@@ -7,7 +7,10 @@
   "author": "Michael Mason <mjmasn@gmail.com>",
   "license": "MIT",
   "private": false,
-  "dependencies": {},
+  "dependencies": {
+    "hoist-non-react-statics": "^3.0.1",
+    "lodash.merge": "^4.6.1"
+  },
   "devDependencies": {
     "@babel/core": "^7.1.2",
     "babel-eslint": "^10.0.1",
