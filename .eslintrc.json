@@ -1,8 +1,9 @@
 {
   "parser": "babel-eslint",
-  "plugins": ["babel", "json", "react-native", "flowtype", "prettier"],
+  "plugins": ["babel", "json", "react-native", "eslint-plugin-import-order-alphabetical", "flowtype", "prettier"],
   "extends": ["airbnb", "plugin:flowtype/recommended", "prettier", "prettier/react"],
   "rules": {
+    "import-order-alphabetical/order": ["error", {"newlines-between": "always"}],
     "import/no-extraneous-dependencies": [
       "error",
       {
