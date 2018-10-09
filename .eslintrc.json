@@ -1,0 +1,21 @@
+{
+  "parser": "babel-eslint",
+  "plugins": ["babel", "json", "react-native", "flowtype", "prettier"],
+  "extends": ["airbnb", "plugin:flowtype/recommended", "prettier", "prettier/react"],
+  "rules": {},
+  "env": {
+    "react-native/react-native": true
+  },
+  "parserOptions": {
+    "ecmaFeatures": {
+      "jsx": true
+    }
+  },
+  "settings": {
+    "import/resolver": {
+      "node": {
+        "extensions": [".js", ".android.js", ".ios.js"]
+      }
+    }
+  }
+}
