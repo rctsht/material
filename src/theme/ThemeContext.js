@@ -1,8 +1,8 @@
 // @flow
 import React from 'react';
 
-import {defaults} from './defaults';
+import {themeDefaults} from '.';
 
-const ThemeContext = React.createContext(defaults);
+const ThemeContext = React.createContext(themeDefaults);
 
 export default ThemeContext;

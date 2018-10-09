@@ -47,7 +47,7 @@ type ThemeProps = {
   animations?: ThemeAnimations,
 };
 
-const defaults: ThemeProps = {
+const themeDefaults: ThemeProps = {
   colors: {
     primary: '#FFD600',
     primaryVariant: '#F9A825',
@@ -97,8 +97,8 @@ const defaults: ThemeProps = {
 };
 
 function createTheme(values: ThemeProps = {}) {
-  return merge({}, defaults, values);
+  return merge({}, themeDefaults, values);
 }
 
-export {createTheme, defaults};
+export {createTheme, themeDefaults};
 export type {ThemeProps};
