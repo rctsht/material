@@ -1,1 +1,1 @@
-console.log('@rctsht/material');
+import './src/animation';
