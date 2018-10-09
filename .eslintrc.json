@@ -2,7 +2,17 @@
   "parser": "babel-eslint",
   "plugins": ["babel", "json", "react-native", "flowtype", "prettier"],
   "extends": ["airbnb", "plugin:flowtype/recommended", "prettier", "prettier/react"],
-  "rules": {},
+  "rules": {
+    "import/no-extraneous-dependencies": [
+      "error",
+      {
+        "devDependencies": true,
+        "optionalDependencies": false,
+        "peerDependencies": false
+      }
+    ],
+    "react/jsx-filename-extension": 0
+  },
   "env": {
     "react-native/react-native": true
   },
