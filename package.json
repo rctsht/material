@@ -1,0 +1,10 @@
+{
+  "name": "@rctsht/material",
+  "version": "0.0.1",
+  "description": "Material design UI library for React Native",
+  "main": "index.js",
+  "repository": "https://github.com/rctsht/material",
+  "author": "Michael Mason <mjmasn@gmail.com>",
+  "license": "MIT",
+  "private": false
+}
