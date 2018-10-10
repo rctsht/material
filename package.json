@@ -9,7 +9,10 @@
   "private": false,
   "dependencies": {
     "hoist-non-react-statics": "^3.0.1",
-    "lodash.merge": "^4.6.1"
+    "lodash.isfunction": "^3.0.9",
+    "lodash.isstring": "^4.0.1",
+    "lodash.merge": "^4.6.1",
+    "lodash.uniq": "^4.5.0"
   },
   "devDependencies": {
     "@babel/core": "^7.1.2",
@@ -30,6 +33,12 @@
     "metro-react-native-babel-preset": "^0.48.0",
     "prettier": "^1.14.2",
     "react": "16.5.1",
-    "react-native": "^0.57.2"
+    "react-native": "^0.57.2",
+    "react-native-vector-icons": "^6.0.2"
+  },
+  "peerDependencies": {
+    "react": "^16.5.0",
+    "react-native": "^0.57.2",
+    "react-native-vector-icons": "^6.0.0"
   }
 }
