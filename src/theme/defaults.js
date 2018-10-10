@@ -3,48 +3,48 @@ import merge from 'lodash.merge';
 import {Easing} from 'react-native';
 
 type ThemeColors = {
-  primary?: string,
-  primaryVariant?: string,
-  secondary?: string,
-  secondaryVariant?: string,
-  background?: string,
-  surface?: string,
-  error?: string,
-  onPrimary?: string,
-  onSecondary?: string,
-  onBackground?: string,
-  onSurface?: string,
-  onError?: string,
+  primary: string,
+  primaryVariant: string,
+  secondary: string,
+  secondaryVariant: string,
+  background: string,
+  surface: string,
+  error: string,
+  onPrimary: string,
+  onSecondary: string,
+  onBackground: string,
+  onSurface: string,
+  onError: string,
 };
 
 type ThemeAnimations = {
-  accelerateEasing?: Function,
-  decelerateEasing?: Function,
-  standardEasing?: Function,
+  accelerateEasing: Function,
+  decelerateEasing: Function,
+  standardEasing: Function,
   medium: {
-    in?: number,
-    out?: number,
+    in: number,
+    out: number,
   },
   large: {
-    in?: number,
-    out?: number,
+    in: number,
+    out: number,
   },
   dialog: {
-    in?: number,
-    out?: number,
+    in: number,
+    out: number,
   },
   control: {
-    selection?: number,
+    selection: number,
   },
   icon: {
-    simple?: number,
-    detailed?: number,
+    simple: number,
+    detailed: number,
   },
 };
 
 type ThemeProps = {
-  colors?: ThemeColors,
-  animations?: ThemeAnimations,
+  colors: ThemeColors,
+  animations: ThemeAnimations,
 };
 
 const themeDefaults: ThemeProps = {
@@ -96,7 +96,7 @@ const themeDefaults: ThemeProps = {
   },
 };
 
-function createTheme(values: ThemeProps = {}) {
+function createTheme(values: $Shape<ThemeProps> = {}) {
   return merge({}, themeDefaults, values);
 }
 
