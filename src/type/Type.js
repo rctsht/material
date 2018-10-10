@@ -1,6 +1,7 @@
 // @flow
 import * as React from 'react';
 import {PixelRatio, StyleSheet, Text} from 'react-native';
+import type {TextStyle} from 'react-native/Libraries/StyleSheet/StyleSheet';
 
 const styles = StyleSheet.create({
   defaults: {
@@ -89,7 +90,8 @@ const typePresets = {
 type Props = {
   alignToBaseline?: number,
   children?: Node,
-  preset?: $Values<typeof presets>,
+  preset?: $Values<typeof typePresets>,
+  style?: TextStyle,
 };
 
 class Type extends React.PureComponent<Props> {
@@ -97,6 +99,7 @@ class Type extends React.PureComponent<Props> {
     alignToBaseline: null,
     children: null,
     preset: null,
+    style: null,
   };
 
   render() {
@@ -113,7 +116,7 @@ class Type extends React.PureComponent<Props> {
     // set the alignToBaseline prop to N and the baseline of the text will be offset from the previous element by that
     // value. This alignment isn't pixel perfect due to the padding within the font itself, as well as the device font
     // scaling settings, but it's a good approximation.
-    if (alignToBaseline) {
+    if (alignToBaseline && !Number.isNaN(alignToBaseline)) {
       const {lineHeight, fontSize} = textStyle;
 
       const fontScale = PixelRatio.getFontScale();

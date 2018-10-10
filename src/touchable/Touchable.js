@@ -2,12 +2,12 @@
 import React from 'react';
 import type {Node} from 'react';
 import {Platform, TouchableOpacity, TouchableNativeFeedback, View} from 'react-native';
-import type {StyleObj} from 'react-native/Libraries/StyleSheet/StyleSheetTypes';
+import type {ViewStyle} from 'react-native/Libraries/StyleSheet/StyleSheet';
 
 type Props = {
   children?: Node,
   pointerEvents?: string,
-  style: StyleObj,
+  style: ViewStyle,
 };
 
 function Touchable(props: Props) {
