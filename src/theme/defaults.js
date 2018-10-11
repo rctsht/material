@@ -96,7 +96,7 @@ const themeDefaults: ThemeProps = {
   },
 };
 
-function createTheme(values: $Shape<ThemeProps> = {}) {
+function createTheme(values: $Shape<ThemeProps> = {}): ThemeProps {
   return merge({}, themeDefaults, values);
 }
 
