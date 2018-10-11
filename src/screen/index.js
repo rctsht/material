@@ -1,3 +1,4 @@
+// @flow
 import {Dimensions} from 'react-native';
 
 function getCurrentOrientation() {
@@ -6,7 +7,7 @@ function getCurrentOrientation() {
   return width > height ? 'landscape' : 'portrait';
 }
 
-// Calculate if a device is a tablet based on figures from:
+// Calculate if a device is a phone based on figures from:
 // https://developer.android.com/training/multiscreen/screensizes#TaskUseSWQuali
 function isPhone() {
   const {width} = Dimensions.get('screen');
