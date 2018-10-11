@@ -89,14 +89,14 @@ const typePresets = {
 
 type Props = {
   alignToBaseline?: number,
-  children?: Node,
+  children?: string | Node,
   preset?: $Values<typeof typePresets>,
   style?: TextStyle,
 };
 
 class Type extends React.PureComponent<Props> {
   static defaultProps = {
-    alignToBaseline: null,
+    alignToBaseline: undefined,
     children: null,
     preset: null,
     style: null,
@@ -116,7 +116,7 @@ class Type extends React.PureComponent<Props> {
     // set the alignToBaseline prop to N and the baseline of the text will be offset from the previous element by that
     // value. This alignment isn't pixel perfect due to the padding within the font itself, as well as the device font
     // scaling settings, but it's a good approximation.
-    if (alignToBaseline && !Number.isNaN(alignToBaseline)) {
+    if (alignToBaseline != null && Number.isInteger(alignToBaseline)) {
       const {lineHeight, fontSize} = textStyle;
 
       const fontScale = PixelRatio.getFontScale();
