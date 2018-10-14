@@ -1,7 +1,7 @@
 // @flow
 import isString from 'lodash.isstring';
 import * as React from 'react';
-import {LayoutAnimation, Platform, StyleSheet, Text, TextInput, UIManager, View} from 'react-native';
+import {LayoutAnimation, StyleSheet, Text, TextInput, View} from 'react-native';
 
 import {Icon} from '../icon';
 import {type ThemeProps, withTheme} from '../theme';
