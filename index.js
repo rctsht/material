@@ -9,6 +9,7 @@ export {default as Log} from './src/log';
 export * from './src/navigation';
 export * from './src/screen';
 export * from './src/scrim';
+export * from './src/sheet';
 export * from './src/text-field';
 export * from './src/theme';
 export * from './src/touchable';

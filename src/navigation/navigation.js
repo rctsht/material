@@ -1,3 +1,4 @@
+// @flow
 import Log from '../log';
 
 let navigation;
@@ -52,7 +53,8 @@ function getNavigation() {
   return navigation;
 }
 
-function setNavigation(navigationRef) {
+// TODO type
+function setNavigation(navigationRef: any) {
   navigation = navigationRef;
 
   // if (navigation && awaitCallbacks.length) {
