@@ -1,7 +1,7 @@
 // @flow
 import * as React from 'react';
 
-// import {DialogContext, DialogOverlay} from '../dialog';
+import {DialogContext, DialogOverlay} from '../dialog';
 // import {MenuContext, MenuOverlay} from '../menu';
 import {SheetContext, SheetOverlay} from '../sheet';
 import {SnackbarContext, SnackbarOverlay} from '../snackbar';
@@ -104,19 +104,19 @@ class Context extends React.PureComponent<Props> {
     return (
       // $FlowFixMe
       <ThemeContext.Provider value={theme}>
-        {/* <DialogContext.Provider value={this.getDialogOverlayRef}> */}
-        <SheetContext.Provider value={this.getSheetOverlayRef}>
-          {/* <MenuContext.Provider value={this.getMenuOverlayRef}> */}
-          <SnackbarContext.Provider value={this.getSnackbarOverlayRef}>
-            {children}
-            <SnackbarOverlay ref={this.setSnackbarOverlayRef} />
-            {/* <MenuOverlay ref={this.setMenuOverlayRef} /> */}
-            <SheetOverlay ref={this.setSheetOverlayRef} />
-            {/* <DialogOverlay ref={this.setDialogOverlayRef} /> */}
-          </SnackbarContext.Provider>
-          {/* </MenuContext.Provider> */}
-        </SheetContext.Provider>
-        {/* </DialogContext.Provider> */}
+        <DialogContext.Provider value={this.getDialogOverlayRef}>
+          <SheetContext.Provider value={this.getSheetOverlayRef}>
+            {/* <MenuContext.Provider value={this.getMenuOverlayRef}> */}
+            <SnackbarContext.Provider value={this.getSnackbarOverlayRef}>
+              {children}
+              <SnackbarOverlay ref={this.setSnackbarOverlayRef} />
+              {/* <MenuOverlay ref={this.setMenuOverlayRef} /> */}
+              <SheetOverlay ref={this.setSheetOverlayRef} />
+              <DialogOverlay ref={this.setDialogOverlayRef} />
+            </SnackbarContext.Provider>
+            {/* </MenuContext.Provider> */}
+          </SheetContext.Provider>
+        </DialogContext.Provider>
       </ThemeContext.Provider>
     );
   }

@@ -9,11 +9,13 @@
   "private": false,
   "dependencies": {
     "hoist-non-react-statics": "^3.0.1",
+    "lodash.debounce": "^4.0.8",
     "lodash.find": "^4.6.0",
     "lodash.findindex": "^4.6.0",
     "lodash.isfunction": "^3.0.9",
     "lodash.isstring": "^4.0.1",
     "lodash.merge": "^4.6.1",
+    "lodash.partition": "^4.6.0",
     "lodash.uniq": "^4.5.0",
     "tinycolor2": "^1.4.1",
     "uuid": "^3.3.2"
