@@ -6,6 +6,7 @@ export * from './src/chip';
 export * from './src/context';
 export * from './src/divider';
 export * from './src/icon';
+export * from './src/image-background';
 export {default as Log} from './src/log';
 export * from './src/navigation';
 export * from './src/progress';
