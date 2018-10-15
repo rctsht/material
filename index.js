@@ -13,6 +13,7 @@ export * from './src/progress';
 export * from './src/screen';
 export * from './src/scrim';
 export * from './src/sheet';
+export * from './src/snackbar';
 export * from './src/text-field';
 export * from './src/theme';
 export * from './src/touchable';
