@@ -1,12 +1,12 @@
 // @flow
 import hoistNonReactStatics from 'hoist-non-react-statics';
-import * as React from 'react';
+import React, {PureComponent} from 'react';
 import uuid from 'uuid';
 
-import SnackbarContext from './SnackbarContext';
+import MenuContext from './MenuContext';
 
-export default function withSnackbarOverlay(Component: React.ComponentType<any>) {
-  class ComponentWithSnackbarOverlay extends React.PureComponent<any> {
+export default function withMenuOverlay(Component: React.ComponentType<any>) {
+  class ComponentWithMenuOverlay extends PureComponent<any> {
     constructor(props: any) {
       super(props);
 
@@ -39,16 +39,16 @@ export default function withSnackbarOverlay(Component: React.ComponentType<any>)
 
     render() {
       return (
-        <SnackbarContext.Consumer>
+        <MenuContext.Consumer>
           {getOverlayRef => {
             this.getOverlayRef = getOverlayRef;
           }}
-        </SnackbarContext.Consumer>
+        </MenuContext.Consumer>
       );
     }
   }
 
-  hoistNonReactStatics(ComponentWithSnackbarOverlay, Component);
+  hoistNonReactStatics(ComponentWithMenuOverlay, Component);
 
-  return ComponentWithSnackbarOverlay;
+  return ComponentWithMenuOverlay;
 }

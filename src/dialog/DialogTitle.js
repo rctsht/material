@@ -25,7 +25,7 @@ type Props = {
   divider?: boolean,
 };
 
-const ModalTitle = (props: Props) => {
+const DialogTitle = (props: Props) => {
   const {title, divider} = props;
 
   if (!title) {
@@ -42,9 +42,9 @@ const ModalTitle = (props: Props) => {
   );
 };
 
-ModalTitle.defaultProps = {
+DialogTitle.defaultProps = {
   title: '',
   divider: false,
 };
 
-export default ModalTitle;
+export default DialogTitle;
