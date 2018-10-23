@@ -18,7 +18,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    alignSelf: 'flex-start',
   },
   containedButton: {
     borderRadius: 3,
