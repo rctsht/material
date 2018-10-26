@@ -43,14 +43,14 @@ class DialogOverlay extends React.PureComponent<any> {
   render() {
     const {contents, extraProps} = this.state;
 
-    return (
-      <View style={styles.container} pointerEvents="box-none">
-        {contents.map(content => {
-          const {Component, props} = content;
-          return <Component {...extraProps} {...props} key={props.id} />;
-        })}
-      </View>
-    );
+    return contents.map(content => {
+      const {Component, props} = content;
+      return (
+        <View style={styles.container} pointerEvents="box-none">
+          <Component {...extraProps} {...props} key={props.id} />
+        </View>
+      );
+    });
   }
 }
 
