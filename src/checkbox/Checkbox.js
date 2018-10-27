@@ -1,7 +1,7 @@
 // @flow
 import isFunction from 'lodash.isfunction';
 import * as React from 'react';
-import {StyleSheet, TouchableWithoutFeedback, View} from 'react-native';
+import {LayoutAnimation, StyleSheet, TouchableWithoutFeedback, View} from 'react-native';
 
 import {Icon} from '../icon';
 import {type ThemeProps, withTheme} from '../theme';
@@ -33,16 +33,35 @@ type Props = {
   onPress?: Function,
   rctshtTheme: ThemeProps,
   selected?: boolean,
+  value: any,
 };
 
 class Checkbox extends React.PureComponent<Props> {
   static defaultProps = {
     onPress: null,
     selected: false,
+    value: null,
+  };
+
+  onPress = () => {
+    const {onPress, rctshtTheme, value} = this.props;
+
+    LayoutAnimation.configureNext(
+      LayoutAnimation.create(
+        rctshtTheme.animations.control.selection,
+        LayoutAnimation.Types.easeInEaseOut,
+        LayoutAnimation.Properties.scaleXY,
+      ),
+    );
+
+    if (isFunction(onPress)) {
+      // $FlowFixMe
+      onPress(value);
+    }
   };
 
   render() {
-    const {rctshtTheme, selected, onPress} = this.props;
+    const {onPress, rctshtTheme, selected} = this.props;
 
     const checkbox = (
       <View style={[styles.outerSquare, selected ? {borderColor: rctshtTheme.colors.secondary} : null]}>
@@ -59,7 +78,7 @@ class Checkbox extends React.PureComponent<Props> {
     );
 
     if (isFunction(onPress)) {
-      return <TouchableWithoutFeedback onPress={onPress}>{checkbox}</TouchableWithoutFeedback>;
+      return <TouchableWithoutFeedback onPress={this.onPress}>{checkbox}</TouchableWithoutFeedback>;
     }
 
     return checkbox;
