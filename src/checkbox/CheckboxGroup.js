@@ -62,7 +62,7 @@ class CheckboxGroup extends React.PureComponent<Props, State> {
     const {selectedValues} = this.state;
 
     return (
-      <View>
+      <View {...this.props}>
         {React.Children.map(children, child =>
           React.cloneElement(child, {
             selected: selectedValues.includes(child.props.value),
