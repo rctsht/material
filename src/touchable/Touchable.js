@@ -1,13 +1,12 @@
 // @flow
-import React from 'react';
-import type {Node} from 'react';
+import * as React from 'react';
 import {Platform, TouchableOpacity, TouchableNativeFeedback, View} from 'react-native';
-import type {ViewStyle} from 'react-native/Libraries/StyleSheet/StyleSheet';
+import {type ViewStyle} from 'react-native/Libraries/StyleSheet/StyleSheet';
 
 type Props = {
-  children?: Node,
+  children?: React.Node,
   pointerEvents?: string,
-  style: ViewStyle,
+  style?: ViewStyle,
 };
 
 function Touchable(props: Props) {
