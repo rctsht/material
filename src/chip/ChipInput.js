@@ -97,6 +97,8 @@ type Props = {
   children?: React.Node,
   labelText?: string,
   onChangeSelection: Function,
+  onPressRemove?: Function,
+  onPressSuggestion?: Function,
   onSubmitEditing?: Function,
   suggestions: Array<string> | Function,
   rctshtTheme: ThemeProps,
@@ -170,6 +172,12 @@ class ChipInput extends React.PureComponent<Props, State> {
   };
 
   onPressRemove = (value: string) => {
+    const {onPressRemove} = this.props;
+    if (onPressRemove && isFunction(onPressRemove)) {
+      onPressRemove(value);
+      return;
+    }
+
     this.setState(
       oldState => {
         const selectedValues = [...oldState.selectedValues].filter(selectedValue => selectedValue !== value);
@@ -187,6 +195,12 @@ class ChipInput extends React.PureComponent<Props, State> {
   };
 
   onPressSuggestion = (value: string) => {
+    const {onPressSuggestion} = this.props;
+    if (onPressSuggestion && isFunction(onPressSuggestion)) {
+      onPressSuggestion(value);
+      return;
+    }
+
     if (this.textInput) {
       this.textInput.clear();
     }

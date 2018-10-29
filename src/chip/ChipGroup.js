@@ -1,7 +1,6 @@
 // @flow
 import isFunction from 'lodash.isfunction';
-import React, {PureComponent} from 'react';
-import type {Node} from 'react';
+import * as React from 'react';
 import {ScrollView, StyleSheet, View} from 'react-native';
 
 const styles = StyleSheet.create({
@@ -24,18 +23,20 @@ const styles = StyleSheet.create({
 });
 
 type Props = {
-  children: Node,
+  children: React.Node,
   initialSelectedValues?: Array<any>,
+  selectedValues?: Array<any>,
   maxSelection?: number,
   onChangeSelection?: Function,
+  onPressChild?: Function,
   scroll?: boolean,
 };
 
 type State = {
-  selectedValues: Array<any>,
+  internalSelectedValues: Array<any>,
 };
 
-class ChipGroup extends PureComponent<Props, State> {
+class ChipGroup extends React.PureComponent<Props, State> {
   static defaultProps = {
     initialSelectedValues: null,
     maxSelection: null,
@@ -49,41 +50,47 @@ class ChipGroup extends PureComponent<Props, State> {
     const {initialSelectedValues} = props;
 
     this.state = {
-      selectedValues: initialSelectedValues || [],
+      internalSelectedValues: initialSelectedValues || [],
     };
   }
 
   onPressChild = (value: any) => {
-    const {maxSelection} = this.props;
+    const {maxSelection, onPressChild} = this.props;
+    if (onPressChild && isFunction(onPressChild)) {
+      onPressChild(value);
+      return;
+    }
+
     this.setState(
       oldState => {
-        const index = oldState.selectedValues.indexOf(value);
-        const selectedValues = [...oldState.selectedValues];
+        const index = oldState.internalSelectedValues.indexOf(value);
+        const internalSelectedValues = [...oldState.internalSelectedValues];
 
         if (index === -1) {
-          selectedValues.push(value);
+          internalSelectedValues.push(value);
         } else {
-          selectedValues.splice(index, 1);
+          internalSelectedValues.splice(index, 1);
         }
 
         return {
-          selectedValues: maxSelection != null ? selectedValues.slice(-maxSelection) : selectedValues,
+          internalSelectedValues:
+            maxSelection != null ? internalSelectedValues.slice(-maxSelection) : internalSelectedValues,
         };
       },
       () => {
         const {onChangeSelection} = this.props;
-        const {selectedValues} = this.state;
+        const {internalSelectedValues} = this.state;
 
         if (onChangeSelection && isFunction(onChangeSelection)) {
-          onChangeSelection(selectedValues);
+          onChangeSelection(internalSelectedValues);
         }
       },
     );
   };
 
   render() {
-    const {children, scroll} = this.props;
-    const {selectedValues} = this.state;
+    const {children, onPressChild, scroll, selectedValues} = this.props;
+    const {internalSelectedValues} = this.state;
 
     const WrapperComponent = scroll ? ScrollView : View;
     const wrapperProps = scroll
@@ -98,7 +105,9 @@ class ChipGroup extends PureComponent<Props, State> {
         {React.Children.map(children, child => (
           <View style={styles.chipWrapper}>
             {React.cloneElement(child, {
-              selected: selectedValues.includes(child.props.value),
+              selected: selectedValues
+                ? selectedValues.includes(child.props.value)
+                : internalSelectedValues.includes(child.props.value),
               onPress: this.onPressChild,
             })}
           </View>
