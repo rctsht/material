@@ -9,6 +9,7 @@ export * from './src/dialog';
 export * from './src/divider';
 export * from './src/icon';
 export * from './src/image-background';
+export * from './src/list';
 export {default as Log} from './src/log';
 export * from './src/menu';
 export * from './src/navigation';
