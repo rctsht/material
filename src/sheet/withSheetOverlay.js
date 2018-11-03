@@ -12,9 +12,12 @@ type Props = {
   navigation: Object,
 };
 
-function withSheetOverlay(Component: React.ComponentType<any>, type: string) {
+function withSheetOverlay(Component: React.ComponentType<any>, type: string, global: boolean = false) {
   class ComponentWithSheetOverlay extends React.PureComponent<Props> {
-    constructor(props) {
+    id = null;
+    getOverlayRef;
+
+    constructor(props: Props) {
       super(props);
 
       this.id = uuid.v4();
@@ -37,8 +40,8 @@ function withSheetOverlay(Component: React.ComponentType<any>, type: string) {
     }
 
     renderContent() {
-      const {navigation} = this.props;
-      const {state} = navigation || {};
+      const navigation = getNavigation();
+      const {nav: state} = navigation || {};
       const {key: navigationKey = this.id} = state || {};
 
       if (this.getOverlayRef) {
@@ -50,7 +53,7 @@ function withSheetOverlay(Component: React.ComponentType<any>, type: string) {
               ...this.props,
               navigation: getNavigation(),
               rctshtOverlayId: this.id,
-              rctshtNavigationKey: navigationKey,
+              rctshtNavigationKey: global ? 'GLOBAL' : navigationKey,
               rctshtGetOverlayRef: this.getOverlayRef,
             },
             overlayId: this.id,

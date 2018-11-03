@@ -48,7 +48,8 @@ class SheetOverlay extends PureComponent<Props> {
     const currentNavigationKey = getCurrentNavigationKey() || 'RCTSHT_UNKNOWN_NAVIGATION_KEY';
 
     const activeContent = find(contents, content => content.navigationKey === currentNavigationKey);
-    const {Component, props} = activeContent || {};
+    const globalContent = find(contents, content => content.navigationKey === 'GLOBAL');
+    const {Component, props} = activeContent || globalContent || {};
 
     return (
       <View style={styles.container} pointerEvents="box-none">
