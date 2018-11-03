@@ -57,7 +57,7 @@ function withSheetOverlay(Component: React.ComponentType<any>, type: string, glo
               rctshtGetOverlayRef: this.getOverlayRef,
             },
             overlayId: this.id,
-            navigationKey,
+            navigationKey: global ? 'GLOBAL' : navigationKey,
           });
         });
       }
