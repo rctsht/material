@@ -2,7 +2,7 @@
 import * as React from 'react';
 
 import {DialogContext, DialogOverlay} from '../dialog';
-// import {MenuContext, MenuOverlay} from '../menu';
+import {MenuContext, MenuOverlay} from '../menu';
 import {SheetContext, SheetOverlay} from '../sheet';
 import {SnackbarContext, SnackbarOverlay} from '../snackbar';
 import {createTheme, ThemeContext, type ThemeProps} from '../theme';
