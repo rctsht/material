@@ -18,6 +18,8 @@ class Context extends React.PureComponent<Props> {
     theme: createTheme(),
   };
 
+  dialogOverlayRef: ?DialogOverlay;
+
   getDialogOverlayRefCallbacks = [];
 
   getDialogOverlayRef = (cb: Function) => {
@@ -28,7 +30,7 @@ class Context extends React.PureComponent<Props> {
     }
   };
 
-  setDialogOverlayRef = (node: React.Node) => {
+  setDialogOverlayRef = (node: ?DialogOverlay) => {
     this.dialogOverlayRef = node;
 
     this.getDialogOverlayRefCallbacks.forEach(cb => {
@@ -38,25 +40,29 @@ class Context extends React.PureComponent<Props> {
     this.getDialogOverlayRefCallbacks = [];
   };
 
-  // getMenuOverlayRefCallbacks = [];
-  //
-  // getMenuOverlayRef = (cb: Function) => {
-  //   if (this.menuOverlayRef) {
-  //     cb(this.menuOverlayRef);
-  //   } else {
-  //     this.getMenuOverlayRefCallbacks.push(cb);
-  //   }
-  // };
-  //
-  // setMenuOverlayRef = (node: React.Node) => {
-  //   this.menuOverlayRef = node;
-  //
-  //   this.getMenuOverlayRefCallbacks.forEach(cb => {
-  //     cb(this.menuOverlayRef);
-  //   });
-  //
-  //   this.getMenuOverlayRefCallbacks = [];
-  // };
+  menuOverlayRef: ?MenuOverlay;
+
+  getMenuOverlayRefCallbacks = [];
+
+  getMenuOverlayRef = (cb: Function) => {
+    if (this.menuOverlayRef) {
+      cb(this.menuOverlayRef);
+    } else {
+      this.getMenuOverlayRefCallbacks.push(cb);
+    }
+  };
+
+  setMenuOverlayRef = (node: ?MenuOverlay) => {
+    this.menuOverlayRef = node;
+
+    this.getMenuOverlayRefCallbacks.forEach(cb => {
+      cb(this.menuOverlayRef);
+    });
+
+    this.getMenuOverlayRefCallbacks = [];
+  };
+
+  sheetOverlayRef: ?SheetOverlay;
 
   getSheetOverlayRefCallbacks = [];
 
@@ -68,7 +74,7 @@ class Context extends React.PureComponent<Props> {
     }
   };
 
-  setSheetOverlayRef = (node: React.Node) => {
+  setSheetOverlayRef = (node: ?SheetOverlay) => {
     this.sheetOverlayRef = node;
 
     this.getSheetOverlayRefCallbacks.forEach(cb => {
@@ -77,6 +83,8 @@ class Context extends React.PureComponent<Props> {
 
     this.getSheetOverlayRefCallbacks = [];
   };
+
+  snackbarOverlayRef: ?SnackbarOverlay;
 
   getSnackbarOverlayRefCallbacks = [];
 
@@ -88,7 +96,7 @@ class Context extends React.PureComponent<Props> {
     }
   };
 
-  setSnackbarOverlayRef = (node: React.Node) => {
+  setSnackbarOverlayRef = (node: ?SnackbarOverlay) => {
     this.snackbarOverlayRef = node;
 
     this.getSnackbarOverlayRefCallbacks.forEach(cb => {
@@ -106,15 +114,15 @@ class Context extends React.PureComponent<Props> {
       <ThemeContext.Provider value={theme}>
         <DialogContext.Provider value={this.getDialogOverlayRef}>
           <SheetContext.Provider value={this.getSheetOverlayRef}>
-            {/* <MenuContext.Provider value={this.getMenuOverlayRef}> */}
-            <SnackbarContext.Provider value={this.getSnackbarOverlayRef}>
-              {children}
-              <SnackbarOverlay ref={this.setSnackbarOverlayRef} />
-              {/* <MenuOverlay ref={this.setMenuOverlayRef} /> */}
-              <SheetOverlay ref={this.setSheetOverlayRef} />
-              <DialogOverlay ref={this.setDialogOverlayRef} />
-            </SnackbarContext.Provider>
-            {/* </MenuContext.Provider> */}
+            <MenuContext.Provider value={this.getMenuOverlayRef}>
+              <SnackbarContext.Provider value={this.getSnackbarOverlayRef}>
+                {children}
+                <SnackbarOverlay ref={this.setSnackbarOverlayRef} />
+                <MenuOverlay ref={this.setMenuOverlayRef} />
+                <SheetOverlay ref={this.setSheetOverlayRef} />
+                <DialogOverlay ref={this.setDialogOverlayRef} />
+              </SnackbarContext.Provider>
+            </MenuContext.Provider>
           </SheetContext.Provider>
         </DialogContext.Provider>
       </ThemeContext.Provider>
