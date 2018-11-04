@@ -216,7 +216,8 @@ class Sheet extends React.PureComponent<Props, State> {
     // Ask to be the responder:
     onStartShouldSetPanResponder: () => false,
     onStartShouldSetPanResponderCapture: () => false,
-    onMoveShouldSetPanResponder: (evt, gestureState) => Math.abs(gestureState.dx) > 30 && Math.abs(gestureState.dx) > Math.abs(gestureState.dy),
+    onMoveShouldSetPanResponder: (evt, gestureState) =>
+      Math.abs(gestureState.dx) > 30 && Math.abs(gestureState.dx) > Math.abs(gestureState.dy),
     onMoveShouldSetPanResponderCapture: () => false,
     onPanResponderGrant: () => {},
     onPanResponderMove: (evt, gestureState) => {
@@ -598,11 +599,11 @@ class Sheet extends React.PureComponent<Props, State> {
     const userStyle = Array.isArray(style) ? style : [style];
 
     // TODO account for freeform / splitscreen modes?
-    if (isVisible) {
-      StatusBar.setHidden(true);
-    } else {
-      StatusBar.setHidden(false);
-    }
+    // if (isVisible) {
+    //   StatusBar.setHidden(true);
+    // } else {
+    //   StatusBar.setHidden(false);
+    // }
 
     return [
       isVisible ? null : (
@@ -610,7 +611,6 @@ class Sheet extends React.PureComponent<Props, State> {
           key="edgel"
           {...this.panResponder2.panHandlers}
           style={{
-            // backgroundColor: 'pink',
             position: 'absolute',
             top: 0,
             left: 0,
@@ -625,7 +625,6 @@ class Sheet extends React.PureComponent<Props, State> {
           key="edger"
           {...this.panResponder2.panHandlers}
           style={{
-            // backgroundColor: 'pink',
             position: 'absolute',
             top: 0,
             right: 0,
