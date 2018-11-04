@@ -12,6 +12,7 @@ const styles = StyleSheet.create({
 
 type Props = {
   halfWidth?: boolean,
+  inline?: boolean,
   name?: string,
   size?: number,
   style?: TextStyle,
@@ -20,25 +21,30 @@ type Props = {
 class Icon extends React.PureComponent<Props> {
   static defaultProps = {
     halfWidth: false,
+    inline: false,
     name: null,
     size: 24,
     style: null,
   };
 
   render() {
-    const {halfWidth, size: theSize, style} = this.props;
+    const {halfWidth, inline, size: theSize, style} = this.props;
 
     // Stop flow complaining
     const size = parseInt(theSize, 10);
 
-    return (
-      <View style={[styles.container, {width: halfWidth ? size / 2 : size, height: size}]}>
-        <MaterialIcon
-          {...this.props}
-          style={[...(Array.isArray(style) ? style : [style]), halfWidth ? {marginLeft: -size / 4} : null]}
-        />
-      </View>
+    const icon = (
+      <MaterialIcon
+        {...this.props}
+        style={[...(Array.isArray(style) ? style : [style]), halfWidth ? {marginLeft: -size / 4} : null]}
+      />
     );
+
+    if (inline) {
+      return icon;
+    }
+
+    return <View style={[styles.container, {width: halfWidth ? size / 2 : size, height: size}]}>{icon}</View>;
   }
 }
 
