@@ -8,6 +8,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: 'rgba(0,0,0,0.87)',
     padding: 0,
+    textShadowRadius: 0,
   },
   defaultLineHeight: {
     lineHeight: 20,

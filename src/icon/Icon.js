@@ -8,6 +8,9 @@ const styles = StyleSheet.create({
   container: {
     alignItems: 'center',
   },
+  noShadow: {
+    textShadowRadius: 0,
+  },
 });
 
 type Props = {
@@ -36,7 +39,11 @@ class Icon extends React.PureComponent<Props> {
     const icon = (
       <MaterialIcon
         {...this.props}
-        style={[...(Array.isArray(style) ? style : [style]), halfWidth ? {marginLeft: -size / 4} : null]}
+        style={[
+          styles.noShadow,
+          ...(Array.isArray(style) ? style : [style]),
+          halfWidth ? {marginLeft: -size / 4} : null,
+        ]}
       />
     );
 

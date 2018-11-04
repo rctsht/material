@@ -11,6 +11,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
+  noShadow: {
+    textShadowRadius: 0,
+  },
 });
 
 type Props = {
@@ -122,7 +125,7 @@ class Icon extends React.PureComponent<Props, State> {
             ],
           }}
         >
-          <MaterialIcon {...this.props} style={[style, halfWidth ? {marginLeft: -size / 4} : null]} />
+          <MaterialIcon {...this.props} style={[styles.noShadow, style, halfWidth ? {marginLeft: -size / 4} : null]} />
         </Animated.View>
         {oldProps ? (
           <Animated.View
@@ -145,7 +148,7 @@ class Icon extends React.PureComponent<Props, State> {
           >
             <MaterialIcon
               {...oldProps}
-              style={[oldProps.style, oldProps.halfWidth ? {marginLeft: -oldSize / 4} : null]}
+              style={[styles.noShadow, oldProps.style, oldProps.halfWidth ? {marginLeft: -oldSize / 4} : null]}
             />
           </Animated.View>
         ) : null}
