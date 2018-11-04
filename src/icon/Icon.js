@@ -18,7 +18,7 @@ type Props = {
   inline?: boolean,
   name?: string,
   size?: number,
-  style?: TextStyle,
+  style: ?TextStyle,
 };
 
 class Icon extends React.PureComponent<Props> {

@@ -20,7 +20,7 @@ type Props = {
   halfWidth?: boolean,
   name?: string,
   size?: number,
-  style?: TextStyle,
+  style: ?TextStyle,
   rctshtTheme: ThemeProps,
 };
 
