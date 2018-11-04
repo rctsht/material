@@ -23,19 +23,23 @@ const styles = StyleSheet.create({
 type Props = {
   fullWidth?: boolean,
   color?: string,
+  style?: Object,
 };
 
 class Divider extends PureComponent<Props> {
   static defaultProps = {
     fullWidth: false,
     color: '#0000001e',
+    style: null,
   };
 
   render() {
-    const {color, fullWidth} = this.props;
+    const {color, fullWidth, style} = this.props;
 
     return (
-      <View style={[styles.divider, fullWidth ? styles.fullWidthDivider : null]}>
+      <View
+        style={[Array.isArray(style) ? style : [style], styles.divider, fullWidth ? styles.fullWidthDivider : null]}
+      >
         <View style={[styles.dividerLine, {borderTopColor: color}]} />
       </View>
     );
