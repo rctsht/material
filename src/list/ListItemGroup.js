@@ -31,7 +31,7 @@ class ListItemGroup extends React.PureComponent<Props> {
 
     return (
       <View style={[styles.container, divider ? styles.divider : null]}>
-        {React.Children.map(children, child => React.cloneElement(child, propsToApply))}
+        {React.Children.map(children, child => (child ? React.cloneElement(child, propsToApply) : null))}
       </View>
     );
   }
