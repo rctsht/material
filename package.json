@@ -1,6 +1,6 @@
 {
   "name": "@rctsht/material",
-  "version": "0.0.36",
+  "version": "0.0.37",
   "description": "Material design UI library for React Native",
   "main": "index.js",
   "repository": "https://github.com/rctsht/material",
