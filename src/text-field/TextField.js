@@ -69,6 +69,9 @@ const styles = StyleSheet.create({
     color: '#545454',
     fontSize: 12,
   },
+  errorText: {
+    color: '#b00020',
+  },
   leadingIcon: {
     flex: 0,
     width: 24,
@@ -90,6 +93,7 @@ const styles = StyleSheet.create({
 type Props = {
   helperText?: string,
   labelText?: string,
+  errorText?: string,
   leadingIcon?: string | React.Node,
   leadingIconColor?: string,
   required?: boolean,
@@ -107,6 +111,7 @@ class TextField extends React.PureComponent<Props, State> {
   static defaultProps = {
     helperText: '',
     labelText: '',
+    errorText: null,
     leadingIcon: null,
     leadingIconColor: '#00000060',
     required: false,
@@ -145,6 +150,7 @@ class TextField extends React.PureComponent<Props, State> {
     const {
       helperText,
       labelText,
+      errorText,
       leadingIcon,
       leadingIconColor = '#00000060',
       required,
@@ -154,6 +160,14 @@ class TextField extends React.PureComponent<Props, State> {
       value,
     } = this.props;
     const {isFocused} = this.state;
+
+    const errorIcon = errorText ? <Icon name="alert-circle" size={24} color="#b00020" /> : null;
+
+    const theTrailingIcon =
+      errorIcon ||
+      // $FlowFixMe
+      (isString(trailingIcon) ? <Icon name={trailingIcon} size={24} color={trailingIconColor} /> : trailingIcon);
+
     // {/* TODO Use <Type /> */}
     return (
       <View style={styles.container}>
@@ -177,6 +191,7 @@ class TextField extends React.PureComponent<Props, State> {
                 isFocused || value ? styles.labelShrink : styles.label,
                 isFocused || value ? {color: rctshtTheme.colors.primary} : null,
                 !isFocused && value ? styles.labelNoColor : null,
+                errorText ? styles.errorText : null,
               ]}
             >
               {labelText}
@@ -184,14 +199,11 @@ class TextField extends React.PureComponent<Props, State> {
             </Text>
             <TextInput {...this.props} onFocus={this.onFocus} onBlur={this.onBlur} style={styles.input} />
           </View>
-          {trailingIcon ? (
-            <View style={styles.trailingIcon}>
-              {/* $FlowFixMe */}
-              {isString(trailingIcon) ? <Icon name={trailingIcon} size={24} color={trailingIconColor} /> : trailingIcon}
-            </View>
-          ) : null}
+          {theTrailingIcon ? <View style={styles.trailingIcon}>{theTrailingIcon}</View> : null}
         </View>
-        <Text style={styles.helperText}>{required && helperText == null ? '* Required' : helperText || ''}</Text>
+        <Text style={[styles.helperText, errorText ? styles.errorText : null]}>
+          {errorText || (required && helperText == null ? '* Required' : helperText || '')}
+        </Text>
       </View>
     );
   }
