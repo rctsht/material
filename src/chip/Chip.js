@@ -87,7 +87,7 @@ type Props = {
   outline?: boolean,
   rctshtTheme: ThemeProps,
   selected?: boolean,
-  thumbnail?: string | Node,
+  thumbnail?: string | React.Node,
   value?: any,
 };
 

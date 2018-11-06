@@ -1,7 +1,7 @@
 // @flow
 import * as React from 'react';
 import {PixelRatio, StyleSheet, Text} from 'react-native';
-import type {TextStyle} from 'react-native/Libraries/StyleSheet/StyleSheet';
+import {type TextStyleProp} from 'react-native/Libraries/StyleSheet/StyleSheet';
 
 const styles = StyleSheet.create({
   defaults: {
@@ -90,9 +90,9 @@ const typePresets = {
 
 type Props = {
   alignToBaseline?: number,
-  children?: string | Node,
+  children?: string | React.Node,
   preset?: $Values<typeof typePresets>,
-  style: ?TextStyle,
+  style: TextStyleProp,
 };
 
 class Type extends React.PureComponent<Props> {

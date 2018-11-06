@@ -1,7 +1,6 @@
 // @flow
 import isString from 'lodash.isstring';
-import React, {PureComponent} from 'react';
-import type {Node} from 'react';
+import * as React from 'react';
 import {StyleSheet, TouchableNativeFeedback, View} from 'react-native';
 
 import {Icon} from '../icon';
@@ -59,16 +58,16 @@ type Props = {
   backgroundColor?: string,
   borderColor?: string,
   disabled?: boolean,
-  icon?: string | Node,
+  icon?: string | React.Node,
   iconColor?: string,
-  label?: string | Node,
+  label?: string | React.Node,
   labelColor?: string,
   onPress?: Function,
   rctshtTheme: ThemeProps,
   type?: $Values<typeof types>,
 };
 
-class Button extends PureComponent<Props> {
+class Button extends React.PureComponent<Props> {
   static types = types;
 
   static defaultProps = {
