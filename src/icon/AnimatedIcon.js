@@ -2,7 +2,7 @@
 import * as React from 'react';
 import {Animated, StyleSheet, View} from 'react-native';
 import MaterialIcon from 'react-native-vector-icons/MaterialCommunityIcons';
-import type {TextStyle} from 'react-native/Libraries/StyleSheet/StyleSheet';
+import {type TextStyleProp} from 'react-native/Libraries/StyleSheet/StyleSheet';
 
 import {type ThemeProps} from '../theme';
 
@@ -20,7 +20,7 @@ type Props = {
   halfWidth?: boolean,
   name?: string,
   size?: number,
-  style: ?TextStyle,
+  style: TextStyleProp,
   rctshtTheme: ThemeProps,
 };
 

@@ -2,7 +2,7 @@
 import * as React from 'react';
 import {StyleSheet, View} from 'react-native';
 import MaterialIcon from 'react-native-vector-icons/MaterialCommunityIcons';
-import type {TextStyleProp, ViewStyleProp} from 'react-native/Libraries/StyleSheet/StyleSheet';
+import {type TextStyleProp, type ViewStyleProp} from 'react-native/Libraries/StyleSheet/StyleSheet';
 
 const styles = StyleSheet.create({
   container: {
@@ -14,7 +14,7 @@ const styles = StyleSheet.create({
 });
 
 type Props = {
-  containerStyle: ?ViewStyleProp,
+  containerStyle: ViewStyleProp,
   halfWidth?: boolean,
   inline?: boolean,
   name?: string,
