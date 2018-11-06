@@ -2,7 +2,7 @@
 import * as React from 'react';
 import {StyleSheet, View} from 'react-native';
 import MaterialIcon from 'react-native-vector-icons/MaterialCommunityIcons';
-import type {TextStyle} from 'react-native/Libraries/StyleSheet/StyleSheet';
+import type {TextStyleProp, ViewStyleProp} from 'react-native/Libraries/StyleSheet/StyleSheet';
 
 const styles = StyleSheet.create({
   container: {
@@ -14,15 +14,17 @@ const styles = StyleSheet.create({
 });
 
 type Props = {
+  containerStyle: ?ViewStyleProp,
   halfWidth?: boolean,
   inline?: boolean,
   name?: string,
   size?: number,
-  style: ?TextStyle,
+  style: TextStyleProp,
 };
 
 class Icon extends React.PureComponent<Props> {
   static defaultProps = {
+    containerStyle: null,
     halfWidth: false,
     inline: false,
     name: null,
@@ -31,7 +33,7 @@ class Icon extends React.PureComponent<Props> {
   };
 
   render() {
-    const {halfWidth, inline, size: theSize, style} = this.props;
+    const {containerStyle, halfWidth, inline, size: theSize, style} = this.props;
 
     // Stop flow complaining
     const size = parseInt(theSize, 10);
@@ -51,7 +53,17 @@ class Icon extends React.PureComponent<Props> {
       return icon;
     }
 
-    return <View style={[styles.container, {width: halfWidth ? size / 2 : size, height: size}]}>{icon}</View>;
+    return (
+      <View
+        style={[
+          styles.container,
+          {width: halfWidth ? size / 2 : size, height: size},
+          ...(Array.isArray(containerStyle) ? containerStyle : [containerStyle]),
+        ]}
+      >
+        {icon}
+      </View>
+    );
   }
 }
 
