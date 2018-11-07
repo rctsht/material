@@ -22,6 +22,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
   },
+  inputWrapperError: {
+    borderBottomColor: '#b00020',
+  },
   inputWrapper2: {
     flex: 1,
     paddingTop: 8,
@@ -97,6 +100,7 @@ type Props = {
   leadingIcon?: string | React.Node,
   leadingIconColor?: string,
   required?: boolean,
+  selectionColor?: string,
   rctshtTheme: ThemeProps,
   trailingIcon?: string | React.Node,
   trailingIconColor?: string,
@@ -158,6 +162,7 @@ class TextField extends React.PureComponent<Props, State> {
       trailingIcon,
       trailingIconColor = '#00000060',
       value,
+      selectionColor,
     } = this.props;
     const {isFocused} = this.state;
 
@@ -168,6 +173,8 @@ class TextField extends React.PureComponent<Props, State> {
       // $FlowFixMe
       (isString(trailingIcon) ? <Icon name={trailingIcon} size={24} color={trailingIconColor} /> : trailingIcon);
 
+    const theSelectionColor = errorText ? '#b00020' : selectionColor;
+
     // {/* TODO Use <Type /> */}
     return (
       <View style={styles.container}>
@@ -177,6 +184,7 @@ class TextField extends React.PureComponent<Props, State> {
             styles.inputWrapper,
             isFocused ? styles.inputWrapperFocused : null,
             isFocused ? {borderBottomColor: rctshtTheme.colors.primary} : null,
+            errorText ? styles.inputWrapperError : null,
           ]}
         >
           {leadingIcon ? (
@@ -197,7 +205,13 @@ class TextField extends React.PureComponent<Props, State> {
               {labelText}
               {required ? <Text style={styles.asteriskText}>*</Text> : null}
             </Text>
-            <TextInput {...this.props} onFocus={this.onFocus} onBlur={this.onBlur} style={styles.input} />
+            <TextInput
+              {...this.props}
+              onFocus={this.onFocus}
+              onBlur={this.onBlur}
+              style={styles.input}
+              selectionColor={theSelectionColor}
+            />
           </View>
           {theTrailingIcon ? <View style={styles.trailingIcon}>{theTrailingIcon}</View> : null}
         </View>
