@@ -105,6 +105,7 @@ type Props = {
   trailingIcon?: string | React.Node,
   trailingIconColor?: string,
   value: string,
+  forwardedRef: Function,
 };
 
 type State = {
@@ -163,6 +164,7 @@ class TextField extends React.PureComponent<Props, State> {
       trailingIconColor = '#00000060',
       value,
       selectionColor,
+      forwardedRef,
     } = this.props;
     const {isFocused} = this.state;
 
@@ -207,6 +209,7 @@ class TextField extends React.PureComponent<Props, State> {
             </Text>
             <TextInput
               {...this.props}
+              ref={forwardedRef}
               onFocus={this.onFocus}
               onBlur={this.onBlur}
               style={styles.input}
@@ -223,4 +226,13 @@ class TextField extends React.PureComponent<Props, State> {
   }
 }
 
-export default withTheme(TextField);
+function withForwardRef(Component: React.ComponentType<any>) {
+  function forwardRef(props, ref) {
+    return <Component {...props} forwardedRef={ref} />;
+  }
+
+  // $FlowFixMe
+  return React.forwardRef(forwardRef);
+}
+
+export default withTheme(withForwardRef(TextField));
