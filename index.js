@@ -1,6 +1,7 @@
 // @flow
 import './src/animation';
 
+export * from './src/banner';
 export * from './src/button';
 export * from './src/checkbox';
 export * from './src/chip';
