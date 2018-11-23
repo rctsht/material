@@ -1,6 +1,7 @@
 // @flow
+import * as React from 'react';
 import {StyleSheet, View} from 'react-native';
-import React, {PureComponent} from 'react';
+import {type ViewStyleProp} from 'react-native/Libraries/StyleSheet/StyleSheet';
 
 const styles = StyleSheet.create({
   divider: {
@@ -23,10 +24,10 @@ const styles = StyleSheet.create({
 type Props = {
   fullWidth?: boolean,
   color?: string,
-  style?: Object,
+  style?: ViewStyleProp,
 };
 
-class Divider extends PureComponent<Props> {
+class Divider extends React.PureComponent<Props> {
   static defaultProps = {
     fullWidth: false,
     color: '#0000001e',

@@ -47,7 +47,11 @@ type Props = {
   rctshtTheme: ThemeProps,
 };
 
-class Dialog extends React.PureComponent<Props> {
+type State = {
+  visible: boolean,
+};
+
+class Dialog extends React.PureComponent<Props, State> {
   static defaultProps = {
     children: null,
     isVisible: false,
@@ -74,7 +78,7 @@ class Dialog extends React.PureComponent<Props> {
     const {isVisible} = this.props;
 
     this.state = {
-      visible: isVisible,
+      visible: isVisible === true,
     };
   }
 
@@ -153,6 +157,10 @@ class Dialog extends React.PureComponent<Props> {
       },
     );
   }
+
+  animation: ?Object;
+
+  closing: boolean;
 
   startCloseAnimation() {
     if (this.animation) {

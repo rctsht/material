@@ -165,12 +165,10 @@ class Chip extends React.PureComponent<Props> {
           {selectedIndicator || thumb}
           <View style={styles.labelWrapper}>
             {isString(label) ? (
-              // $FlowFixMe
               <Type
                 style={[styles.labelText, highlighted ? {color: rctshtTheme.colors.onPrimary} : null]}
                 numberOfLines={1}
               >
-                {/* $FlowFixMe */}
                 {label}
               </Type>
             ) : (
@@ -180,6 +178,7 @@ class Chip extends React.PureComponent<Props> {
           {icon ? (
             <View style={styles.buttonWrapper}>
               <Touchable style={styles.button} background={background} onPress={this.onPressRemove}>
+                {/* $FlowFixMe: isString not recognised as determining type */}
                 {isString(icon) ? <Icon name={icon} size={18} /> : icon}
               </Touchable>
             </View>

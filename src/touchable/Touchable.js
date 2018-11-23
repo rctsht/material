@@ -6,7 +6,7 @@ import {type ViewStyleProp} from 'react-native/Libraries/StyleSheet/StyleSheet';
 type Props = {
   children?: React.Node,
   pointerEvents?: string,
-  style: ViewStyleProp,
+  style?: ViewStyleProp,
 };
 
 function Touchable(props: Props) {
@@ -28,6 +28,7 @@ function Touchable(props: Props) {
 Touchable.defaultProps = {
   children: null,
   pointerEvents: undefined,
+  style: null,
 };
 
 export default Touchable;

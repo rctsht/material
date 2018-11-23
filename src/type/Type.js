@@ -92,7 +92,7 @@ type Props = {
   alignToBaseline?: number,
   children?: string | React.Node,
   preset?: $Values<typeof typePresets>,
-  style: TextStyleProp,
+  style?: TextStyleProp,
 };
 
 class Type extends React.PureComponent<Props> {

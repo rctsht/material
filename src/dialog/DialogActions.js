@@ -55,6 +55,8 @@ class DialogActions extends React.Component<Props> {
     this.onPressActionDebounced = debounce(this.onPressAction, 500);
   }
 
+  onPressActionDebounced: Function;
+
   onPressAction = (action: Action) => {
     Keyboard.dismiss();
     InteractionManager.runAfterInteractions(() => {

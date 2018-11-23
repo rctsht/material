@@ -96,6 +96,7 @@ type Props = {
   allowNewValues?: boolean,
   children?: React.Node,
   labelText?: string,
+  onChangeText?: Function,
   onChangeSelection: Function,
   onPressRemove?: Function,
   onPressSuggestion?: Function,
@@ -105,13 +106,15 @@ type Props = {
   render?: Function,
   renderNewValueSuggestion?: Function,
   renderSuggestion: Function,
+  value?: any,
+  selectedValues?: Array<any>,
 };
 
 type State = {
   isFocused: boolean,
   suggestions: Array<string>,
   selectedValues: Array<string>,
-  text: string,
+  value: string,
 };
 
 class ChipInput extends React.PureComponent<Props, State> {
@@ -120,6 +123,7 @@ class ChipInput extends React.PureComponent<Props, State> {
     children: null,
     labelText: null,
     onSubmitEditing: null,
+    onChangeText: null,
     render: null,
     renderNewValueSuggestion: null,
   };
@@ -128,7 +132,7 @@ class ChipInput extends React.PureComponent<Props, State> {
     isFocused: false,
     suggestions: [],
     selectedValues: [],
-    text: '',
+    value: '',
   };
 
   textInput = null;
@@ -144,10 +148,10 @@ class ChipInput extends React.PureComponent<Props, State> {
     return suggestions.filter(suggestion => new RegExp(`${input}`, 'i').test(suggestion));
   };
 
-  onChangeText = text => {
+  onChangeText = value => {
     this.setState(oldState => ({
-      text,
-      suggestions: this.getSuggestions(text, oldState.selectedValues),
+      value,
+      suggestions: this.getSuggestions(value, oldState.selectedValues),
     }));
   };
 
@@ -155,12 +159,12 @@ class ChipInput extends React.PureComponent<Props, State> {
     const {onSubmitEditing} = this.props;
 
     if (isFunction(onSubmitEditing)) {
-      const {text} = this.state;
+      const {value} = this.state;
       // $FlowFixMe: Flow doesn't recognise lodash type checks as type refinements
-      onSubmitEditing(text);
+      onSubmitEditing(value);
     }
     // @TODO implement to allow adding new values
-    // const {text} = this.state;
+    // const {value} = this.state;
     //
     // if (this.textInput) {
     //   this.textInput.clear();
@@ -183,7 +187,7 @@ class ChipInput extends React.PureComponent<Props, State> {
         const selectedValues = [...oldState.selectedValues].filter(selectedValue => selectedValue !== value);
         return {
           selectedValues,
-          suggestions: this.getSuggestions(oldState.text, selectedValues),
+          suggestions: this.getSuggestions(oldState.value, selectedValues),
         };
       },
       () => {
@@ -210,8 +214,8 @@ class ChipInput extends React.PureComponent<Props, State> {
         const selectedValues = uniq([...oldState.selectedValues, value]);
         return {
           selectedValues,
-          suggestions: this.getSuggestions(oldState.text, selectedValues),
-          text: '',
+          suggestions: this.getSuggestions(oldState.value, selectedValues),
+          value: '',
         };
       },
       () => {
@@ -250,7 +254,7 @@ class ChipInput extends React.PureComponent<Props, State> {
       renderNewValueSuggestion,
       renderSuggestion,
     } = this.props;
-    const {isFocused, suggestions, selectedValues, text} = this.state;
+    const {isFocused, suggestions, selectedValues, value} = this.state;
 
     return (
       <View
@@ -268,17 +272,17 @@ class ChipInput extends React.PureComponent<Props, State> {
               <View style={styles.chipWrapper}>{child}</View>
             ))
           : React.Children.map(children, child => <View style={styles.chipWrapper}>{child}</View>)}
-        {(suggestions && suggestions.length) || (allowNewValues && text && !selectedValues.includes(text)) ? (
+        {(suggestions && suggestions.length) || (allowNewValues && value && !selectedValues.includes(value)) ? (
           <ScrollView
             horizontal
             style={styles.suggestions}
             contentContainerStyle={styles.suggestionsContent}
             keyboardShouldPersistTaps="handled"
           >
-            {renderNewValueSuggestion && allowNewValues && text && !selectedValues.includes(text) ? (
-              <View key={text} style={styles.chipWrapper}>
+            {renderNewValueSuggestion && allowNewValues && value && !selectedValues.includes(value) ? (
+              <View key={value} style={styles.chipWrapper}>
                 {renderNewValueSuggestion({
-                  suggestion: text,
+                  suggestion: value,
                   onPress: this.onPressSuggestion,
                 })}
               </View>
@@ -298,9 +302,9 @@ class ChipInput extends React.PureComponent<Props, State> {
           {/* @TODO Use <Type /> */}
           <Text
             style={[
-              isFocused || text ? styles.labelShrink : styles.label,
-              isFocused || text ? {color: rctshtTheme.colors.primary} : null,
-              !isFocused && text ? styles.labelNoColor : null,
+              isFocused || value ? styles.labelShrink : styles.label,
+              isFocused || value ? {color: rctshtTheme.colors.primary} : null,
+              !isFocused && value ? styles.labelNoColor : null,
             ]}
           >
             {labelText}

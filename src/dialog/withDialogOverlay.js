@@ -28,6 +28,10 @@ export default function withDialogOverlay(Component: React.ComponentType<any>) {
       }
     }
 
+    getOverlayRef: ?Function;
+
+    id: string;
+
     renderContent() {
       if (this.getOverlayRef) {
         this.getOverlayRef(overlay => {

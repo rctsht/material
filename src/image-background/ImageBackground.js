@@ -1,6 +1,7 @@
 // @flow
 import * as React from 'react';
 import {Animated, StyleSheet, View} from 'react-native';
+import {type ImageStyleProp, type ViewStyleProp} from 'react-native/Libraries/StyleSheet/StyleSheet';
 
 const styles = StyleSheet.create({
   scrim: {
@@ -13,9 +14,24 @@ const styles = StyleSheet.create({
   },
 });
 
-type Props = {};
+type Props = {
+  children?: React.Node,
+  imageRef?: Function,
+  imageStyle?: ImageStyleProp,
+  style?: ViewStyleProp,
+  scrim?: boolean,
+  opacity: Object,
+};
 
 class ImageBackground extends React.Component<Props> {
+  static defaultProps = {
+    children: null,
+    imageRef: null,
+    imageStyle: null,
+    scrim: false,
+    style: null,
+  };
+
   render() {
     const {children, style, scrim, opacity, imageStyle, imageRef, ...props} = this.props;
 
@@ -26,8 +42,8 @@ class ImageBackground extends React.Component<Props> {
           style={[
             StyleSheet.absoluteFill,
             {
-              width: style.width,
-              height: style.height,
+              width: (style && style.width) || 0,
+              height: (style && style.height) || 0,
             },
             imageStyle,
             {
