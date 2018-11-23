@@ -4,7 +4,7 @@ import {LayoutAnimation, StyleSheet, View} from 'react-native';
 
 import {Button} from '../button';
 import {Icon} from '../icon';
-import {withTheme} from '../theme';
+import {type ThemeProps, withTheme} from '../theme';
 import {Type, typePresets} from '../type';
 
 const styles = StyleSheet.create({
@@ -27,8 +27,6 @@ const styles = StyleSheet.create({
   },
   text: {
     flex: 1,
-    color: '#212121',
-    fontSize: 14,
   },
   iconWrapper: {
     marginRight: 16,
@@ -53,6 +51,7 @@ type Props = {
   actions: Array<Object>,
   icon: string,
   message: string,
+  rctshtTheme: ThemeProps,
   visible: boolean,
 };
 
@@ -77,7 +76,7 @@ class Banner extends React.PureComponent<Props> {
           <View style={[styles.iconWrapper, {backgroundColor: rctshtTheme.colors.primary}]}>
             <Icon name={icon} size={24} color="#ffffff" />
           </View>
-          <Type preset={typePresets.body2} numberOfLines={2}>
+          <Type preset={typePresets.body2} style={styles.text} numberOfLines={2}>
             {message}
           </Type>
         </View>
