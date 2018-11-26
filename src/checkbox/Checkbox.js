@@ -33,7 +33,7 @@ type Props = {
   onPress?: Function,
   rctshtTheme: ThemeProps,
   selected?: boolean,
-  value: any,
+  value?: any,
 };
 
 class Checkbox extends React.PureComponent<Props> {
@@ -72,7 +72,7 @@ class Checkbox extends React.PureComponent<Props> {
             selected ? styles.innerSquareSelected : null,
           ]}
         >
-          <Icon name="check" color="#ffffff" size={16} />
+          <Icon name="check" color={selected ? rctshtTheme.colors.background : 'transparent'} size={16} />
         </View>
       </View>
     );
