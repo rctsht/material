@@ -2,6 +2,7 @@
 import * as React from 'react';
 
 import {DialogContext, DialogOverlay} from '../dialog';
+import {GlobalContext, GlobalOverlay} from '../global';
 import {MenuContext, MenuOverlay} from '../menu';
 import {SheetContext, SheetOverlay} from '../sheet';
 import {SnackbarContext, SnackbarOverlay} from '../snackbar';
@@ -17,8 +18,6 @@ class Context extends React.PureComponent<Props> {
     children: null,
     theme: createTheme(),
   };
-
-  dialogOverlayRef: ?DialogOverlay;
 
   getDialogOverlayRefCallbacks = [];
 
@@ -40,8 +39,6 @@ class Context extends React.PureComponent<Props> {
     this.getDialogOverlayRefCallbacks = [];
   };
 
-  menuOverlayRef: ?MenuOverlay;
-
   getMenuOverlayRefCallbacks = [];
 
   getMenuOverlayRef = (cb: Function) => {
@@ -61,8 +58,6 @@ class Context extends React.PureComponent<Props> {
 
     this.getMenuOverlayRefCallbacks = [];
   };
-
-  sheetOverlayRef: ?SheetOverlay;
 
   getSheetOverlayRefCallbacks = [];
 
@@ -84,8 +79,6 @@ class Context extends React.PureComponent<Props> {
     this.getSheetOverlayRefCallbacks = [];
   };
 
-  snackbarOverlayRef: ?SnackbarOverlay;
-
   getSnackbarOverlayRefCallbacks = [];
 
   getSnackbarOverlayRef = (cb: Function) => {
@@ -106,25 +99,58 @@ class Context extends React.PureComponent<Props> {
     this.getSnackbarOverlayRefCallbacks = [];
   };
 
+  getGlobalOverlayRefCallbacks = [];
+
+  getGlobalOverlayRef = (cb: Function) => {
+    if (this.globalOverlayRef) {
+      cb(this.globalOverlayRef);
+    } else {
+      this.getGlobalOverlayRefCallbacks.push(cb);
+    }
+  };
+
+  setGlobalOverlayRef = (node: ?GlobalOverlay) => {
+    this.globalOverlay = node;
+
+    this.getGlobalOverlayRefCallbacks.forEach(cb => {
+      cb(this.globalOverlayRef);
+    });
+
+    this.getGlobalOverlayRefCallbacks = [];
+  };
+
+  dialogOverlayRef: ?DialogOverlay;
+
+  menuOverlayRef: ?MenuOverlay;
+
+  sheetOverlayRef: ?SheetOverlay;
+
+  snackbarOverlayRef: ?SnackbarOverlay;
+
+  globalOverlayRef: ?GlobalOverlay;
+
   render() {
     const {children, theme} = this.props;
 
     return (
       // $FlowFixMe
       <ThemeContext.Provider value={theme}>
-        <DialogContext.Provider value={this.getDialogOverlayRef}>
-          <SheetContext.Provider value={this.getSheetOverlayRef}>
-            <MenuContext.Provider value={this.getMenuOverlayRef}>
-              <SnackbarContext.Provider value={this.getSnackbarOverlayRef}>
-                {children}
-                <SnackbarOverlay ref={this.setSnackbarOverlayRef} />
-                <MenuOverlay ref={this.setMenuOverlayRef} />
-                <SheetOverlay ref={this.setSheetOverlayRef} />
-                <DialogOverlay ref={this.setDialogOverlayRef} />
-              </SnackbarContext.Provider>
-            </MenuContext.Provider>
-          </SheetContext.Provider>
-        </DialogContext.Provider>
+        <GlobalContext.Provider value={this.getGlobalOverlayRef}>
+          <DialogContext.Provider value={this.getDialogOverlayRef}>
+            <SheetContext.Provider value={this.getSheetOverlayRef}>
+              <MenuContext.Provider value={this.getMenuOverlayRef}>
+                <SnackbarContext.Provider value={this.getSnackbarOverlayRef}>
+                  {children}
+                  <SnackbarOverlay ref={this.setSnackbarOverlayRef} />
+                  <MenuOverlay ref={this.setMenuOverlayRef} />
+                  <SheetOverlay ref={this.setSheetOverlayRef} />
+                  <DialogOverlay ref={this.setDialogOverlayRef} />
+                  <GlobalOverlay ref={this.setGlobalOverlayRef} />
+                </SnackbarContext.Provider>
+              </MenuContext.Provider>
+            </SheetContext.Provider>
+          </DialogContext.Provider>
+        </GlobalContext.Provider>
       </ThemeContext.Provider>
     );
   }

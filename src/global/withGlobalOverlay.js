@@ -1,11 +1,12 @@
 // @flow
+import hoistNonReactStatics from 'hoist-non-react-statics';
 import * as React from 'react';
 import uuid from 'uuid';
 
 import GlobalContext from './GlobalContext';
 
 export default function withGlobalOverlay(Component: React.ComponentType<any>) {
-  return class ComponentWithGlobalOverlay extends React.PureComponent<any> {
+  class ComponentWithGlobalOverlay extends React.PureComponent<any> {
     constructor(props: any) {
       super(props);
 
@@ -49,5 +50,9 @@ export default function withGlobalOverlay(Component: React.ComponentType<any>) {
         </GlobalContext.Consumer>
       );
     }
-  };
+  }
+
+  hoistNonReactStatics(ComponentWithGlobalOverlay, Component);
+
+  return ComponentWithGlobalOverlay;
 }
