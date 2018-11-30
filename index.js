@@ -8,6 +8,7 @@ export * from './src/chip';
 export * from './src/context';
 export * from './src/dialog';
 export * from './src/divider';
+export * from './src/global';
 export * from './src/icon';
 export * from './src/image-background';
 export * from './src/list';
