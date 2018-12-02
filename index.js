@@ -19,6 +19,7 @@ export * from './src/menu';
 export * from './src/navigation';
 export * from './src/progress';
 export * from './src/radio-button';
+export * from './src/screen';
 export * from './src/scrim';
 export * from './src/sheet';
 export * from './src/snackbar';
