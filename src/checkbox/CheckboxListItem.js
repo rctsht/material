@@ -3,7 +3,6 @@ import isFunction from 'lodash.isfunction';
 import isString from 'lodash.isstring';
 import * as React from 'react';
 import {LayoutAnimation, Platform, StyleSheet, Text, TouchableNativeFeedback, View} from 'react-native';
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import color from 'tinycolor2';
 
 import {type ThemeProps, withTheme} from '../theme';
