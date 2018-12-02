@@ -3,6 +3,7 @@ import './src/animation';
 
 export * from './src/banner';
 export * from './src/button';
+export * from './src/card';
 export * from './src/checkbox';
 export * from './src/chip';
 export * from './src/context';
