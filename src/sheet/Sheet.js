@@ -3,7 +3,7 @@ import isFunction from 'lodash.isfunction';
 import * as React from 'react';
 import {Animated, Dimensions, PanResponder, StatusBar, ScrollView, StyleSheet, View} from 'react-native';
 
-import {isPhone} from '../screen';
+import {isPhone} from '../device';
 import {Scrim} from '../scrim';
 import {type ThemeProps, withTheme} from '../theme';
 
