@@ -253,6 +253,8 @@ class ChipInput extends React.PureComponent<Props, State> {
       render,
       renderNewValueSuggestion,
       renderSuggestion,
+
+      ...rest
     } = this.props;
     const {isFocused, suggestions, selectedValues, value} = this.state;
 
@@ -312,6 +314,7 @@ class ChipInput extends React.PureComponent<Props, State> {
             {/* {required ? <Text style={styles.asteriskText}>*</Text> : null} */}
           </Text>
           <TextInput
+            {...rest}
             ref={this.setTextInputRef}
             style={styles.textInput}
             onFocus={this.onFocus}
