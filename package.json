@@ -15,7 +15,7 @@
     "uuid": "^3.3.2"
   },
   "devDependencies": {
-    "@babel/core": "^7.3.3",
+    "@babel/core": "^7.3.4",
     "babel-eslint": "^10.0.1",
     "eslint": "^5.14.1",
     "eslint-config-airbnb": "^17.1.0",
@@ -43,5 +43,8 @@
     "react-native": "^0.58.5",
     "react-native-vector-icons": "^6.0.2",
     "react-navigation": "^3.3.0"
+  },
+  "resolutions": {
+    "merge": "^1.2.1"
   }
 }
