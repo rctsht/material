@@ -13,7 +13,7 @@ const styles = {
 };
 
 type Props = {
-  key: any,
+  key?: any,
   children: React.Node,
   divider?: boolean,
 };
@@ -21,6 +21,7 @@ type Props = {
 class ListItemGroup extends React.PureComponent<Props> {
   static defaultProps = {
     divider: false,
+    key: null,
   };
 
   render() {
