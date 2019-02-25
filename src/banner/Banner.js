@@ -17,6 +17,7 @@ const styles = StyleSheet.create({
   },
   containerHidden: {
     height: 0,
+    borderBottomWidth: 0,
   },
   content: {
     paddingTop: 24,
