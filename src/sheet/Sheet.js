@@ -39,7 +39,15 @@ const styles = {
     },
   }),
   BOTTOM: StyleSheet.create({
-    container: {},
+    container: {
+      minHeight: 56,
+    },
+    wrapperPhone: {
+      justifyContent: 'flex-end',
+    },
+    wrapperTablet: {
+      justifyContent: 'flex-end',
+    },
   }),
   LEFT: StyleSheet.create({
     container: {
@@ -605,6 +613,31 @@ class Sheet extends React.PureComponent<Props, State> {
     //   StatusBar.setHidden(false);
     // }
 
+    const contentStyles = [
+      styles.common.container,
+      styles[type].container,
+      deviceIsPhone ? styles[type].containerPhone : styles[type].containerTablet,
+      type === types.BOTTOM ? {maxHeight: height / 2} : null,
+      ...userStyle,
+    ];
+
+    const scrollView = (
+      <ScrollView
+        {...this.props}
+        style={type !== types.BOTTOM ? contentStyles : null}
+        onMoveShouldSetResponder={(event, gestureState) =>
+          Math.abs(gestureState.dy) > 10 && Math.abs(gestureState.dy) > Math.abs(gestureState.dx)
+        }
+        onMoveShouldSetResponderCapture={(event, gestureState) =>
+          Math.abs(gestureState.dy) > 10 && Math.abs(gestureState.dy) > Math.abs(gestureState.dx)
+        }
+        onStartShouldSetResponder={() => false}
+        onStartShouldSetResponderCapture={() => false}
+        ref={this.setScrollView}
+        keyboardShouldPersistTaps="handled"
+      />
+    );
+
     return [
       isVisible ? null : (
         <View
@@ -658,6 +691,7 @@ class Sheet extends React.PureComponent<Props, State> {
       ) : null,
       <Animated.View
         key="sheet"
+        pointerEvents="box-none"
         style={[
           styles.wrapper,
           deviceIsPhone ? styles[type].wrapperPhone : styles[type].wrapperTablet,
@@ -681,36 +715,22 @@ class Sheet extends React.PureComponent<Props, State> {
                 }),
               },
               {
-                translateY: this.positionY.interpolate({
-                  inputRange: [deviceIsPhone ? -width : -320, 0],
-                  outputRange: [-250, 0],
-                  extrapolate: 'clamp',
-                }),
+                translateY:
+                  type === types.BOTTOM
+                    ? this.positionY
+                    : this.positionY.interpolate({
+                        inputRange: [deviceIsPhone ? -width : -320, 0],
+                        outputRange: [-250, 0],
+                        extrapolate: 'clamp',
+                      }),
               },
             ],
           },
         ]}
         {...this.panResponder.panHandlers}
       >
-        <ScrollView
-          {...this.props}
-          style={[
-            styles.common.container,
-            styles[type].container,
-            deviceIsPhone ? styles[type].containerPhone : styles[type].containerTablet,
-            ...userStyle,
-          ]}
-          onMoveShouldSetResponder={(event, gestureState) =>
-            Math.abs(gestureState.dy) > 10 && Math.abs(gestureState.dy) > Math.abs(gestureState.dx)
-          }
-          onMoveShouldSetResponderCapture={(event, gestureState) =>
-            Math.abs(gestureState.dy) > 10 && Math.abs(gestureState.dy) > Math.abs(gestureState.dx)
-          }
-          onStartShouldSetResponder={() => false}
-          onStartShouldSetResponderCapture={() => false}
-          ref={this.setScrollView}
-          keyboardShouldPersistTaps="handled"
-        />
+        {type !== types.BOTTOM ? scrollView : null}
+        {type === types.BOTTOM ? <View style={contentStyles}>{scrollView}</View> : null}
       </Animated.View>,
     ];
   }
