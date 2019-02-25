@@ -1,3 +1,4 @@
+// @flow strict-local
 const {
   debug: consoleDebug,
   error: consoleError,

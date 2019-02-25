@@ -1,4 +1,4 @@
-// @flow
+// @flow strict-local
 import React from 'react';
 
 const DialogContext: React$Context<?Function> = React.createContext();

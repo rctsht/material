@@ -1,4 +1,4 @@
-// @flow
+// @flow strict-local
 import EventEmitter from 'events';
 
 import * as React from 'react';

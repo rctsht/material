@@ -1,4 +1,4 @@
-// @flow
+// @flow strict-local
 import * as React from 'react';
 import {Animated, StyleSheet, View} from 'react-native';
 import {type ImageStyleProp, type ViewStyleProp} from 'react-native/Libraries/StyleSheet/StyleSheet';

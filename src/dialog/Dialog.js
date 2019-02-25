@@ -1,4 +1,4 @@
-// @flow
+// @flow strict-local
 import * as React from 'react';
 import {Animated, BackHandler, StyleSheet, TouchableWithoutFeedback, View} from 'react-native';
 

@@ -1,4 +1,4 @@
-// @flow
+// @flow strict-local
 import findIndex from 'lodash.findindex';
 import * as React from 'react';
 import {StyleSheet, View} from 'react-native';

@@ -1,4 +1,4 @@
-// @flow
+// @flow strict-local
 import hoistNonReactStatics from 'hoist-non-react-statics';
 import * as React from 'react';
 import uuid from 'uuid';

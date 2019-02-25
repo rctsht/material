@@ -1,4 +1,4 @@
-// @flow
+// @flow strict-local
 import isFunction from 'lodash.isfunction';
 import uniq from 'lodash.uniq';
 import * as React from 'react';

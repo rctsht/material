@@ -1,4 +1,4 @@
-// @flow
+// @flow strict-local
 import {UIManager} from 'react-native';
 
 if (UIManager.setLayoutAnimationEnabledExperimental) {

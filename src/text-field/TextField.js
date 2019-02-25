@@ -1,4 +1,4 @@
-// @flow
+// @flow strict-local
 import isString from 'lodash.isstring';
 import * as React from 'react';
 import {LayoutAnimation, StyleSheet, Text, TextInput, View} from 'react-native';

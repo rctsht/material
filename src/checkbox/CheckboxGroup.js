@@ -1,4 +1,4 @@
-// @flow
+// @flow strict-local
 import isFunction from 'lodash.isfunction';
 import * as React from 'react';
 import {View} from 'react-native';

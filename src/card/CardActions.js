@@ -1,4 +1,4 @@
-// @flow
+// @flow strict-local
 import debounce from 'lodash.debounce';
 import partition from 'lodash.partition';
 import * as React from 'react';

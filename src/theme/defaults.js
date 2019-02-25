@@ -1,4 +1,4 @@
-// @flow
+// @flow strict-local
 import merge from 'lodash.merge';
 import {Easing} from 'react-native';
 

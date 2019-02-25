@@ -1,4 +1,4 @@
-// @flow
+// @flow strict-local
 import * as React from 'react';
 import {Platform, TouchableOpacity, TouchableNativeFeedback, View} from 'react-native';
 import {type ViewStyleProp} from 'react-native/Libraries/StyleSheet/StyleSheet';

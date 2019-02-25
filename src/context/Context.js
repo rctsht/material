@@ -1,4 +1,4 @@
-// @flow
+// @flow strict-local
 import * as React from 'react';
 
 import {DialogContext, DialogOverlay} from '../dialog';

@@ -1,4 +1,4 @@
-// @flow
+// @flow strict-local
 import isFunction from 'lodash.isfunction';
 import React, {PureComponent} from 'react';
 import {InteractionManager, PanResponder} from 'react-native';
