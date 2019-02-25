@@ -1,5 +1,5 @@
 // @flow strict-local
-import merge from 'lodash.merge';
+import {merge} from 'lodash-es';
 import {Easing} from 'react-native';
 
 type ThemeColors = {

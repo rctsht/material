@@ -1,5 +1,5 @@
 // @flow strict-local
-import findIndex from 'lodash.findindex';
+import {findIndex} from 'lodash-es';
 import * as React from 'react';
 import {StyleSheet, View} from 'react-native';
 

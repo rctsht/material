@@ -1,6 +1,5 @@
 // @flow strict-local
-import isFunction from 'lodash.isfunction';
-import isString from 'lodash.isstring';
+import {isFunction, isString} from 'lodash-es';
 import * as React from 'react';
 import {LayoutAnimation, Platform, StyleSheet, TouchableNativeFeedback, View} from 'react-native';
 import color from 'tinycolor2';

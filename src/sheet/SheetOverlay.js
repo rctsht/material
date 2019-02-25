@@ -1,5 +1,5 @@
 // @flow strict-local
-import find from 'lodash.find';
+import {find} from 'lodash-es';
 import React, {PureComponent} from 'react';
 import {StyleSheet, View} from 'react-native';
 

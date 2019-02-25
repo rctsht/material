@@ -1,5 +1,5 @@
 // @flow strict-local
-import isFunction from 'lodash.isfunction';
+import {isFunction} from 'lodash-es';
 import React, {PureComponent} from 'react';
 import {InteractionManager, PanResponder} from 'react-native';
 import uuid from 'uuid';

@@ -1,6 +1,5 @@
 // @flow strict-local
-import debounce from 'lodash.debounce';
-import partition from 'lodash.partition';
+import {debounce, partition} from 'lodash-es';
 import * as React from 'react';
 import {InteractionManager, Keyboard, StyleSheet, View} from 'react-native';
 
