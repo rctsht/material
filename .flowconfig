@@ -5,7 +5,21 @@
 [libs]
 
 [lints]
+sketchy-null=warn
+sketchy-null-bool=off
 
 [options]
 
 [strict]
+# recommended
+nonstrict-import
+unclear-type
+unsafe-getters-setters
+untyped-import
+untyped-type-import
+# other
+# sketchy-null
+sketchy-number
+unnecessary-optional-chain
+unnecessary-invariant
+deprecated-utility
