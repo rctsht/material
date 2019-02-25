@@ -18,8 +18,8 @@ const styles = StyleSheet.create({
 });
 
 type Props = {
-  icon?: Icon,
-  onPress: Function,
+  icon: ?Icon,
+  onPress: () => void,
   rctshtTheme: ThemeProps,
 };
 

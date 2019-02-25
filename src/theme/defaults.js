@@ -18,9 +18,9 @@ type ThemeColors = {
 };
 
 type ThemeAnimations = {
-  accelerateEasing: Function,
-  decelerateEasing: Function,
-  standardEasing: Function,
+  accelerateEasing: (Array<number>, number) => number,
+  decelerateEasing: (Array<number>, number) => number,
+  standardEasing: (Array<number>, number) => number,
   medium: {
     in: number,
     out: number,

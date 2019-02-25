@@ -33,7 +33,7 @@ const styles = StyleSheet.create({
 type Action = {
   id: string,
   label: string,
-  onPress: Function,
+  onPress: () => void,
   styleName?: string,
   align?: 'left' | 'right',
 };
@@ -54,7 +54,7 @@ class CardActions extends React.Component<Props> {
     this.onPressActionDebounced = debounce(this.onPressAction, 500);
   }
 
-  onPressActionDebounced: Function;
+  onPressActionDebounced: Action => void;
 
   onPressAction = (action: Action) => {
     Keyboard.dismiss();
@@ -68,6 +68,7 @@ class CardActions extends React.Component<Props> {
 
     const [leftActions, rightActions] = partition(actions, action => action.align === 'left');
 
+    // $FlowFixMe
     const renderAction = action => <Button key={`content-${action.id}`} {...action} type={Button.types.TEXT} />;
 
     return (

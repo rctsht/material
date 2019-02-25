@@ -1,8 +1,11 @@
 // @flow strict-local
 import * as React from 'react';
 import {Animated, BackHandler, StyleSheet, TouchableWithoutFeedback, View} from 'react-native';
+import type {CompositeAnimation} from 'react-native/Libraries/Animated/src/AnimatedImplementation';
 
 import {type ThemeProps, withTheme} from '../theme';
+
+import DialogOverlay from './DialogOverlay';
 
 const styles = StyleSheet.create({
   container: {
@@ -37,13 +40,13 @@ const styles = StyleSheet.create({
 });
 
 type Props = {
-  children?: React.Node,
-  getOverlayRef: Function,
+  children: React.Node,
+  getOverlayRef: ((DialogOverlay) => void) => void,
   id: string,
-  isVisible?: boolean,
-  maxWidth?: number,
-  noPadding?: boolean,
-  onClose?: Function,
+  isVisible: boolean,
+  maxWidth: ?number,
+  noPadding: boolean,
+  onClose: ?() => void,
   rctshtTheme: ThemeProps,
 };
 
@@ -158,7 +161,7 @@ class Dialog extends React.PureComponent<Props, State> {
     );
   }
 
-  animation: ?Object;
+  animation: ?CompositeAnimation;
 
   closing: boolean;
 
@@ -215,8 +218,8 @@ class Dialog extends React.PureComponent<Props, State> {
           style={[
             styles.modalContainer,
             noPadding ? styles.modalContainerNoPadding : null,
-            maxWidth ? styles.modalContainerMaxWidth : null,
-            maxWidth ? {maxWidth} : null,
+            maxWidth != null ? styles.modalContainerMaxWidth : null,
+            maxWidth != null ? {maxWidth} : null,
             {opacity: this.animationProgress},
           ]}
         >

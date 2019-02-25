@@ -94,9 +94,9 @@ const styles = StyleSheet.create({
 });
 
 type Props = {
-  helperText?: string,
-  labelText?: string,
-  errorText?: string,
+  helperText: string,
+  labelText: string,
+  errorText: ?string,
   leadingIcon?: string | React.Node,
   leadingIconColor?: string,
   required?: boolean,
@@ -105,7 +105,7 @@ type Props = {
   trailingIcon?: string | React.Node,
   trailingIconColor?: string,
   value: string,
-  forwardedRef: Function,
+  forwardedRef: (?TextInput) => void,
 };
 
 type State = {
@@ -120,6 +120,7 @@ class TextField extends React.PureComponent<Props, State> {
     leadingIcon: null,
     leadingIconColor: '#00000060',
     required: false,
+    selectionColor: undefined,
     trailingIcon: null,
     trailingIconColor: '#00000060',
   };
@@ -168,14 +169,14 @@ class TextField extends React.PureComponent<Props, State> {
     } = this.props;
     const {isFocused} = this.state;
 
-    const errorIcon = errorText ? <Icon name="alert-circle" size={24} color="#b00020" /> : null;
+    const errorIcon = errorText != null ? <Icon name="alert-circle" size={24} color="#b00020" /> : null;
 
     const theTrailingIcon =
       errorIcon ||
       // $FlowFixMe
       (isString(trailingIcon) ? <Icon name={trailingIcon} size={24} color={trailingIconColor} /> : trailingIcon);
 
-    const theSelectionColor = errorText ? '#b00020' : selectionColor;
+    const theSelectionColor = errorText != null ? '#b00020' : selectionColor;
 
     // {/* TODO Use <Type /> */}
     return (
@@ -186,10 +187,10 @@ class TextField extends React.PureComponent<Props, State> {
             styles.inputWrapper,
             isFocused ? styles.inputWrapperFocused : null,
             isFocused ? {borderBottomColor: rctshtTheme.colors.primary} : null,
-            errorText ? styles.inputWrapperError : null,
+            errorText != null ? styles.inputWrapperError : null,
           ]}
         >
-          {leadingIcon ? (
+          {leadingIcon != null ? (
             <View style={styles.leadingIcon}>
               {/* $FlowFixMe */}
               {isString(leadingIcon) ? <Icon name={leadingIcon} size={24} color={leadingIconColor} /> : leadingIcon}
@@ -201,7 +202,7 @@ class TextField extends React.PureComponent<Props, State> {
                 isFocused || value ? styles.labelShrink : styles.label,
                 isFocused || value ? {color: rctshtTheme.colors.primary} : null,
                 !isFocused && value ? styles.labelNoColor : null,
-                errorText ? styles.errorText : null,
+                errorText != null ? styles.errorText : null,
               ]}
             >
               {labelText}
@@ -216,22 +217,21 @@ class TextField extends React.PureComponent<Props, State> {
               selectionColor={theSelectionColor}
             />
           </View>
-          {theTrailingIcon ? <View style={styles.trailingIcon}>{theTrailingIcon}</View> : null}
+          {theTrailingIcon != null ? <View style={styles.trailingIcon}>{theTrailingIcon}</View> : null}
         </View>
-        <Text style={[styles.helperText, errorText ? styles.errorText : null]}>
-          {errorText || (required && helperText == null ? '* Required' : helperText || '')}
+        <Text style={[styles.helperText, errorText != null ? styles.errorText : null]}>
+          {errorText != null || (required && helperText == null ? '* Required' : helperText || '')}
         </Text>
       </View>
     );
   }
 }
 
-function withForwardRef(Component: React.ComponentType<any>) {
+function withForwardRef(Component: React.ComponentType<*>) {
   function forwardRef(props, ref) {
     return <Component {...props} forwardedRef={ref} />;
   }
 
-  // $FlowFixMe
   return React.forwardRef(forwardRef);
 }
 

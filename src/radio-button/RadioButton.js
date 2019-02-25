@@ -28,10 +28,10 @@ const styles = StyleSheet.create({
 });
 
 type Props = {
-  onPress?: Function,
+  onPress: ?(mixed) => void,
   rctshtTheme: ThemeProps,
-  selected?: boolean,
-  value?: any,
+  selected: boolean,
+  value: mixed,
 };
 
 class Checkbox extends React.PureComponent<Props> {
@@ -53,7 +53,6 @@ class Checkbox extends React.PureComponent<Props> {
     );
 
     if (isFunction(onPress)) {
-      // $FlowFixMe
       onPress(value);
     }
   };

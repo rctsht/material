@@ -1,4 +1,6 @@
 // @flow strict-local
+import type {NavigationScreenProp, NavigationState} from 'react-navigation';
+
 import Log from '../log';
 
 let navigation;
@@ -54,7 +56,7 @@ function getNavigation() {
 }
 
 // TODO type
-function setNavigation(navigationRef: any) {
+function setNavigation(navigationRef: NavigationScreenProp<NavigationState>) {
   navigation = navigationRef;
 
   // if (navigation && awaitCallbacks.length) {

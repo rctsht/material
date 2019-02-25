@@ -21,7 +21,7 @@ class Context extends React.PureComponent<Props> {
 
   getDialogOverlayRefCallbacks = [];
 
-  getDialogOverlayRef = (cb: Function) => {
+  getDialogOverlayRef = (cb: DialogOverlay => void) => {
     if (this.dialogOverlayRef) {
       cb(this.dialogOverlayRef);
     } else {
@@ -32,16 +32,20 @@ class Context extends React.PureComponent<Props> {
   setDialogOverlayRef = (node: ?DialogOverlay) => {
     this.dialogOverlayRef = node;
 
-    this.getDialogOverlayRefCallbacks.forEach(cb => {
-      cb(this.dialogOverlayRef);
-    });
+    if (this.dialogOverlayRef) {
+      this.getDialogOverlayRefCallbacks.forEach(cb => {
+        if (this.dialogOverlayRef) {
+          cb(this.dialogOverlayRef);
+        }
+      });
 
-    this.getDialogOverlayRefCallbacks = [];
+      this.getDialogOverlayRefCallbacks = [];
+    }
   };
 
   getMenuOverlayRefCallbacks = [];
 
-  getMenuOverlayRef = (cb: Function) => {
+  getMenuOverlayRef = (cb: MenuOverlay => void) => {
     if (this.menuOverlayRef) {
       cb(this.menuOverlayRef);
     } else {
@@ -52,16 +56,20 @@ class Context extends React.PureComponent<Props> {
   setMenuOverlayRef = (node: ?MenuOverlay) => {
     this.menuOverlayRef = node;
 
-    this.getMenuOverlayRefCallbacks.forEach(cb => {
-      cb(this.menuOverlayRef);
-    });
+    if (this.menuOverlayRef) {
+      this.getMenuOverlayRefCallbacks.forEach(cb => {
+        if (this.menuOverlayRef) {
+          cb(this.menuOverlayRef);
+        }
+      });
 
-    this.getMenuOverlayRefCallbacks = [];
+      this.getMenuOverlayRefCallbacks = [];
+    }
   };
 
   getSheetOverlayRefCallbacks = [];
 
-  getSheetOverlayRef = (cb: Function) => {
+  getSheetOverlayRef = (cb: SheetOverlay => void) => {
     if (this.sheetOverlayRef) {
       cb(this.sheetOverlayRef);
     } else {
@@ -72,16 +80,20 @@ class Context extends React.PureComponent<Props> {
   setSheetOverlayRef = (node: ?SheetOverlay) => {
     this.sheetOverlayRef = node;
 
-    this.getSheetOverlayRefCallbacks.forEach(cb => {
-      cb(this.sheetOverlayRef);
-    });
+    if (this.sheetOverlayRef) {
+      this.getSheetOverlayRefCallbacks.forEach(cb => {
+        if (this.sheetOverlayRef) {
+          cb(this.sheetOverlayRef);
+        }
+      });
 
-    this.getSheetOverlayRefCallbacks = [];
+      this.getSheetOverlayRefCallbacks = [];
+    }
   };
 
   getSnackbarOverlayRefCallbacks = [];
 
-  getSnackbarOverlayRef = (cb: Function) => {
+  getSnackbarOverlayRef = (cb: SnackbarOverlay => void) => {
     if (this.snackbarOverlayRef) {
       cb(this.snackbarOverlayRef);
     } else {
@@ -92,16 +104,20 @@ class Context extends React.PureComponent<Props> {
   setSnackbarOverlayRef = (node: ?SnackbarOverlay) => {
     this.snackbarOverlayRef = node;
 
-    this.getSnackbarOverlayRefCallbacks.forEach(cb => {
-      cb(this.snackbarOverlayRef);
-    });
+    if (this.snackbarOverlayRef) {
+      this.getSnackbarOverlayRefCallbacks.forEach(cb => {
+        if (this.snackbarOverlayRef) {
+          cb(this.snackbarOverlayRef);
+        }
+      });
 
-    this.getSnackbarOverlayRefCallbacks = [];
+      this.getSnackbarOverlayRefCallbacks = [];
+    }
   };
 
   getGlobalOverlayRefCallbacks = [];
 
-  getGlobalOverlayRef = (cb: Function) => {
+  getGlobalOverlayRef = (cb: GlobalOverlay => void) => {
     if (this.globalOverlayRef) {
       cb(this.globalOverlayRef);
     } else {
@@ -110,13 +126,16 @@ class Context extends React.PureComponent<Props> {
   };
 
   setGlobalOverlayRef = (node: ?GlobalOverlay) => {
-    this.globalOverlay = node;
+    this.globalOverlayRef = node;
+    if (this.globalOverlayRef) {
+      this.getGlobalOverlayRefCallbacks.forEach(cb => {
+        if (this.globalOverlayRef) {
+          cb(this.globalOverlayRef);
+        }
+      });
 
-    this.getGlobalOverlayRefCallbacks.forEach(cb => {
-      cb(this.globalOverlayRef);
-    });
-
-    this.getGlobalOverlayRefCallbacks = [];
+      this.getGlobalOverlayRefCallbacks = [];
+    }
   };
 
   dialogOverlayRef: ?DialogOverlay;

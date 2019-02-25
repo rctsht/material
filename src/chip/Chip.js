@@ -81,13 +81,13 @@ type Props = {
   highlighted?: boolean,
   icon?: string | React.Node,
   label?: string | React.Node,
-  onPress?: Function,
-  onPressRemove?: Function,
+  onPress: ?(mixed) => void,
+  onPressRemove: ?(mixed) => void,
   outline?: boolean,
   rctshtTheme: ThemeProps,
   selected?: boolean,
   thumbnail?: string | React.Node,
-  value?: any,
+  value?: mixed,
 };
 
 class Chip extends React.PureComponent<Props> {
@@ -141,7 +141,7 @@ class Chip extends React.PureComponent<Props> {
     // eslint-disable-next-line babel/new-cap
     const background = TouchableNativeFeedback.SelectableBackgroundBorderless();
 
-    const thumb = thumbnail ? <View style={styles.thumbnailWrapper}>{thumbnail}</View> : null;
+    const thumb = thumbnail != null ? <View style={styles.thumbnailWrapper}>{thumbnail}</View> : null;
     const selectedIndicator = selected ? (
       <View style={styles.selectedIndicatorWrapper}>
         <Icon name="check" size={18} />
@@ -155,8 +155,8 @@ class Chip extends React.PureComponent<Props> {
           style={[
             styles.container,
             outline ? styles.containerOutlined : styles.containerFilled,
-            !thumbnail && !selected ? styles.containerLeftPad : null,
-            !icon ? styles.containerRightPad : null,
+            thumbnail == null && !selected ? styles.containerLeftPad : null,
+            icon == null ? styles.containerRightPad : null,
             selected ? styles.containerSelected : null,
             highlighted ? {backgroundColor: `${rctshtTheme.colors.primary}`} : null,
           ]}
@@ -174,7 +174,7 @@ class Chip extends React.PureComponent<Props> {
               label
             )}
           </View>
-          {icon ? (
+          {icon != null ? (
             <View style={styles.buttonWrapper}>
               <Touchable style={styles.button} background={background} onPress={this.onPressRemove}>
                 {/* $FlowFixMe: isString not recognised as determining type */}

@@ -2,7 +2,7 @@
 import * as React from 'react';
 import {StyleSheet, View} from 'react-native';
 import MaterialIcon from 'react-native-vector-icons/MaterialCommunityIcons';
-import {type TextStyleProp, type ViewStyleProp} from 'react-native/Libraries/StyleSheet/StyleSheet';
+import type {TextStyleProp, ViewStyleProp} from 'react-native/Libraries/StyleSheet/StyleSheet';
 
 const styles = StyleSheet.create({
   container: {
@@ -14,12 +14,13 @@ const styles = StyleSheet.create({
 });
 
 type Props = {
-  containerStyle: ViewStyleProp,
-  halfWidth?: boolean,
-  inline?: boolean,
-  name?: string,
-  size?: number,
-  style: TextStyleProp,
+  containerStyle: ?ViewStyleProp,
+  halfWidth: boolean,
+  inline: boolean,
+  name: ?string,
+  size: number,
+  style: ?TextStyleProp,
+  color: ?string,
 };
 
 class Icon extends React.PureComponent<Props> {
@@ -30,6 +31,7 @@ class Icon extends React.PureComponent<Props> {
     name: null,
     size: 24,
     style: null,
+    color: undefined,
   };
 
   render() {
@@ -53,14 +55,14 @@ class Icon extends React.PureComponent<Props> {
       return icon;
     }
 
+    let theContainerStyle = [];
+
+    if (containerStyle != null) {
+      theContainerStyle = Array.isArray(containerStyle) ? containerStyle : [containerStyle];
+    }
+
     return (
-      <View
-        style={[
-          styles.container,
-          {width: halfWidth ? size / 2 : size, height: size},
-          ...(Array.isArray(containerStyle) ? containerStyle : [containerStyle]),
-        ]}
-      >
+      <View style={[styles.container, {width: halfWidth ? size / 2 : size, height: size}, ...theContainerStyle]}>
         {icon}
       </View>
     );

@@ -13,7 +13,7 @@ const styles = {
 };
 
 type Props = {
-  key?: any,
+  key?: mixed,
   children: React.Node,
   divider?: boolean,
 };
@@ -25,10 +25,8 @@ class ListItemGroup extends React.PureComponent<Props> {
   };
 
   render() {
-    const {children, divider} = this.props;
-    const propsToApply = {...this.props};
-    delete propsToApply.children;
-    delete propsToApply.key;
+    const {children, key, divider, ...rest} = this.props;
+    const propsToApply = {divider, ...rest};
 
     return (
       <View style={[styles.container, divider ? styles.divider : null]}>

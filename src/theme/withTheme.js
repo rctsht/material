@@ -4,8 +4,8 @@ import * as React from 'react';
 
 import {ThemeContext} from '.';
 
-function withTheme(Component: React.ComponentType<any>) {
-  class ThemedComponent extends React.PureComponent<any> {
+function withTheme(Component: React.ComponentType<*>) {
+  class ThemedComponent extends React.PureComponent<*> {
     render() {
       const {forwardedRef} = this.props;
 
@@ -17,10 +17,15 @@ function withTheme(Component: React.ComponentType<any>) {
     }
   }
 
+  type Props = {
+    onRef?: () => ?ThemedComponent,
+  };
+  /* eslint-disable react/no-multi-comp */
   // $FlowFixMe: https://github.com/facebook/flow/issues/6103
-  const ThemedComponentWithForwardRef = React.forwardRef((props, ref) => (
+  const ThemedComponentWithForwardRef = React.forwardRef((props: Props, ref) => (
     <ThemedComponent {...props} forwardedRef={props.onRef || ref} />
   ));
+  /* eslint-enable react/no-multi-comp */
 
   hoistNonReactStatics(ThemedComponentWithForwardRef, Component);
 

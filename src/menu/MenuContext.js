@@ -1,6 +1,8 @@
 // @flow strict-local
-import React from 'react';
+import * as React from 'react';
 
-const MenuContext = React.createContext();
+import MenuOverlay from './MenuOverlay';
+
+const MenuContext = React.createContext<?((MenuOverlay) => void) => void>();
 
 export default MenuContext;

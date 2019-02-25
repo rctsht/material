@@ -94,19 +94,28 @@ const styles = StyleSheet.create({
 type Props = {
   allowNewValues?: boolean,
   children?: React.Node,
-  labelText?: string,
-  onChangeText?: Function,
-  onChangeSelection: Function,
-  onPressRemove?: Function,
-  onPressSuggestion?: Function,
-  onSubmitEditing?: Function,
-  suggestions: Array<string> | Function,
+  labelText: ?string,
+  onChangeText: ?() => void,
+  onChangeSelection: (Array<string>) => void,
+  onPressRemove?: string => void,
+  onPressSuggestion?: string => void,
+  onSubmitEditing: ?() => void,
+  suggestions: Array<string> | (() => void),
   rctshtTheme: ThemeProps,
-  render?: Function,
-  renderNewValueSuggestion?: Function,
-  renderSuggestion: Function,
-  value?: any,
-  selectedValues?: Array<any>,
+  render: ?({
+    selectedValues: Array<string>,
+    onPressRemove: string => void,
+  }) => void,
+  renderNewValueSuggestion: ?({
+    suggestion: string,
+    onPress: string => void,
+  }) => void,
+  renderSuggestion: ({
+    suggestion: string,
+    onPress: string => void,
+  }) => void,
+  value?: string,
+  selectedValues?: Array<string>,
 };
 
 type State = {
@@ -140,7 +149,6 @@ class ChipInput extends React.PureComponent<Props, State> {
     const {suggestions} = this.props;
 
     if (isFunction(suggestions)) {
-      // $FlowFixMe: Flow doesn't recognise lodash type checks as type refinements
       return suggestions(input, selectedValues);
     }
 
@@ -159,7 +167,6 @@ class ChipInput extends React.PureComponent<Props, State> {
 
     if (isFunction(onSubmitEditing)) {
       const {value} = this.state;
-      // $FlowFixMe: Flow doesn't recognise lodash type checks as type refinements
       onSubmitEditing(value);
     }
     // @TODO implement to allow adding new values

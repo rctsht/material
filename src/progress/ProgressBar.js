@@ -1,6 +1,7 @@
 // @flow strict-local
-import React, {PureComponent} from 'react';
+import * as React from 'react';
 import {Animated, StyleSheet, View} from 'react-native';
+import type {ViewStyleProp} from 'react-native/Libraries/StyleSheet/StyleSheet';
 import color from 'tinycolor2';
 
 import {type ThemeProps, withTheme} from '../theme';
@@ -24,9 +25,10 @@ const styles = StyleSheet.create({
 
 type Props = {
   rctshtTheme: ThemeProps,
+  style: ViewStyleProp,
 };
 
-class ProgressBar extends PureComponent<Props> {
+class ProgressBar extends React.PureComponent<Props> {
   animation = new Animated.Value(0);
 
   animation2 = new Animated.Value(0);

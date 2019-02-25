@@ -21,10 +21,10 @@ const styles = StyleSheet.create({
 
 type Props = {
   label: string | React.Node,
-  onPress?: Function,
-  selected?: boolean,
+  onPress: ?(mixed) => void,
+  selected: boolean,
   rctshtTheme: ThemeProps,
-  value: any,
+  value: mixed,
 };
 
 class RadioButtonListItem extends React.PureComponent<Props> {
@@ -46,7 +46,6 @@ class RadioButtonListItem extends React.PureComponent<Props> {
     );
 
     if (isFunction(onPress)) {
-      // $FlowFixMe
       onPress(value);
     }
   };

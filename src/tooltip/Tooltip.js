@@ -24,8 +24,12 @@ type Props = {
   pageY: number,
 };
 
-class Tooltip extends React.PureComponent<Props> {
-  static handlers = (options: Object = {}) => {
+type State = {
+  width: 'auto' | number,
+};
+
+class Tooltip extends React.PureComponent<Props, State> {
+  static handlers = (options: {} = {}) => {
     const id = uuid.v4();
     return {
       onLongPress: event => {

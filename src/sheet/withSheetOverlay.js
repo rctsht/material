@@ -7,14 +7,16 @@ import {getNavigation} from '../navigation';
 import {withTheme} from '../theme';
 
 import SheetContext from './SheetContext';
+import SheetOverlay from './SheetOverlay';
 
 type Props = {
-  navigation: Object,
+  navigation: {},
 };
 
 function withSheetOverlay(Component: React.ComponentType<any>, type: string, global: boolean = false) {
   class ComponentWithSheetOverlay extends React.PureComponent<Props> {
     id = null;
+
     getOverlayRef;
 
     constructor(props: Props) {
@@ -38,6 +40,10 @@ function withSheetOverlay(Component: React.ComponentType<any>, type: string, glo
         });
       }
     }
+
+    getOverlayRef: ((SheetOverlay) => void) => void;
+
+    id: string;
 
     renderContent() {
       const navigation = getNavigation();

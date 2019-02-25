@@ -5,12 +5,12 @@ import {View} from 'react-native';
 
 type Props = {
   children: React.Node,
-  initialSelectedValue?: any,
-  onChangeSelection?: Function,
+  initialSelectedValue: mixed,
+  onChangeSelection: ?(mixed) => void,
 };
 
 type State = {
-  selectedValue: any,
+  selectedValue: mixed,
 };
 
 class RadioButtonGroup extends React.PureComponent<Props, State> {
@@ -29,7 +29,7 @@ class RadioButtonGroup extends React.PureComponent<Props, State> {
     };
   }
 
-  onPressChild = (selectedValue: any) => {
+  onPressChild = (selectedValue: mixed) => {
     let changed = false;
     this.setState(
       oldState => {
@@ -46,7 +46,6 @@ class RadioButtonGroup extends React.PureComponent<Props, State> {
         const {onChangeSelection} = this.props;
 
         if (changed && isFunction(onChangeSelection)) {
-          // $FlowFixMe
           onChangeSelection(selectedValue);
         }
       },

@@ -86,7 +86,7 @@ const deviceIsPhone = isPhone();
 type Props = {
   children: React.Node,
   initialIsVisible?: boolean,
-  style: Object,
+  style: {},
   type: $Values<typeof types>,
   modal?: boolean,
   rctshtTheme: ThemeProps,
@@ -111,7 +111,7 @@ class Sheet extends React.PureComponent<Props, State> {
 
   // Must be before panResponder declaration
   // eslint-disable-next-line react/sort-comp
-  onReleaseOrTerminate = (evt: Object, gestureState: Object) => {
+  onReleaseOrTerminate = (evt: {}, gestureState: {}) => {
     const {width, height} = Dimensions.get('window');
     const {type, rctshtTheme} = this.props;
 

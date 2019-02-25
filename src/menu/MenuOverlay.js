@@ -14,8 +14,20 @@ const styles = StyleSheet.create({
   },
 });
 
-class MenuOverlay extends React.PureComponent<any> {
-  constructor(props: any) {
+type Props = {};
+
+type State = {
+  contents: Array<{
+    Component: React.ComponentType<*>,
+    props: {
+      id: string,
+    },
+  }>,
+  extraProps: {},
+};
+
+class MenuOverlay extends React.PureComponent<Props, State> {
+  constructor(props: Props) {
     super(props);
 
     this.state = {
@@ -24,13 +36,16 @@ class MenuOverlay extends React.PureComponent<any> {
     };
   }
 
-  setExtraProps = (extraProps: Object = {}, callback: Function) => {
+  setExtraProps = (extraProps: {} = {}, callback: () => void) => {
     this.setState({extraProps}, callback);
   };
 
-  addOrUpdateContent = (Component: React.ComponentType<any>, props: Object = {}) => {
+  addOrUpdateContent = (Component: React.ComponentType<*>, theProps: {id: string} = {}) => {
     this.setState(currentState => ({
-      contents: [...currentState.contents.filter(content => content.props.id !== props.id), {Component, props}],
+      contents: [
+        ...currentState.contents.filter(content => content.props.id !== theProps.id),
+        {Component, props: theProps},
+      ],
     }));
   };
 

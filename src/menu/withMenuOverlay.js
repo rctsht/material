@@ -1,13 +1,14 @@
 // @flow strict-local
 import hoistNonReactStatics from 'hoist-non-react-statics';
-import React, {PureComponent} from 'react';
+import * as React from 'react';
 import uuid from 'uuid';
 
 import MenuContext from './MenuContext';
+import MenuOverlay from './MenuOverlay';
 
-export default function withMenuOverlay(Component: React.ComponentType<any>) {
-  class ComponentWithMenuOverlay extends PureComponent<any> {
-    constructor(props: any) {
+export default function withMenuOverlay(Component: React.ComponentType<*>) {
+  class ComponentWithMenuOverlay extends React.PureComponent<*> {
+    constructor(props: *) {
       super(props);
 
       this.id = uuid.v4();
@@ -28,6 +29,10 @@ export default function withMenuOverlay(Component: React.ComponentType<any>) {
         });
       }
     }
+
+    getOverlayRef: ?((MenuOverlay) => void) => void;
+
+    id: string;
 
     renderContent() {
       if (this.getOverlayRef) {
