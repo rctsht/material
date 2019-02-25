@@ -1,16 +1,16 @@
-// @flow
-import isFunction from 'lodash.isfunction';
+// @flow strict-local
+import {isFunction} from 'lodash-es';
 import * as React from 'react';
 import {View} from 'react-native';
 
 type Props = {
   children: React.Node,
-  initialSelectedValues: Array<any>,
-  onChangeSelection?: Function,
+  initialSelectedValues: Array<mixed>,
+  onChangeSelection?: (Array<mixed>) => void,
 };
 
 type State = {
-  selectedValues: Array<any>,
+  selectedValues: Array<mixed>,
 };
 
 class CheckboxGroup extends React.PureComponent<Props, State> {
@@ -29,7 +29,7 @@ class CheckboxGroup extends React.PureComponent<Props, State> {
     };
   }
 
-  onPressChild = (value: any) => {
+  onPressChild = (value: mixed) => {
     this.setState(
       oldState => {
         const index = oldState.selectedValues.indexOf(value);
@@ -50,7 +50,6 @@ class CheckboxGroup extends React.PureComponent<Props, State> {
         const {selectedValues} = this.state;
 
         if (isFunction(onChangeSelection)) {
-          // $FlowFixMe
           onChangeSelection(selectedValues);
         }
       },

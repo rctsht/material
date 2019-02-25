@@ -1,6 +1,5 @@
-// @flow
-import isFunction from 'lodash.isfunction';
-import isString from 'lodash.isstring';
+// @flow strict-local
+import {isFunction, isString} from 'lodash-es';
 import * as React from 'react';
 import {LayoutAnimation, Platform, StyleSheet, Text, TouchableNativeFeedback, View} from 'react-native';
 import color from 'tinycolor2';
@@ -22,10 +21,10 @@ const styles = StyleSheet.create({
 
 type Props = {
   label: string | React.Node,
-  onPress?: Function,
+  onPress: ?(mixed) => void,
   selected?: boolean,
   rctshtTheme: ThemeProps,
-  value: any,
+  value: mixed,
 };
 
 class CheckboxListItem extends React.PureComponent<Props> {
@@ -46,7 +45,6 @@ class CheckboxListItem extends React.PureComponent<Props> {
     );
 
     if (isFunction(onPress)) {
-      // $FlowFixMe
       onPress(value);
     }
   };

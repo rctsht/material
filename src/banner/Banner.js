@@ -1,8 +1,8 @@
-// @flow
+// @flow strict-local
 import * as React from 'react';
 import {LayoutAnimation, StyleSheet, View} from 'react-native';
 
-import {Button} from '../button';
+import {Button, type ButtonProps} from '../button';
 import {Icon} from '../icon';
 import {type ThemeProps, withTheme} from '../theme';
 import {Type, typePresets} from '../type';
@@ -17,6 +17,7 @@ const styles = StyleSheet.create({
   },
   containerHidden: {
     height: 0,
+    borderBottomWidth: 0,
   },
   content: {
     paddingTop: 24,
@@ -48,7 +49,7 @@ const styles = StyleSheet.create({
 });
 
 type Props = {
-  actions: Array<Object>,
+  actions: Array<{key?: string} & ButtonProps>,
   icon: string,
   message: string,
   rctshtTheme: ThemeProps,

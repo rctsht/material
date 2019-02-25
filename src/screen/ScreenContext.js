@@ -1,6 +1,8 @@
-// @flow
-import React from 'react';
+// @flow strict-local
+import EventEmitter from 'events';
 
-const ScreenContext: React$Context<?Function> = React.createContext();
+import * as React from 'react';
+
+const ScreenContext: React$Context<?((EventEmitter) => void) => void> = React.createContext();
 
 export default ScreenContext;

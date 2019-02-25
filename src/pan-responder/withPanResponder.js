@@ -1,6 +1,6 @@
-// @flow
-import isFunction from 'lodash.isfunction';
-import React, {PureComponent} from 'react';
+// @flow strict-local
+import {isFunction} from 'lodash-es';
+import * as React from 'react';
 import {InteractionManager, PanResponder} from 'react-native';
 import uuid from 'uuid';
 
@@ -16,8 +16,17 @@ const maybeCallFunctionWithGestureState = fn => (event, gestureState) => {
   }
 };
 
-function withPanResponder(Component) {
-  class ComponentWithPanResponder extends PureComponent {
+type Props = {};
+type State = {
+  panResponder: ?{
+    getInteractionHandle: () => {},
+  },
+  panHandlers: ?{},
+  active: boolean,
+};
+
+function withPanResponder(Component: React.ComponentType<*>) {
+  class ComponentWithPanResponder extends React.PureComponent<Props, State> {
     state = {
       panResponder: null,
       panHandlers: null,
@@ -27,6 +36,12 @@ function withPanResponder(Component) {
     componentWillUnmount() {
       this.destroyPanResponder();
     }
+
+    onDragStart: ?({}) => void;
+
+    onDragMove: ?({}) => void;
+
+    onDragEnd: ?({}) => void;
 
     initPanResponder = () => {
       const panResponder = PanResponder.create({
@@ -50,7 +65,13 @@ function withPanResponder(Component) {
       });
     };
 
-    capturePanResponder = (options = {}) => {
+    capturePanResponder = (
+      options: {
+        onDragStart: ({}) => void,
+        onDragMove: ({}) => void,
+        onDragEnd: ({}) => void,
+      } = {},
+    ) => {
       const {onDragStart, onDragMove, onDragEnd} = options;
       this.onDragStart = onDragStart;
       this.onDragMove = onDragMove;
@@ -70,7 +91,7 @@ function withPanResponder(Component) {
       return this.captureId;
     };
 
-    releasePanResponder = captureId => {
+    releasePanResponder = (captureId: string) => {
       if (this.captureId === captureId) {
         this.onDragStart = null;
         this.onDragMove = null;
@@ -98,6 +119,8 @@ function withPanResponder(Component) {
         active: false,
       });
     };
+
+    captureId: ?string;
 
     render() {
       const {panResponder, panHandlers, active} = this.state;

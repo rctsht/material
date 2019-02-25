@@ -1,6 +1,8 @@
-// @flow
-import React from 'react';
+// @flow strict-local
+import * as React from 'react';
 
-const SheetContext = React.createContext();
+import SheetOverlay from './SheetOverlay';
+
+const SheetContext = React.createContext<?((SheetOverlay) => void) => void>();
 
 export default SheetContext;

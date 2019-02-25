@@ -1,13 +1,14 @@
-// @flow
+// @flow strict-local
 import hoistNonReactStatics from 'hoist-non-react-statics';
 import * as React from 'react';
 import uuid from 'uuid';
 
 import GlobalContext from './GlobalContext';
+import GlobalOverlay from './GlobalOverlay';
 
-export default function withGlobalOverlay(Component: React.ComponentType<any>) {
-  class ComponentWithGlobalOverlay extends React.PureComponent<any> {
-    constructor(props: any) {
+export default function withGlobalOverlay(Component: React.ComponentType<*>) {
+  class ComponentWithGlobalOverlay extends React.PureComponent<*> {
+    constructor(props: *) {
       super(props);
 
       this.id = uuid.v4();
@@ -29,7 +30,7 @@ export default function withGlobalOverlay(Component: React.ComponentType<any>) {
       }
     }
 
-    getOverlayRef: ?Function;
+    getOverlayRef: ?((GlobalOverlay) => void) => void;
 
     id: string;
 

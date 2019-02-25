@@ -1,5 +1,5 @@
-// @flow
-import React from 'react';
+// @flow strict-local
+import * as React from 'react';
 
 import {themeDefaults, type ThemeProps} from '.';
 

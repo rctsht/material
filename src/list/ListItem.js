@@ -1,6 +1,5 @@
-// @flow
-import isFunction from 'lodash.isfunction';
-import isString from 'lodash.isstring';
+// @flow strict-local
+import {isFunction, isString} from 'lodash-es';
 import * as React from 'react';
 import {LayoutAnimation, Platform, StyleSheet, TouchableNativeFeedback, View} from 'react-native';
 import color from 'tinycolor2';
@@ -34,15 +33,13 @@ const styles = StyleSheet.create({
 type Props = {
   children: React.Node,
   divider: boolean,
-  expanding?: boolean,
-  initialExpanded?: boolean,
+  expanding: boolean,
+  initialExpanded: boolean,
   label: string | React.Node,
-  leadingIcon?: React.Node,
-  leadingIconColor: string,
-  onPress?: Function,
+  leadingIcon: React.Node,
+  onPress: ?() => void,
   rctshtTheme: ThemeProps,
-  trailingIcon?: React.Node,
-  trailingIconColor: string,
+  trailingIcon: React.Node,
 };
 
 type State = {
@@ -55,6 +52,8 @@ class ListItem extends React.PureComponent<Props, State> {
     expanding: false,
     onPress: null,
     selected: false,
+    leadingIcon: null,
+    trailingIcon: null,
   };
 
   constructor(props) {
@@ -86,23 +85,12 @@ class ListItem extends React.PureComponent<Props, State> {
     }
 
     if (isFunction(onPress)) {
-      // $FlowFixMe
       onPress();
     }
   };
 
   render() {
-    const {
-      children,
-      divider,
-      label,
-      leadingIcon,
-      leadingIconColor,
-      expanding,
-      rctshtTheme,
-      trailingIcon,
-      trailingIconColor,
-    } = this.props;
+    const {children, divider, label, leadingIcon, expanding, rctshtTheme, trailingIcon} = this.props;
     const {expanded} = this.state;
 
     let background;
@@ -133,9 +121,9 @@ class ListItem extends React.PureComponent<Props, State> {
               label
             )}
           </View>
-          {trailingIcon || expandingTrailingIcon}
+          {trailingIcon != null ? trailingIcon : expandingTrailingIcon}
         </Touchable>
-        {children ? (
+        {children != null ? (
           <View style={expanding && !expanded ? {height: 0, opacity: 0, overflow: 'hidden'} : null}>{children}</View>
         ) : null}
       </View>

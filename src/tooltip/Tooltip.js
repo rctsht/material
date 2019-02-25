@@ -1,4 +1,4 @@
-// @flow
+// @flow strict-local
 import * as React from 'react';
 import {StyleSheet, View} from 'react-native';
 import uuid from 'uuid';
@@ -24,8 +24,12 @@ type Props = {
   pageY: number,
 };
 
-class Tooltip extends React.PureComponent<Props> {
-  static handlers = (options: Object = {}) => {
+type State = {
+  width: 'auto' | number,
+};
+
+class Tooltip extends React.PureComponent<Props, State> {
+  static handlers = (options: {} = {}) => {
     const id = uuid.v4();
     return {
       onLongPress: event => {

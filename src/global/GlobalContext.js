@@ -1,6 +1,8 @@
-// @flow
-import React from 'react';
+// @flow strict-local
+import * as React from 'react';
 
-const GlobalContext: React$Context<?Function> = React.createContext();
+import GlobalOverlay from './GlobalOverlay';
+
+const GlobalContext = React.createContext<?((GlobalOverlay) => void) => void>();
 
 export default GlobalContext;

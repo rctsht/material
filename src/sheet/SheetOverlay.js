@@ -1,6 +1,6 @@
-// @flow
-import find from 'lodash.find';
-import React, {PureComponent} from 'react';
+// @flow strict-local
+import {find} from 'lodash-es';
+import * as React from 'react';
 import {StyleSheet, View} from 'react-native';
 
 import {getCurrentNavigationKey} from '../navigation';
@@ -17,7 +17,7 @@ const styles = StyleSheet.create({
 
 type Props = {};
 
-class SheetOverlay extends PureComponent<Props> {
+class SheetOverlay extends React.PureComponent<Props> {
   constructor(props: Props) {
     super(props);
 
@@ -26,7 +26,7 @@ class SheetOverlay extends PureComponent<Props> {
     };
   }
 
-  addOrUpdateSheet = (options: Object = {}) => {
+  addOrUpdateSheet = (options: {} = {}) => {
     const {type, Component, props = {}, overlayId, navigationKey} = options;
     this.setState(currentState => ({
       contents: [

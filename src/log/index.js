@@ -1,3 +1,4 @@
+// @flow strict-local
 const {
   debug: consoleDebug,
   error: consoleError,
@@ -10,27 +11,33 @@ const {
 const TAG = '@rctsht/material: ';
 
 const Log = {
-  debug(...args) {
+  // $FlowFixMe: console.* functions support params of any type
+  debug(...args: Array<any>) {
     consoleDebug(TAG, ...args);
   },
 
-  error(...args) {
+  // $FlowFixMe: console.* functions support params of any type
+  error(...args: Array<any>) {
     consoleError(TAG, ...args);
   },
 
-  info(...args) {
+  // $FlowFixMe: console.* functions support params of any type
+  info(...args: Array<any>) {
     consoleInfo(TAG, ...args);
   },
 
-  log(...args) {
+  // $FlowFixMe: console.* functions support params of any type
+  log(...args: Array<any>) {
     consoleLog(TAG, ...args);
   },
 
-  warn(...args) {
+  // $FlowFixMe: console.* functions support params of any type
+  warn(...args: Array<any>) {
     consoleWarn(TAG, ...args);
   },
 
-  trace(...args) {
+  // $FlowFixMe: console.* functions support params of any type
+  trace(...args: Array<any>) {
     consoleTrace(TAG, ...args);
   },
 };

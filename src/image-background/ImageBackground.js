@@ -1,4 +1,4 @@
-// @flow
+// @flow strict-local
 import * as React from 'react';
 import {Animated, StyleSheet, View} from 'react-native';
 import {type ImageStyleProp, type ViewStyleProp} from 'react-native/Libraries/StyleSheet/StyleSheet';
@@ -15,12 +15,12 @@ const styles = StyleSheet.create({
 });
 
 type Props = {
-  children?: React.Node,
-  imageRef?: Function,
-  imageStyle?: ImageStyleProp,
-  style?: ViewStyleProp,
-  scrim?: boolean,
-  opacity: Object,
+  children: React.Node,
+  imageRef: ?(?Animated.Image) => void,
+  imageStyle: ImageStyleProp,
+  style: ViewStyleProp,
+  scrim: boolean,
+  opacity: {},
 };
 
 class ImageBackground extends React.Component<Props> {

@@ -1,5 +1,8 @@
-import React from 'react';
+// @flow strict-local
+import * as React from 'react';
 
-const SnackbarContext = React.createContext();
+import SnackbarOverlay from './SnackbarOverlay';
+
+const SnackbarContext = React.createContext<?((SnackbarOverlay) => void) => void>();
 
 export default SnackbarContext;

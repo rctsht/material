@@ -1,4 +1,4 @@
-// @flow
+// @flow strict-local
 import * as React from 'react';
 import {StyleSheet, View} from 'react-native';
 
@@ -14,8 +14,12 @@ const styles = StyleSheet.create({
   },
 });
 
-class DialogOverlay extends React.PureComponent<any> {
-  constructor(props: any) {
+type Props = {};
+
+type State = {};
+
+class DialogOverlay extends React.PureComponent<Props, State> {
+  constructor(props: Props) {
     super(props);
 
     this.state = {
@@ -24,11 +28,11 @@ class DialogOverlay extends React.PureComponent<any> {
     };
   }
 
-  setExtraProps = (extraProps: Object = {}, callback: Function) => {
+  setExtraProps = (extraProps: {} = {}, callback: () => void) => {
     this.setState({extraProps}, callback);
   };
 
-  addOrUpdateContent = (Component: React.ComponentType<any>, props: Object = {}) => {
+  addOrUpdateContent = (Component: React.ComponentType<any>, props: {} = {}) => {
     this.setState(currentState => ({
       contents: [...currentState.contents.filter(content => content.props.id !== props.id), {Component, props}],
     }));

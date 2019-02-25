@@ -1,5 +1,5 @@
-// @flow
-import isFunction from 'lodash.isfunction';
+// @flow strict-local
+import {isFunction} from 'lodash-es';
 import * as React from 'react';
 import {LayoutAnimation, StyleSheet, TouchableWithoutFeedback, View} from 'react-native';
 
@@ -30,10 +30,10 @@ const styles = StyleSheet.create({
 });
 
 type Props = {
-  onPress?: Function,
+  onPress: ?(mixed) => void,
   rctshtTheme: ThemeProps,
   selected?: boolean,
-  value?: any,
+  value?: mixed,
 };
 
 class Checkbox extends React.PureComponent<Props> {
@@ -55,7 +55,6 @@ class Checkbox extends React.PureComponent<Props> {
     );
 
     if (isFunction(onPress)) {
-      // $FlowFixMe
       onPress(value);
     }
   };

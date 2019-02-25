@@ -1,11 +1,11 @@
-// @flow
+// @flow strict-local
 import hoistNonReactStatics from 'hoist-non-react-statics';
 import * as React from 'react';
 
 import ScreenContext from './ScreenContext';
 
-export default function withScreen(Component: React.ComponentType<any>) {
-  class ComponentWithScreen extends React.PureComponent<any> {
+export default function withScreen(Component: React.ComponentType<*>) {
+  class ComponentWithScreen extends React.PureComponent<*> {
     render() {
       return (
         <ScreenContext.Consumer>

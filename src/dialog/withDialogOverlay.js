@@ -1,12 +1,13 @@
-// @flow
+// @flow strict-local
 import * as React from 'react';
 import uuid from 'uuid';
 
 import DialogContext from './DialogContext';
+import DialogOverlay from './DialogOverlay';
 
-export default function withDialogOverlay(Component: React.ComponentType<any>) {
-  return class ComponentWithDialogOverlay extends React.PureComponent<any> {
-    constructor(props: any) {
+export default function withDialogOverlay(Component: React.ComponentType<*>) {
+  return class ComponentWithDialogOverlay extends React.PureComponent<*> {
+    constructor(props: *) {
       super(props);
 
       this.id = uuid.v4();
@@ -28,7 +29,7 @@ export default function withDialogOverlay(Component: React.ComponentType<any>) {
       }
     }
 
-    getOverlayRef: ?Function;
+    getOverlayRef: ?((DialogOverlay) => void) => void;
 
     id: string;
 

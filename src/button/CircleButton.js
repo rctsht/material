@@ -1,4 +1,4 @@
-// @flow
+// @flow strict-local
 import * as React from 'react';
 import {Platform, StyleSheet, TouchableNativeFeedback, View} from 'react-native';
 
@@ -18,8 +18,8 @@ const styles = StyleSheet.create({
 });
 
 type Props = {
-  icon?: Icon,
-  onPress: Function,
+  icon: ?Icon,
+  onPress: () => void,
   rctshtTheme: ThemeProps,
 };
 

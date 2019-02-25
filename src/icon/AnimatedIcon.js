@@ -1,4 +1,4 @@
-// @flow
+// @flow strict-local
 import * as React from 'react';
 import {Animated, StyleSheet, View} from 'react-native';
 import MaterialIcon from 'react-native-vector-icons/MaterialCommunityIcons';

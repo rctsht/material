@@ -1,4 +1,4 @@
-// @flow
+// @flow strict-local
 import * as React from 'react';
 import {PixelRatio, StyleSheet, Text} from 'react-native';
 import {type TextStyleProp} from 'react-native/Libraries/StyleSheet/StyleSheet';

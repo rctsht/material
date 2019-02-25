@@ -1,5 +1,6 @@
-// @flow
+// @flow strict-local
 import * as React from 'react';
+import {type NavigationEventCallback} from 'react-navigation';
 
 import {getNavigation} from './navigation';
 
@@ -13,10 +14,10 @@ const EventNameToPropName = {
 const EventNames = Object.keys(EventNameToPropName);
 
 type Props = {
-  onWillFocus?: Function,
-  onDidFocus?: Function,
-  onWillBlur?: Function,
-  onDidBlur?: Function,
+  onWillFocus: ?NavigationEventCallback,
+  onDidFocus: ?NavigationEventCallback,
+  onWillBlur: ?NavigationEventCallback,
+  onDidBlur: ?NavigationEventCallback,
 };
 
 class NavigationEvents extends React.PureComponent<Props> {

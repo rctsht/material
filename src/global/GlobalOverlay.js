@@ -1,4 +1,4 @@
-// @flow
+// @flow strict-local
 import * as React from 'react';
 import {StyleSheet, View} from 'react-native';
 
@@ -40,11 +40,11 @@ class GlobalOverlay extends React.PureComponent<any> {
     context = null;
   }
 
-  setExtraProps = (extraProps: Object = {}, callback: Function) => {
+  setExtraProps = (extraProps: {} = {}, callback: Function) => {
     this.setState({extraProps}, callback);
   };
 
-  addOrUpdateTooltip = (Component: React.ComponentType<any>, props: Object = {}) => {
+  addOrUpdateTooltip = (Component: React.ComponentType<any>, props: {} = {}) => {
     this.setState(currentState => ({
       tooltips: [...currentState.tooltips.filter(tooltip => tooltip.props.id !== props.id), {Component, props}],
     }));

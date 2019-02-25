@@ -1,5 +1,5 @@
-// @flow
-import isFunction from 'lodash.isfunction';
+// @flow strict-local
+import {isFunction} from 'lodash-es';
 import * as React from 'react';
 import {ScrollView, StyleSheet, View} from 'react-native';
 
@@ -24,16 +24,16 @@ const styles = StyleSheet.create({
 
 type Props = {
   children: React.Node,
-  initialSelectedValues?: Array<any>,
-  selectedValues?: Array<any>,
+  initialSelectedValues?: Array<mixed>,
+  selectedValues?: Array<mixed>,
   maxSelection?: number,
-  onChangeSelection?: Function,
-  onPressChild?: Function,
+  onChangeSelection: ?(Array<mixed>) => void,
+  onPressChild: ?(mixed) => void,
   scroll?: boolean,
 };
 
 type State = {
-  internalSelectedValues: Array<any>,
+  internalSelectedValues: Array<mixed>,
 };
 
 class ChipGroup extends React.PureComponent<Props, State> {
@@ -54,7 +54,7 @@ class ChipGroup extends React.PureComponent<Props, State> {
     };
   }
 
-  onPressChild = (value: any) => {
+  onPressChild = (value: mixed) => {
     const {maxSelection, onPressChild} = this.props;
     if (onPressChild && isFunction(onPressChild)) {
       onPressChild(value);
@@ -89,7 +89,7 @@ class ChipGroup extends React.PureComponent<Props, State> {
   };
 
   render() {
-    const {children, onPressChild, scroll, selectedValues} = this.props;
+    const {children, scroll, selectedValues} = this.props;
     const {internalSelectedValues} = this.state;
 
     const WrapperComponent = scroll ? ScrollView : View;

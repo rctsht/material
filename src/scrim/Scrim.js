@@ -1,4 +1,4 @@
-// @flow
+// @flow strict-local
 import * as React from 'react';
 import {Animated, StyleSheet, TouchableWithoutFeedback, View} from 'react-native';
 
@@ -24,12 +24,12 @@ const styles = StyleSheet.create({
 });
 
 type Props = {
-  animated?: boolean,
-  elevation?: number,
-  isVisible?: boolean,
+  animated: boolean,
+  elevation: number,
+  isVisible: boolean,
   rctshtTheme: ThemeProps,
-  opacity?: number,
-  onPress?: Function,
+  opacity: number,
+  onPress: ?() => void,
 };
 
 type State = {

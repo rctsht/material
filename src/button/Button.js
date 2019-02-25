@@ -1,5 +1,5 @@
-// @flow
-import isString from 'lodash.isstring';
+// @flow strict-local
+import {isString} from 'lodash-es';
 import * as React from 'react';
 import {StyleSheet, TouchableNativeFeedback, View} from 'react-native';
 
@@ -54,7 +54,7 @@ const types = {
   TOGGLE: 'TOGGLE',
 };
 
-type Props = {
+export type ButtonProps = {
   backgroundColor?: string,
   borderColor?: string,
   disabled?: boolean,
@@ -62,12 +62,12 @@ type Props = {
   iconColor?: string,
   label?: string | React.Node,
   labelColor?: string,
-  onPress?: Function,
+  onPress: ?() => void,
   rctshtTheme: ThemeProps,
   type?: $Values<typeof types>,
 };
 
-class Button extends React.PureComponent<Props> {
+class Button extends React.PureComponent<ButtonProps> {
   static types = types;
 
   static defaultProps = {
@@ -97,7 +97,6 @@ class Button extends React.PureComponent<Props> {
     const iconNode = isString(icon) ? <Icon name={icon} size={18} color={iconColor} /> : icon;
     const labelNode = isString(label) ? (
       <Type preset={typePresets.button} style={{color: labelColor}}>
-        {/* $FlowFixMe */}
         {label.toUpperCase()}
       </Type>
     ) : (
@@ -131,10 +130,10 @@ class Button extends React.PureComponent<Props> {
         background={background}
         disabled={disabled}
         onPress={onPress}
-        style={[styles.button, additionalStyles, iconNode ? styles.iconButton : null]}
+        style={[styles.button, additionalStyles, iconNode != null ? styles.iconButton : null]}
       >
-        {iconNode ? <View style={styles.icon}>{iconNode}</View> : null}
-        {labelNode ? <View style={styles.label}>{labelNode}</View> : null}
+        {iconNode != null ? <View style={styles.icon}>{iconNode}</View> : null}
+        {labelNode != null ? <View style={styles.label}>{labelNode}</View> : null}
       </Touchable>
     );
   }

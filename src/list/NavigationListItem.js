@@ -1,5 +1,5 @@
-// @flow
-import isString from 'lodash.isstring';
+// @flow strict-local
+import {isString} from 'lodash-es';
 import * as React from 'react';
 import {StyleSheet, View} from 'react-native';
 
@@ -43,7 +43,7 @@ type Props = {
   icon: string | React.Node,
   indent: boolean,
   label: string | React.Node,
-  onPress: Function,
+  onPress: () => void,
   rctshtTheme: ThemeProps,
 };
 
@@ -53,7 +53,7 @@ class NavigationListItem extends React.PureComponent<Props> {
 
     let iconNode = null;
 
-    if (icon) {
+    if (icon != null) {
       iconNode = (
         <View style={styles.icon}>
           {isString(icon) ? (
@@ -72,7 +72,6 @@ class NavigationListItem extends React.PureComponent<Props> {
       <Touchable style={styles.container} onPress={onPress} disabled={active}>
         {active ? <View style={[styles.active, {backgroundColor: `${rctshtTheme.colors.secondary}33`}]} /> : null}
         {iconNode}
-        {/* $FlowFixMe */}
         {isString(label) ? <Type style={styles.label}>{label}</Type> : label}
       </Touchable>
     );

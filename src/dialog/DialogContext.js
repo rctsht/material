@@ -1,6 +1,8 @@
-// @flow
-import React from 'react';
+// @flow strict-local
+import * as React from 'react';
 
-const DialogContext: React$Context<?Function> = React.createContext();
+import DialogOverlay from './DialogOverlay';
+
+const DialogContext = React.createContext<?((DialogOverlay) => void) => void>();
 
 export default DialogContext;

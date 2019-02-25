@@ -1,13 +1,14 @@
-// @flow
+// @flow strict-local
 import hoistNonReactStatics from 'hoist-non-react-statics';
 import * as React from 'react';
 import uuid from 'uuid';
 
 import SnackbarContext from './SnackbarContext';
+import SnackbarOverlay from './SnackbarOverlay';
 
-export default function withSnackbarOverlay(Component: React.ComponentType<any>) {
-  class ComponentWithSnackbarOverlay extends React.PureComponent<any> {
-    constructor(props: any) {
+export default function withSnackbarOverlay(Component: React.ComponentType<*>) {
+  class ComponentWithSnackbarOverlay extends React.PureComponent<*> {
+    constructor(props: *) {
       super(props);
 
       this.id = uuid.v4();
@@ -28,6 +29,10 @@ export default function withSnackbarOverlay(Component: React.ComponentType<any>)
         });
       }
     }
+
+    getOverlayRef: ?((SnackbarOverlay) => void) => void;
+
+    id: string;
 
     renderContent() {
       if (this.getOverlayRef) {

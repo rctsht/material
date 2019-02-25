@@ -1,5 +1,5 @@
-// @flow
-import findIndex from 'lodash.findindex';
+// @flow strict-local
+import {findIndex} from 'lodash-es';
 import * as React from 'react';
 import {StyleSheet, View} from 'react-native';
 
@@ -15,12 +15,24 @@ const styles = StyleSheet.create({
   },
 });
 
-class SnackbarOverlay extends React.PureComponent<any> {
+type Props = {};
+
+type State = {
+  currentItem: ?{
+    id: string,
+    key: string,
+    Component: React.ComponentType<*>,
+    props: {},
+    timeout: number,
+  },
+};
+
+class SnackbarOverlay extends React.PureComponent<Props, State> {
   static DEFAULT_TIMEOUT = 10 * 1000; // 10 seconds
 
   queue = [];
 
-  constructor(props: any) {
+  constructor(props: Props) {
     super(props);
 
     this.state = {
@@ -30,8 +42,8 @@ class SnackbarOverlay extends React.PureComponent<any> {
 
   queueItem = (
     id: string,
-    Component: React.ComponentType<any>,
-    props: Object = {},
+    Component: React.ComponentType<*>,
+    props: {} = {},
     timeout: number = SnackbarOverlay.DEFAULT_TIMEOUT,
   ) => {
     this.queue.push({
@@ -39,6 +51,7 @@ class SnackbarOverlay extends React.PureComponent<any> {
       Component,
       props,
       timeout,
+      key: id, // TODO ??
     });
   };
 
@@ -90,6 +103,8 @@ class SnackbarOverlay extends React.PureComponent<any> {
       },
     );
   };
+
+  forceRemoveTimeout: ?TimeoutID;
 
   render() {
     const {currentItem} = this.state;
