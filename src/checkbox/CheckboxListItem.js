@@ -17,6 +17,9 @@ const styles = StyleSheet.create({
     height: 56,
     padding: 16,
   },
+  checkbox: {
+    marginRight: 32,
+  },
 });
 
 type Props = {
@@ -64,7 +67,7 @@ class CheckboxListItem extends React.PureComponent<Props> {
     return (
       <Touchable onPress={this.onPress} background={background}>
         <View style={styles.container}>
-          <Checkbox selected={selected} />
+          <Checkbox selected={selected} style={styles.checkbox} />
           {isString(label) ? <Text numberOfLines={1}>{label}</Text> : label}
         </View>
       </Touchable>
