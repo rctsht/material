@@ -6,6 +6,7 @@ import uuid from 'uuid';
 import {getNavigation} from '../navigation';
 import {withTheme} from '../theme';
 
+import type Sheet from './Sheet';
 import SheetContext from './SheetContext';
 import SheetOverlay from './SheetOverlay';
 
@@ -41,6 +42,24 @@ function withSheetOverlay(Component: React.ComponentType<any>, type: string, glo
       }
     }
 
+    open = () => {
+      if (this.sheetRef) {
+        this.sheetRef.open();
+      }
+    };
+
+    close = () => {
+      if (this.sheetRef) {
+        this.sheetRef.close();
+      }
+    };
+
+    setSheetRef = (node: ?Sheet) => {
+      this.sheetRef = node;
+    };
+
+    sheetRef: ?Sheet;
+
     getOverlayRef: ((SheetOverlay) => void) => void;
 
     id: string;
@@ -61,6 +80,7 @@ function withSheetOverlay(Component: React.ComponentType<any>, type: string, glo
               rctshtOverlayId: this.id,
               rctshtNavigationKey: global ? 'GLOBAL' : navigationKey,
               rctshtGetOverlayRef: this.getOverlayRef,
+              ref: this.setSheetRef,
             },
             overlayId: this.id,
             navigationKey: global ? 'GLOBAL' : navigationKey,
@@ -82,7 +102,7 @@ function withSheetOverlay(Component: React.ComponentType<any>, type: string, glo
 
   hoistNonReactStatics(ComponentWithSheetOverlay, Component);
 
-  return withTheme(ComponentWithSheetOverlay); // TODO do we need theme here?
+  return ComponentWithSheetOverlay;
 }
 
 export default withSheetOverlay;

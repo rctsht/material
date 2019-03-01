@@ -49,7 +49,7 @@ class SheetOverlay extends React.PureComponent<Props> {
 
     const activeContent = find(contents, content => content.navigationKey === currentNavigationKey);
     const globalContent = find(contents, content => content.navigationKey === 'GLOBAL');
-    const {Component, props} = activeContent || globalContent || {};
+    const {Component, props} = activeContent || globalContent || contents[0] || {}; // XXX remove contents[0]
 
     return (
       <View style={styles.container} pointerEvents="box-none">
