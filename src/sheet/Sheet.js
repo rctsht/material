@@ -1,7 +1,8 @@
 // @flow strict-local
 import {isFunction} from 'lodash-es';
 import * as React from 'react';
-import {Animated, Dimensions, PanResponder, StatusBar, ScrollView, StyleSheet, View} from 'react-native';
+import {Animated, BackHandler, Dimensions, PanResponder, StatusBar, ScrollView, StyleSheet, View} from 'react-native';
+import type {CompositeAnimation} from 'react-native/Libraries/Animated/src/AnimatedImplementation';
 
 import {isPhone} from '../device';
 import {Scrim} from '../scrim';
@@ -250,8 +251,8 @@ class Sheet extends React.PureComponent<Props, State> {
       return type === types.LEFT
         ? evt.nativeEvent.pageX < 16
         : type === types.RIGHT
-          ? evt.nativeEvent.pageX > width - 16
-          : false;
+        ? evt.nativeEvent.pageX > width - 16
+        : false;
     },
     onStartShouldSetResponderCapture: () => false,
     onMoveShouldSetPanResponder: () => false,
@@ -274,8 +275,8 @@ class Sheet extends React.PureComponent<Props, State> {
               ? -width
               : -320 + gestureState.dx
             : type === types.RIGHT
-              ? (deviceIsPhone ? width : 320) + gestureState.dx
-              : 0,
+            ? (deviceIsPhone ? width : 320) + gestureState.dx
+            : 0,
         dy: type === types.BOTTOM ? height / 2 + gestureState.dy : 0,
       });
     },
@@ -504,12 +505,6 @@ class Sheet extends React.PureComponent<Props, State> {
     onShouldBlockNativeResponder: () => true,
   });
 
-  positionX: typeof Animated.Value;
-
-  positionY: typeof Animated.Value;
-
-  animation: typeof Animated.Value;
-
   constructor(props: Props) {
     super(props);
 
@@ -521,33 +516,59 @@ class Sheet extends React.PureComponent<Props, State> {
       initialIsVisible
         ? 0
         : type === types.LEFT
-          ? deviceIsPhone
-            ? -width
-            : -320
-          : type === types.RIGHT
-            ? deviceIsPhone
-              ? width
-              : 320
-            : 0,
+        ? deviceIsPhone
+          ? -width
+          : -320
+        : type === types.RIGHT
+        ? deviceIsPhone
+          ? width
+          : 320
+        : 0,
     );
 
     this.positionY = new Animated.Value(initialIsVisible ? 0 : type === types.BOTTOM ? height / 2 : 0);
-    this.animation = new Animated.Value(this.props.initialIsVisible ? 1 : 0);
 
     this.state = {
       isVisible: initialIsVisible,
     };
   }
 
+  componentDidMount() {
+    const {isVisible} = this.state;
+
+    if (isVisible) {
+      BackHandler.addEventListener('hardwareBackPress', this.onBackPress);
+    }
+  }
+
+  componentWillUnmount() {
+    BackHandler.removeEventListener('hardwareBackPress', this.onBackPress);
+
+    if (this.animation) {
+      this.animation.stop();
+    }
+  }
+
+  onBackPress = () => {
+    this.close();
+    return true;
+  };
+
   open = () => {
     const {type, rctshtTheme} = this.props;
+
+    BackHandler.addEventListener('hardwareBackPress', this.onBackPress);
+
+    if (this.animation) {
+      this.animation.stop();
+    }
 
     this.setState(
       {
         isVisible: true,
       },
       () => {
-        Animated.timing(type === types.BOTTOM ? this.positionY : this.positionX, {
+        this.animation = Animated.timing(type === types.BOTTOM ? this.positionY : this.positionX, {
           toValue: 0,
           useNativeDriver: true,
           duration: rctshtTheme.animations.medium.in,
@@ -560,19 +581,25 @@ class Sheet extends React.PureComponent<Props, State> {
     const {type, onClose, rctshtTheme} = this.props;
     const {width, height} = Dimensions.get('window');
 
-    Animated.timing(type === types.BOTTOM ? this.positionY : this.positionX, {
+    BackHandler.removeEventListener('hardwareBackPress', this.onBackPress);
+
+    if (this.animation) {
+      this.animation.stop();
+    }
+
+    this.animation = Animated.timing(type === types.BOTTOM ? this.positionY : this.positionX, {
       toValue:
         type === types.BOTTOM
           ? height / 2
           : type === types.LEFT
-            ? deviceIsPhone
-              ? -width
-              : -320
-            : type === types.RIGHT
-              ? deviceIsPhone
-                ? width
-                : 320
-              : 0,
+          ? deviceIsPhone
+            ? -width
+            : -320
+          : type === types.RIGHT
+          ? deviceIsPhone
+            ? width
+            : 320
+          : 0,
       useNativeDriver: true,
       duration: rctshtTheme.animations.medium.out,
     }).start(() => {
@@ -584,6 +611,7 @@ class Sheet extends React.PureComponent<Props, State> {
           if (this.scrollView && isFunction(this.scrollView.scrollTo)) {
             this.scrollView.scrollTo({x: 0, y: 0, animated: false});
           }
+
           // @TODO call onClose prop?
           // if (isFunction(onClose)) {
           //   onClose();
@@ -596,6 +624,12 @@ class Sheet extends React.PureComponent<Props, State> {
   setScrollView = (node: ScrollView) => {
     this.scrollView = node;
   };
+
+  positionX: typeof Animated.Value;
+
+  positionY: typeof Animated.Value;
+
+  animation: CompositeAnimation;
 
   render() {
     const {width, height} = Dimensions.get('window');
@@ -675,8 +709,8 @@ class Sheet extends React.PureComponent<Props, State> {
               type === types.LEFT
                 ? [deviceIsPhone ? -width : -320, 0]
                 : type === types.RIGHT
-                  ? [0, deviceIsPhone ? width : 320]
-                  : [0, 0],
+                ? [0, deviceIsPhone ? width : 320]
+                : [0, 0],
             outputRange: type === types.LEFT ? [0, 1] : type === types.RIGHT ? [1, 0] : [0, 0],
             extrapolate: 'clamp',
           })}
@@ -703,14 +737,14 @@ class Sheet extends React.PureComponent<Props, State> {
                     type === types.LEFT
                       ? [deviceIsPhone ? -width : -320, 0]
                       : type === types.RIGHT
-                        ? [0, deviceIsPhone ? width : 320]
-                        : [0, 1],
+                      ? [0, deviceIsPhone ? width : 320]
+                      : [0, 1],
                   outputRange:
                     type === types.LEFT
                       ? [deviceIsPhone ? -width : -320, 0]
                       : type === types.RIGHT
-                        ? [0, deviceIsPhone ? width : 320]
-                        : [0, 1],
+                      ? [0, deviceIsPhone ? width : 320]
+                      : [0, 1],
                   extrapolate: 'clamp',
                 }),
               },
