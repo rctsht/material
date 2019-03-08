@@ -1,5 +1,5 @@
 // @flow strict-local
-import type {NavigationScreenProp, NavigationState} from 'react-navigation';
+import type {NavigationContainer, NavigationState} from 'react-navigation';
 
 import Log from '../log';
 
@@ -20,7 +20,8 @@ function getCurrentRoute() {
     return null;
   }
 
-  const {state} = navigation;
+  // eslint-disable-next-line no-underscore-dangle
+  const {state} = navigation._navigation;
   const findCurrentRoute = navState => {
     if (navState.index !== undefined) {
       return findCurrentRoute(navState.routes[navState.index]);
@@ -36,7 +37,8 @@ function getCurrentNavigationKey() {
     return null;
   }
 
-  const {state = {}} = navigation;
+  // eslint-disable-next-line no-underscore-dangle
+  const {state = {}} = navigation._navigation;
   const findCurrentRoute = navState => {
     if (navState.index !== undefined) {
       return findCurrentRoute(navState.routes[navState.index]);
@@ -52,11 +54,12 @@ function getNavigation() {
     return null;
   }
 
-  return navigation;
+  // eslint-disable-next-line no-underscore-dangle
+  return navigation._navigation;
 }
 
 // TODO type
-function setNavigation(navigationRef: NavigationScreenProp<NavigationState>) {
+function setNavigation(navigationRef: NavigationContainer<NavigationState, {}, {}>) {
   navigation = navigationRef;
 
   // if (navigation && awaitCallbacks.length) {

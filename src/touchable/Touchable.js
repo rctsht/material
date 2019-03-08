@@ -4,9 +4,9 @@ import {Platform, TouchableOpacity, TouchableNativeFeedback, View} from 'react-n
 import {type ViewStyleProp} from 'react-native/Libraries/StyleSheet/StyleSheet';
 
 type Props = {
-  children?: React.Node,
+  children: React.Node,
   pointerEvents?: string,
-  style?: ViewStyleProp,
+  style: ViewStyleProp,
 };
 
 function Touchable(props: Props) {

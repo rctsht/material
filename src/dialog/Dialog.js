@@ -1,6 +1,6 @@
 // @flow strict-local
 import * as React from 'react';
-import {Animated, BackHandler, StyleSheet, TouchableWithoutFeedback, View} from 'react-native';
+import {Animated, BackHandler, Dimensions, ScrollView, StyleSheet, TouchableWithoutFeedback, View} from 'react-native';
 import type {CompositeAnimation} from 'react-native/Libraries/Animated/src/AnimatedImplementation';
 
 import {type ThemeProps, withTheme} from '../theme';
@@ -9,6 +9,12 @@ import DialogOverlay from './DialogOverlay';
 
 const styles = StyleSheet.create({
   container: {
+    flex: 1,
+    alignItems: 'stretch',
+    justifyContent: 'center',
+  },
+  containerFullScreen: {
+    elevation: 24,
     flex: 1,
     alignItems: 'stretch',
     justifyContent: 'center',
@@ -24,11 +30,17 @@ const styles = StyleSheet.create({
   modalContainer: {
     elevation: 24,
     backgroundColor: '#fff',
-    margin: 40,
     overflow: 'hidden',
+    margin: 40,
     padding: 0,
-    paddingBottom: 0,
     borderRadius: 3,
+  },
+  modalContainerFullScreen: {
+    backgroundColor: '#fff',
+    overflow: 'hidden',
+    margin: 0,
+    padding: 0,
+    flex: 1,
   },
   modalContainerNoPadding: {
     padding: 0,
@@ -36,6 +48,17 @@ const styles = StyleSheet.create({
   modalContainerMaxWidth: {
     alignSelf: 'center',
     flexDirection: 'row',
+  },
+  scrollView: {
+    flex: 1,
+  },
+  scrollViewContent: {
+    flexGrow: 1,
+    alignItems: 'stretch',
+    justifyContent: 'flex-start',
+  },
+  toolbar: {
+    zIndex: 100,
   },
 });
 
@@ -48,6 +71,10 @@ type Props = {
   noPadding: boolean,
   onClose: ?() => void,
   rctshtTheme: ThemeProps,
+  fullScreen: boolean,
+  renderToolbar: ?() => React.Node,
+  noScrollView: boolean,
+  scrollViewProps: {},
 };
 
 type State = {
@@ -61,6 +88,10 @@ class Dialog extends React.PureComponent<Props, State> {
     maxWidth: null,
     noPadding: false,
     onClose: null,
+    fullScreen: false,
+    renderToolbar: null,
+    noScrollView: false,
+    scrollViewProps: {},
   };
 
   static getDerivedStateFromProps(props: Props) {
@@ -190,41 +221,106 @@ class Dialog extends React.PureComponent<Props, State> {
   }
 
   render() {
-    const {children, noPadding, maxWidth} = this.props;
+    const {
+      children,
+      noPadding,
+      maxWidth,
+      fullScreen,
+      renderToolbar,
+      noScrollView,
+      scrollViewProps,
+      isVisible,
+    } = this.props;
     const {visible} = this.state;
 
     if (!visible) {
       return null;
     }
 
+    let translateAnimationX;
+    let translateAnimationY;
+
+    if (fullScreen) {
+      const {width, height} = Dimensions.get('window');
+
+      translateAnimationX = isVisible
+        ? this.animationProgress.interpolate({
+            inputRange: [0, 1],
+            outputRange: [width, 0],
+          })
+        : 0;
+
+      translateAnimationY = this.animationProgress.interpolate({
+        inputRange: [0, 1],
+        outputRange: [height, 0],
+      });
+    }
+
     return (
-      <View style={styles.container}>
-        <TouchableWithoutFeedback
-          key="overlay"
-          onPress={() => {
-            this.onClose();
-          }}
-        >
+      <View style={styles.container} collapsable={false}>
+        {fullScreen ? null : (
+          <TouchableWithoutFeedback
+            key="overlay"
+            onPress={() => {
+              this.onClose();
+            }}
+          >
+            <Animated.View
+              style={[
+                styles.overlay,
+                {
+                  opacity: this.animationProgress,
+                },
+              ]}
+            />
+          </TouchableWithoutFeedback>
+        )}
+        {fullScreen ? (
+          <View style={styles.containerFullScreen}>
+            {renderToolbar ? renderToolbar() : null}
+            <Animated.View
+              key="content"
+              style={[
+                styles.modalContainerFullScreen,
+                {
+                  transform: [
+                    {
+                      translateX: translateAnimationX,
+                    },
+                    {
+                      translateY: translateAnimationY,
+                    },
+                  ],
+                  opacity: this.animationProgress,
+                },
+              ]}
+            >
+              {noScrollView ? (
+                children
+              ) : (
+                <ScrollView
+                  style={styles.scrollView}
+                  contentContainerStyle={styles.scrollViewContent}
+                  {...scrollViewProps}
+                >
+                  {children}
+                </ScrollView>
+              )}
+            </Animated.View>
+          </View>
+        ) : (
           <Animated.View
             style={[
-              styles.overlay,
-              {
-                opacity: this.animationProgress,
-              },
+              styles.modalContainer,
+              noPadding ? styles.modalContainerNoPadding : null,
+              maxWidth != null ? styles.modalContainerMaxWidth : null,
+              maxWidth != null ? {maxWidth} : null,
+              {opacity: this.animationProgress},
             ]}
-          />
-        </TouchableWithoutFeedback>
-        <Animated.View
-          style={[
-            styles.modalContainer,
-            noPadding ? styles.modalContainerNoPadding : null,
-            maxWidth != null ? styles.modalContainerMaxWidth : null,
-            maxWidth != null ? {maxWidth} : null,
-            {opacity: this.animationProgress},
-          ]}
-        >
-          {children}
-        </Animated.View>
+          >
+            {children}
+          </Animated.View>
+        )}
       </View>
     );
   }

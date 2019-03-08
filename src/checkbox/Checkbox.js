@@ -2,6 +2,7 @@
 import {isFunction} from 'lodash-es';
 import * as React from 'react';
 import {LayoutAnimation, StyleSheet, TouchableWithoutFeedback, View} from 'react-native';
+import type {ViewStyleProp} from 'react-native/Libraries/StyleSheet/StyleSheet';
 
 import {Icon} from '../icon';
 import {type ThemeProps, withTheme} from '../theme';
@@ -13,7 +14,6 @@ const styles = StyleSheet.create({
     borderRadius: 2,
     borderWidth: 2,
     borderColor: '#00000089',
-    marginRight: 32,
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -34,6 +34,7 @@ type Props = {
   rctshtTheme: ThemeProps,
   selected?: boolean,
   value?: mixed,
+  style: ViewStyleProp,
 };
 
 class Checkbox extends React.PureComponent<Props> {
@@ -41,6 +42,7 @@ class Checkbox extends React.PureComponent<Props> {
     onPress: null,
     selected: false,
     value: null,
+    style: null,
   };
 
   onPress = () => {
@@ -60,10 +62,16 @@ class Checkbox extends React.PureComponent<Props> {
   };
 
   render() {
-    const {onPress, rctshtTheme, selected} = this.props;
+    const {onPress, rctshtTheme, selected, style} = this.props;
 
     const checkbox = (
-      <View style={[styles.outerSquare, selected ? {borderColor: rctshtTheme.colors.secondary} : null]}>
+      <View
+        style={[
+          styles.outerSquare,
+          selected ? {borderColor: rctshtTheme.colors.secondary} : null,
+          ...(Array.isArray(style) ? style : [style]),
+        ]}
+      >
         <View
           style={[
             styles.innerSquare,
