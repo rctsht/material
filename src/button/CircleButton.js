@@ -18,7 +18,7 @@ const styles = StyleSheet.create({
 });
 
 type Props = {
-  icon: ?Icon,
+  icon: React.Node,
   onPress: () => void,
   rctshtTheme: ThemeProps,
 };
