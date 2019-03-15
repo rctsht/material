@@ -1,7 +1,7 @@
 // @flow strict-local
 import {isFunction, isString} from 'lodash-es';
 import * as React from 'react';
-import {LayoutAnimation, StyleSheet, TouchableNativeFeedback, View} from 'react-native';
+import {Platform, LayoutAnimation, StyleSheet, TouchableNativeFeedback, View} from 'react-native';
 
 import {Icon} from '../icon';
 import {withTheme, type ThemeProps} from '../theme';
@@ -138,8 +138,17 @@ class Chip extends React.PureComponent<Props> {
   render() {
     const {highlighted, icon, label, outline, selected, thumbnail, rctshtTheme} = this.props;
 
-    // eslint-disable-next-line babel/new-cap
-    const background = TouchableNativeFeedback.SelectableBackgroundBorderless();
+    let background = null;
+
+    if (Platform.OS === 'android') {
+      if (Platform.Version >= 21) {
+        // eslint-disable-next-line babel/new-cap
+        background = TouchableNativeFeedback.SelectableBackgroundBorderless();
+      } else {
+        // eslint-disable-next-line babel/new-cap
+        background = TouchableNativeFeedback.SelectableBackground();
+      }
+    }
 
     const thumb = thumbnail != null ? <View style={styles.thumbnailWrapper}>{thumbnail}</View> : null;
     const selectedIndicator = selected ? (
