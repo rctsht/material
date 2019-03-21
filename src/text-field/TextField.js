@@ -106,6 +106,8 @@ type Props = {
   trailingIconColor?: string,
   value: string,
   forwardedRef: (?TextInput) => void,
+  onFocus?: ?() => void,
+  onBlur?: ?() => void,
 };
 
 type State = {
@@ -135,21 +137,33 @@ class TextField extends React.PureComponent<Props, State> {
   };
 
   onFocus = () => {
+    const {onFocus} = this.props;
+
     LayoutAnimation.configureNext(
       LayoutAnimation.create(100, LayoutAnimation.Types.easeInEaseOut, LayoutAnimation.Properties.opacity),
     );
     this.setState({
       isFocused: true,
     });
+
+    if (onFocus) {
+      onFocus();
+    }
   };
 
   onBlur = () => {
+    const {onBlur} = this.props;
+
     LayoutAnimation.configureNext(
       LayoutAnimation.create(100, LayoutAnimation.Types.easeInEaseOut, LayoutAnimation.Properties.opacity),
     );
     this.setState({
       isFocused: false,
     });
+
+    if (onBlur) {
+      onBlur();
+    }
   };
 
   render() {
