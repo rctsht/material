@@ -1,4 +1,5 @@
 // @flow strict-local
+import hoistNonReactStatics from 'hoist-non-react-statics';
 import {isFunction} from 'lodash-es';
 import * as React from 'react';
 import {InteractionManager, PanResponder} from 'react-native';
@@ -137,6 +138,8 @@ function withPanResponder(Component: React.ComponentType<*>) {
       );
     }
   }
+
+  hoistNonReactStatics(ComponentWithPanResponder, Component);
 
   return ComponentWithPanResponder;
 }

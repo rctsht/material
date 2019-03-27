@@ -1,4 +1,5 @@
 // @flow strict-local
+import hoistNonReactStatics from 'hoist-non-react-statics';
 import {isString} from 'lodash-es';
 import * as React from 'react';
 import {LayoutAnimation, StyleSheet, Text, TextInput, View} from 'react-native';
@@ -245,6 +246,8 @@ function withForwardRef(Component: React.ComponentType<*>) {
   function forwardRef(props, ref) {
     return <Component {...props} forwardedRef={ref} />;
   }
+
+  hoistNonReactStatics(forwardRef, Component);
 
   return React.forwardRef(forwardRef);
 }

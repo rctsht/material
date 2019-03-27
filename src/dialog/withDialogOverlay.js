@@ -1,4 +1,5 @@
 // @flow strict-local
+import hoistNonReactStatics from 'hoist-non-react-statics';
 import * as React from 'react';
 import uuid from 'uuid';
 
@@ -6,7 +7,7 @@ import DialogContext from './DialogContext';
 import DialogOverlay from './DialogOverlay';
 
 export default function withDialogOverlay(Component: React.ComponentType<*>) {
-  return class ComponentWithDialogOverlay extends React.PureComponent<*> {
+  class ComponentWithDialogOverlay extends React.PureComponent<*> {
     constructor(props: *) {
       super(props);
 
@@ -50,5 +51,9 @@ export default function withDialogOverlay(Component: React.ComponentType<*>) {
         </DialogContext.Consumer>
       );
     }
-  };
+  }
+
+  hoistNonReactStatics(ComponentWithDialogOverlay, Component);
+
+  return ComponentWithDialogOverlay;
 }
