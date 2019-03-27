@@ -70,6 +70,24 @@ const styles = StyleSheet.create({
     fontSize: 10,
     lineHeight: 10,
   },
+  bold: {
+    fontWeight: '500',
+  },
+  italic: {
+    fontStyle: 'italic',
+  },
+  strike: {
+    textDecorationLine: 'line-through',
+  },
+  underline: {
+    textDecorationLine: 'underline',
+  },
+  strikeUnderline: {
+    textDecorationLine: 'underline line-through',
+  },
+  center: {
+    textAlign: 'center',
+  },
 });
 
 const typePresets = {
@@ -93,6 +111,11 @@ type Props = {
   children?: string | React.Node,
   preset?: $Values<typeof typePresets>,
   style?: TextStyleProp,
+  bold?: boolean,
+  italic?: boolean,
+  strike?: boolean,
+  underline?: boolean,
+  center?: boolean,
 };
 
 class Type extends React.PureComponent<Props> {
@@ -103,13 +126,71 @@ class Type extends React.PureComponent<Props> {
     style: null,
   };
 
+  static H1 = class H1 extends Type {
+    static defaultProps = {...Type.defaultProps, preset: typePresets.h1};
+  };
+
+  static H2 = class H2 extends Type {
+    static defaultProps = {...Type.defaultProps, preset: typePresets.h2};
+  };
+
+  static H3 = class H3 extends Type {
+    static defaultProps = {...Type.defaultProps, preset: typePresets.h3};
+  };
+
+  static H4 = class H4 extends Type {
+    static defaultProps = {...Type.defaultProps, preset: typePresets.h4};
+  };
+
+  static H5 = class H5 extends Type {
+    static defaultProps = {...Type.defaultProps, preset: typePresets.h5};
+  };
+
+  static H6 = class H6 extends Type {
+    static defaultProps = {...Type.defaultProps, preset: typePresets.h6};
+  };
+
+  static Subtitle1 = class Subtitle1 extends Type {
+    static defaultProps = {...Type.defaultProps, preset: typePresets.subtitle1};
+  };
+
+  static Subtitle2 = class Subtitle2 extends Type {
+    static defaultProps = {...Type.defaultProps, preset: typePresets.subtitle2};
+  };
+
+  static Body1 = class Body1 extends Type {
+    static defaultProps = {...Type.defaultProps, preset: typePresets.body1};
+  };
+
+  static Body2 = class Body2 extends Type {
+    static defaultProps = {...Type.defaultProps, preset: typePresets.body2};
+  };
+
+  static Button = class Button extends Type {
+    static defaultProps = {...Type.defaultProps, preset: typePresets.button};
+  };
+
+  static Caption = class Caption extends Type {
+    static defaultProps = {...Type.defaultProps, preset: typePresets.caption};
+  };
+
+  static Overline = class Overline extends Type {
+    static defaultProps = {...Type.defaultProps, preset: typePresets.overline};
+  };
+
   render() {
-    const {alignToBaseline, children, preset, style} = this.props;
+    const {alignToBaseline, children, preset, style, bold, italic, strike, underline, center} = this.props;
 
     const textStyle = StyleSheet.flatten([
       styles.defaults,
       !preset && (!style || (style.fontSize == null && style.lineHeight == null)) ? styles.defaultLineHeight : null,
       preset || null,
+      bold ? styles.bold : null,
+      italic ? styles.italic : null,
+      strike && !underline ? styles.strike : null,
+      underline && !strike ? styles.underline : null,
+      strike && underline ? styles.strikeUnderline : null,
+      center ? styles.center : null,
       style,
     ]);
 
