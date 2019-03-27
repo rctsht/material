@@ -1,8 +1,11 @@
 // @flow strict-local
 import {isFunction} from 'lodash-es';
 import * as React from 'react';
-import {Animated, BackHandler, Dimensions, PanResponder, StatusBar, ScrollView, StyleSheet, View} from 'react-native';
+import {Animated, BackHandler, Dimensions, PanResponder, ScrollView, StyleSheet, View} from 'react-native';
 import type {CompositeAnimation} from 'react-native/Libraries/Animated/src/AnimatedImplementation';
+import type {GestureState} from 'react-native/Libraries/Interaction/PanResponder';
+import type {ViewStyleProp} from 'react-native/Libraries/StyleSheet/StyleSheet';
+import type {PressEvent} from 'react-native/Libraries/Types/CoreEventTypes';
 
 import {isPhone} from '../device';
 import {Scrim} from '../scrim';
@@ -86,11 +89,12 @@ const deviceIsPhone = isPhone();
 
 type Props = {
   children: React.Node,
-  initialIsVisible?: boolean,
-  style: {},
+  initialIsVisible: boolean,
+  style: ViewStyleProp,
   type: $Values<typeof types>,
-  modal?: boolean,
+  modal: boolean,
   rctshtTheme: ThemeProps,
+  onClose: () => void,
 };
 
 type State = {
@@ -112,7 +116,7 @@ class Sheet extends React.PureComponent<Props, State> {
 
   // Must be before panResponder declaration
   // eslint-disable-next-line react/sort-comp
-  onReleaseOrTerminate = (evt: {}, gestureState: {}) => {
+  onReleaseOrTerminate = (event: PressEvent, gestureState: GestureState) => {
     const {width, height} = Dimensions.get('window');
     const {type, rctshtTheme} = this.props;
 
@@ -578,7 +582,7 @@ class Sheet extends React.PureComponent<Props, State> {
   };
 
   close = () => {
-    const {type, onClose, rctshtTheme} = this.props;
+    const {type, rctshtTheme} = this.props; // onClose
     const {width, height} = Dimensions.get('window');
 
     BackHandler.removeEventListener('hardwareBackPress', this.onBackPress);
