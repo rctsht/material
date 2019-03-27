@@ -2,6 +2,7 @@
 import {isString} from 'lodash-es';
 import * as React from 'react';
 import {StyleSheet, TouchableNativeFeedback, View} from 'react-native';
+import {ViewStyleProp} from 'react-native/Libraries/StyleSheet/StyleSheet';
 
 import {Icon} from '../icon';
 import {type ThemeProps, withTheme} from '../theme';
@@ -65,6 +66,7 @@ export type ButtonProps = {
   onPress: ?() => void,
   rctshtTheme: ThemeProps,
   type?: $Values<typeof types>,
+  style: ViewStyleProp,
 };
 
 class Button extends React.PureComponent<ButtonProps> {
@@ -83,7 +85,7 @@ class Button extends React.PureComponent<ButtonProps> {
   };
 
   render() {
-    const {disabled, icon, label, onPress, rctshtTheme, type} = this.props;
+    const {disabled, icon, label, onPress, rctshtTheme, type, style} = this.props;
     const defaultIconLabelColor =
       type === Button.types.CONTAINED ? rctshtTheme.colors.onSecondary : rctshtTheme.colors.secondary;
     const {
@@ -130,7 +132,12 @@ class Button extends React.PureComponent<ButtonProps> {
         background={background}
         disabled={disabled}
         onPress={onPress}
-        style={[styles.button, additionalStyles, iconNode != null ? styles.iconButton : null]}
+        style={[
+          styles.button,
+          additionalStyles,
+          iconNode != null ? styles.iconButton : null,
+          ...(Array.isArray(style) ? style : [style]),
+        ]}
       >
         {iconNode != null ? <View style={styles.icon}>{iconNode}</View> : null}
         {labelNode != null ? <View style={styles.label}>{labelNode}</View> : null}
