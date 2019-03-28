@@ -16,6 +16,7 @@ const styles = StyleSheet.create({
     borderTopLeftRadius: 4,
     borderTopRightRadius: 4,
     height: 56,
+    minHeight: 56,
     paddingHorizontal: 12,
     borderBottomWidth: 1,
     borderBottomColor: '#00000099',
@@ -61,6 +62,7 @@ const styles = StyleSheet.create({
     borderWidth: 0,
     fontSize: 16,
     height: 56,
+    maxHeight: 132,
     alignItems: 'flex-start',
     justifyContent: 'flex-start',
   },
@@ -109,10 +111,12 @@ type Props = {
   forwardedRef: (?TextInput) => void,
   onFocus?: ?() => void,
   onBlur?: ?() => void,
+  multiline?: boolean,
 };
 
 type State = {
   isFocused: boolean,
+  height: number,
 };
 
 class TextField extends React.PureComponent<Props, State> {
@@ -135,6 +139,7 @@ class TextField extends React.PureComponent<Props, State> {
 
   state = {
     isFocused: false,
+    height: 0,
   };
 
   onFocus = () => {
@@ -167,6 +172,14 @@ class TextField extends React.PureComponent<Props, State> {
     }
   };
 
+  onContentSizeChange = (event: {nativeEvent: {contentSize: {width: number, height: number}}}) => {
+    const {height} = event.nativeEvent.contentSize;
+
+    this.setState({
+      height,
+    });
+  };
+
   render() {
     const {
       helperText,
@@ -181,8 +194,9 @@ class TextField extends React.PureComponent<Props, State> {
       value,
       selectionColor,
       forwardedRef,
+      multiline,
     } = this.props;
-    const {isFocused} = this.state;
+    const {isFocused, height} = this.state;
 
     const errorIcon = errorText != null ? <Icon name="alert-circle" size={24} color="#b00020" /> : null;
 
@@ -203,6 +217,7 @@ class TextField extends React.PureComponent<Props, State> {
             isFocused ? styles.inputWrapperFocused : null,
             isFocused ? {borderBottomColor: rctshtTheme.colors.primary} : null,
             errorText != null ? styles.inputWrapperError : null,
+            multiline && height > 0 ? {height: height + 8} : null,
           ]}
         >
           {leadingIcon != null ? (
@@ -228,8 +243,9 @@ class TextField extends React.PureComponent<Props, State> {
               ref={forwardedRef}
               onFocus={this.onFocus}
               onBlur={this.onBlur}
-              style={styles.input}
+              style={[styles.input, multiline && height > 0 ? {height, paddingTop: 24} : null]}
               selectionColor={theSelectionColor}
+              onContentSizeChange={multiline ? this.onContentSizeChange : null}
             />
           </View>
           {theTrailingIcon != null ? <View style={styles.trailingIcon}>{theTrailingIcon}</View> : null}
