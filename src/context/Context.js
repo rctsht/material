@@ -1,5 +1,6 @@
 // @flow strict-local
 import * as React from 'react';
+import {MenuProvider} from 'react-native-popup-menu';
 
 import {DialogContext, DialogOverlay} from '../dialog';
 import {GlobalContext, GlobalOverlay} from '../global';
@@ -152,25 +153,27 @@ class Context extends React.PureComponent<Props> {
     const {children, theme} = this.props;
 
     return (
-      // $FlowFixMe
-      <ThemeContext.Provider value={theme}>
-        <GlobalContext.Provider value={this.getGlobalOverlayRef}>
-          <DialogContext.Provider value={this.getDialogOverlayRef}>
-            <SheetContext.Provider value={this.getSheetOverlayRef}>
-              <MenuContext.Provider value={this.getMenuOverlayRef}>
-                <SnackbarContext.Provider value={this.getSnackbarOverlayRef}>
-                  {children}
-                  <SnackbarOverlay ref={this.setSnackbarOverlayRef} />
-                  <MenuOverlay ref={this.setMenuOverlayRef} />
-                  <SheetOverlay ref={this.setSheetOverlayRef} />
-                  <DialogOverlay ref={this.setDialogOverlayRef} />
-                  <GlobalOverlay ref={this.setGlobalOverlayRef} />
-                </SnackbarContext.Provider>
-              </MenuContext.Provider>
-            </SheetContext.Provider>
-          </DialogContext.Provider>
-        </GlobalContext.Provider>
-      </ThemeContext.Provider>
+      <MenuProvider>
+        {/* $FlowFixMe */}
+        <ThemeContext.Provider value={theme}>
+          <GlobalContext.Provider value={this.getGlobalOverlayRef}>
+            <DialogContext.Provider value={this.getDialogOverlayRef}>
+              <SheetContext.Provider value={this.getSheetOverlayRef}>
+                <MenuContext.Provider value={this.getMenuOverlayRef}>
+                  <SnackbarContext.Provider value={this.getSnackbarOverlayRef}>
+                    {children}
+                    <SnackbarOverlay ref={this.setSnackbarOverlayRef} />
+                    <MenuOverlay ref={this.setMenuOverlayRef} />
+                    <SheetOverlay ref={this.setSheetOverlayRef} />
+                    <DialogOverlay ref={this.setDialogOverlayRef} />
+                    <GlobalOverlay ref={this.setGlobalOverlayRef} />
+                  </SnackbarContext.Provider>
+                </MenuContext.Provider>
+              </SheetContext.Provider>
+            </DialogContext.Provider>
+          </GlobalContext.Provider>
+        </ThemeContext.Provider>
+      </MenuProvider>
     );
   }
 }
