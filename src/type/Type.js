@@ -73,8 +73,14 @@ const styles = StyleSheet.create({
   bold: {
     fontWeight: '500',
   },
+  notBold: {
+    fontWeight: 'normal',
+  },
   italic: {
     fontStyle: 'italic',
+  },
+  notItalic: {
+    fontStyle: 'normal',
   },
   strike: {
     textDecorationLine: 'line-through',
@@ -87,6 +93,9 @@ const styles = StyleSheet.create({
   },
   center: {
     textAlign: 'center',
+  },
+  notCenter: {
+    textAlign: 'left',
   },
 });
 
@@ -191,6 +200,9 @@ class Type extends React.PureComponent<Props> {
       underline && !strike ? styles.underline : null,
       strike && underline ? styles.strikeUnderline : null,
       center ? styles.center : null,
+      bold === false ? styles.notBold : null,
+      italic === false ? styles.notItalic : null,
+      center === false ? styles.notCenter : null,
       style,
     ]);
 
