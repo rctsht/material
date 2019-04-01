@@ -31,11 +31,7 @@ class CircleButton extends React.PureComponent<Props> {
   render() {
     const {icon, onPress, rctshtTheme, ...rest} = this.props;
 
-    let background = null;
-
-    if (Platform.OS === 'android') {
-      background = TouchableNativeFeedback.SelectableBackground();
-    }
+    const background = Platform.OS === 'android' ? TouchableNativeFeedback.SelectableBackgroundBorderless() : null;
 
     return (
       <View style={styles.container}>
