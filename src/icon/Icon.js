@@ -45,8 +45,9 @@ class Icon extends React.PureComponent<Props> {
         {...this.props}
         style={[
           styles.noShadow,
-          ...(Array.isArray(style) ? style : [style]),
+          {lineHeight: size},
           halfWidth ? {marginLeft: -size / 4} : null,
+          ...(Array.isArray(style) ? style : [style]),
         ]}
       />
     );
