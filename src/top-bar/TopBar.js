@@ -19,6 +19,8 @@ const styles = StyleSheet.create({
   },
   leftAction: {
     marginLeft: 10,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   leftActionNoButton: {
     alignItems: 'center',
@@ -91,12 +93,17 @@ type RightActionItem = {
 type Props = {
   label: string | React.Node,
   leftIcon: string | React.Node,
+  leftNode?: React.Node,
   onPressLeftIcon: ?() => void,
   rightActions: Array<RightActionItem>,
   rctshtTheme: ThemeProps,
 };
 
 class TopBar extends React.Component<Props> {
+  static defaultProps = {
+    rightActions: [],
+  };
+
   filterRightActionsByShow = (rightAction: RightActionItem) => {
     const {show} = rightAction;
 
@@ -144,7 +151,7 @@ class TopBar extends React.Component<Props> {
   };
 
   render() {
-    const {label, leftIcon, onPressLeftIcon, rctshtTheme, rightActions} = this.props;
+    const {label, leftNode, leftIcon, onPressLeftIcon, rctshtTheme, rightActions} = this.props;
 
     let leftAction =
       typeof leftIcon === 'string' ? <Icon name={leftIcon} size={24} color={rctshtTheme.colors.onPrimary} /> : leftIcon;
@@ -182,20 +189,40 @@ class TopBar extends React.Component<Props> {
 
     return (
       <View style={[styles.container, {backgroundColor: rctshtTheme.colors.primary}]}>
-        {leftAction}
+        {leftNode != null ? leftNode : leftAction}
         <View style={[styles.label, leftAction ? null : styles.labelNoLeftAction]}>
           {typeof label === 'string' ? <Type.H6 style={{color: rctshtTheme.colors.onPrimary}}>{label}</Type.H6> : label}
         </View>
         {rightActions.filter(this.filterRightActionsByShow).map(this.renderRightAction)}
         {ellipsisMenu}
         {/*
-          <View style={{position: 'absolute', top: 0, height: 4, width: 72, backgroundColor: 'black'}} />
-          <View style={{position: 'absolute', top: 4, height: 4, width: 32, backgroundColor: 'white'}} />
+          <View
+            style={{position: 'absolute', top: StatusBar.currentHeight, height: 4, width: 72, backgroundColor: 'black'}}
+          />
+          <View
+            style={{
+              position: 'absolute',
+              top: StatusBar.currentHeight + 4,
+              height: 4,
+              width: 32,
+              backgroundColor: 'white',
+            }}
+          />
           <View style={{position: 'absolute', top: 0, right: 0, height: 56, width: 8, backgroundColor: 'white'}} />
           <View style={{position: 'absolute', top: 0, right: 8, height: 56, width: 8, backgroundColor: 'black'}} />
           <View style={{position: 'absolute', top: 40, right: 28, height: 24, width: 24, backgroundColor: 'white'}} />
           <View style={{position: 'absolute', top: 40, right: 76, height: 24, width: 24, backgroundColor: 'black'}} />
           <View style={{position: 'absolute', top: 40, right: 124, height: 24, width: 24, backgroundColor: 'white'}} />
+          <View
+            style={{
+              position: 'absolute',
+              top: 0,
+              height: StatusBar.currentHeight,
+              left: 0,
+              right: 0,
+              backgroundColor: 'black',
+            }}
+          />
         */}
       </View>
     );
