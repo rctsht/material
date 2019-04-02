@@ -107,10 +107,10 @@ class ListItem extends React.PureComponent<Props, State> {
     if (expanding) {
       expandingTrailingIcon = expanded ? <Icon name="menu-up" /> : <Icon name="menu-down" />;
     }
-
+    // background={background}
     return (
       <View style={divider ? styles.divider : null}>
-        <Touchable onPress={this.onPress} background={background} style={styles.container} pointerEvents="box-only">
+        <Touchable onPress={this.onPress} style={styles.container} pointerEvents="box-only">
           {leadingIcon}
           <View style={styles.label}>
             {isString(label) ? (
