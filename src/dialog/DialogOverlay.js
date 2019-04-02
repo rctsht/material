@@ -9,8 +9,8 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
     bottom: 0,
-    zIndex: 1000,
-    elevation: 100,
+    // zIndex: 1000,
+    // elevation: 100,
   },
 });
 
