@@ -1,6 +1,7 @@
 // @flow strict-local
 import * as React from 'react';
 import {Platform, StyleSheet, TouchableNativeFeedback, View} from 'react-native';
+import type {ViewStyleProp} from 'react-native/Libraries/StyleSheet/StyleSheet';
 
 import {Icon} from '../icon';
 import {type ThemeProps, withTheme} from '../theme';
@@ -18,9 +19,11 @@ const styles = StyleSheet.create({
 });
 
 type Props = {
+  containerStyle: ViewStyleProp,
   icon: React.Node,
   onPress: () => void,
   rctshtTheme: ThemeProps,
+  useForeground: boolean,
 };
 
 class CircleButton extends React.PureComponent<Props> {
@@ -29,13 +32,21 @@ class CircleButton extends React.PureComponent<Props> {
   };
 
   render() {
-    const {icon, onPress, rctshtTheme, ...rest} = this.props;
+    const {icon, onPress, rctshtTheme, containerStyle, useForeground: maybeUseForeground, ...rest} = this.props;
 
     const background = Platform.OS === 'android' ? TouchableNativeFeedback.SelectableBackgroundBorderless() : null;
 
+    const useForeground =
+      Platform.OS === 'android' && TouchableNativeFeedback.canUseNativeForeground() ? maybeUseForeground : false;
+
     return (
-      <View style={styles.container}>
-        <Touchable background={background} style={styles.container} onPress={onPress}>
+      <View style={[styles.container, ...(Array.isArray(containerStyle) ? containerStyle : [containerStyle])]}>
+        <Touchable
+          background={background}
+          style={[styles.container, ...(Array.isArray(containerStyle) ? containerStyle : [containerStyle])]}
+          onPress={onPress}
+          useForeground={useForeground}
+        >
           {/* $FlowFixMe */}
           {icon || <Icon size={24} color={rctshtTheme.colors.primary} {...rest} />}
         </Touchable>
