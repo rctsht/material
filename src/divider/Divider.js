@@ -7,8 +7,8 @@ const styles = StyleSheet.create({
   divider: {
     height: 1,
     width: '100%',
-    paddingLeft: 20,
-    paddingRight: 20,
+    paddingLeft: 16,
+    paddingRight: 16,
     alignItems: 'stretch',
     justifyContent: 'flex-start',
   },
