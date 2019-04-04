@@ -9,16 +9,19 @@ import {Touchable} from '../touchable';
 
 const styles = StyleSheet.create({
   container: {
-    overflow: 'hidden',
     width: 36,
     height: 36,
     borderRadius: 18,
     alignItems: 'center',
     justifyContent: 'center',
   },
+  overflowHidden: {
+    overflow: 'hidden',
+  },
 });
 
 type Props = {
+  allowOverflow: boolean,
   containerStyle: ViewStyleProp,
   icon: React.Node,
   onPress: () => void,
@@ -29,10 +32,19 @@ type Props = {
 class CircleButton extends React.PureComponent<Props> {
   static defaultProps = {
     icon: null,
+    allowOverflow: false,
   };
 
   render() {
-    const {icon, onPress, rctshtTheme, containerStyle, useForeground: maybeUseForeground, ...rest} = this.props;
+    const {
+      allowOverflow,
+      icon,
+      onPress,
+      rctshtTheme,
+      containerStyle,
+      useForeground: maybeUseForeground,
+      ...rest
+    } = this.props;
 
     const background = Platform.OS === 'android' ? TouchableNativeFeedback.SelectableBackgroundBorderless() : null;
 
@@ -40,10 +52,20 @@ class CircleButton extends React.PureComponent<Props> {
       Platform.OS === 'android' && TouchableNativeFeedback.canUseNativeForeground() ? maybeUseForeground : false;
 
     return (
-      <View style={[styles.container, ...(Array.isArray(containerStyle) ? containerStyle : [containerStyle])]}>
+      <View
+        style={[
+          styles.container,
+          allowOverflow ? null : styles.overflowHidden,
+          ...(Array.isArray(containerStyle) ? containerStyle : [containerStyle]),
+        ]}
+      >
         <Touchable
           background={background}
-          style={[styles.container, ...(Array.isArray(containerStyle) ? containerStyle : [containerStyle])]}
+          style={[
+            styles.container,
+            allowOverflow ? null : styles.overflowHidden,
+            ...(Array.isArray(containerStyle) ? containerStyle : [containerStyle]),
+          ]}
           onPress={onPress}
           useForeground={useForeground}
         >
