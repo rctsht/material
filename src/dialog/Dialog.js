@@ -14,7 +14,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   containerFullScreen: {
-    elevation: 24,
     flex: 1,
     alignItems: 'stretch',
     justifyContent: 'center',
@@ -63,6 +62,7 @@ const styles = StyleSheet.create({
 });
 
 type Props = {
+  animationOrigin: 'topLeft' | 'topRight' | 'bottomLeft' | 'bottomRight',
   children: React.Node,
   getOverlayRef: ((DialogOverlay) => void) => void,
   id: string,
@@ -83,6 +83,7 @@ type State = {
 
 class Dialog extends React.PureComponent<Props, State> {
   static defaultProps = {
+    animationOrigin: 'bottomRight',
     children: null,
     isVisible: false,
     maxWidth: null,
@@ -170,6 +171,8 @@ class Dialog extends React.PureComponent<Props, State> {
   };
 
   startOpenAnimation() {
+    const {fullScreen} = this.props;
+
     if (this.animation) {
       this.animation.stop();
     }
@@ -182,7 +185,7 @@ class Dialog extends React.PureComponent<Props, State> {
         const {rctshtTheme} = this.props;
         this.animation = Animated.timing(this.animationProgress, {
           toValue: 1,
-          duration: rctshtTheme.animations.dialog.in,
+          duration: fullScreen ? rctshtTheme.animations.large.in : rctshtTheme.animations.dialog.in,
           easing: rctshtTheme.animations.decelerateEasing,
           useNativeDriver: true,
         }).start(() => {
@@ -197,13 +200,15 @@ class Dialog extends React.PureComponent<Props, State> {
   closing: boolean;
 
   startCloseAnimation() {
+    const {fullScreen} = this.props;
+
     if (this.animation) {
       this.animation.stop();
     }
     const {rctshtTheme} = this.props;
     this.animation = Animated.timing(this.animationProgress, {
-      toValue: 0,
-      duration: rctshtTheme.animations.dialog.out,
+      toValue: 0.1,
+      duration: fullScreen ? rctshtTheme.animations.large.out : rctshtTheme.animations.dialog.out,
       easing: rctshtTheme.animations.accelerateEasing,
       useNativeDriver: true,
     }).start(() => {
@@ -230,6 +235,7 @@ class Dialog extends React.PureComponent<Props, State> {
       noScrollView,
       scrollViewProps,
       isVisible,
+      animationOrigin,
     } = this.props;
     const {visible} = this.state;
 
@@ -239,20 +245,29 @@ class Dialog extends React.PureComponent<Props, State> {
 
     let translateAnimationX;
     let translateAnimationY;
+    let opacityAnimation;
 
     if (fullScreen) {
       const {width, height} = Dimensions.get('window');
 
+      const xStart = animationOrigin.includes('Left') ? -width : width;
+      const yStart = animationOrigin.includes('top') ? -height : height;
+
       translateAnimationX = isVisible
         ? this.animationProgress.interpolate({
-            inputRange: [0, 1],
-            outputRange: [width, 0],
+            inputRange: [0, 0.5, 1],
+            outputRange: [xStart, xStart, 0],
           })
         : 0;
 
       translateAnimationY = this.animationProgress.interpolate({
-        inputRange: [0, 1],
-        outputRange: [height, 0],
+        inputRange: [0, 0.5, 1],
+        outputRange: [yStart, yStart, 0],
+      });
+
+      opacityAnimation = this.animationProgress.interpolate({
+        inputRange: [0, 0.25, 1],
+        outputRange: [0, 1, 1],
       });
     }
 
@@ -276,7 +291,15 @@ class Dialog extends React.PureComponent<Props, State> {
           </TouchableWithoutFeedback>
         )}
         {fullScreen ? (
-          <View style={styles.containerFullScreen}>
+          <Animated.View
+            needsOffscreenAlphaCompositing
+            style={[
+              styles.containerFullScreen,
+              {
+                opacity: opacityAnimation,
+              },
+            ]}
+          >
             {renderToolbar ? renderToolbar() : null}
             <Animated.View
               key="content"
@@ -291,7 +314,6 @@ class Dialog extends React.PureComponent<Props, State> {
                       translateY: translateAnimationY,
                     },
                   ],
-                  opacity: this.animationProgress,
                 },
               ]}
             >
@@ -307,7 +329,7 @@ class Dialog extends React.PureComponent<Props, State> {
                 </ScrollView>
               )}
             </Animated.View>
-          </View>
+          </Animated.View>
         ) : (
           <Animated.View
             style={[
