@@ -17,7 +17,7 @@ const styles = StyleSheet.create({
     paddingRight: 0,
   },
   dividerLine: {
-    borderTopWidth: 1,
+    borderTopWidth: StyleSheet.hairlineWidth,
   },
 });
 
@@ -30,7 +30,7 @@ type Props = {
 class Divider extends React.PureComponent<Props> {
   static defaultProps = {
     fullWidth: false,
-    color: '#0000001e',
+    color: '#e0e0e0',
     style: null,
   };
 
