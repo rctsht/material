@@ -83,7 +83,8 @@ const menuOptionStyles = {
 
 type RightActionItem = {
   disabled?: boolean,
-  icon?: string | React.Node,
+  leadingIcon?: string | React.Node,
+  trailingIcon?: string | React.Node,
   key: string,
   label: string,
   onPress: () => void,
@@ -117,35 +118,53 @@ class TopBar extends React.Component<Props> {
   };
 
   renderEllipsisMenuAction = (ellipsisMenuAction: RightActionItem) => {
-    const {disabled, icon, key, label, onPress} = ellipsisMenuAction;
+    const {disabled, leadingIcon, trailingIcon, key, label, onPress} = ellipsisMenuAction;
     const {rctshtTheme} = this.props;
 
-    let menuOptionIcon = null;
+    let leadingMenuOptionIcon = null;
+    let trailingMenuOptionIcon = null;
 
-    if (icon != null) {
-      menuOptionIcon = (
+    if (leadingIcon != null) {
+      leadingMenuOptionIcon = (
         <View style={styles.iconWrapper}>
-          {typeof icon === 'string' ? <Icon name={icon} size={24} color={rctshtTheme.colors.onPrimary} /> : icon}
+          {typeof leadingIcon === 'string' ? (
+            <Icon name={leadingIcon} size={24} color={rctshtTheme.colors.onPrimary} />
+          ) : (
+            leadingIcon
+          )}
+        </View>
+      );
+    }
+
+    if (trailingIcon != null) {
+      trailingMenuOptionIcon = (
+        <View style={styles.iconWrapper}>
+          {typeof trailingIcon === 'string' ? (
+            <Icon name={trailingIcon} size={24} color={rctshtTheme.colors.onPrimary} />
+          ) : (
+            trailingIcon
+          )}
         </View>
       );
     }
 
     return (
       <MenuOption key={key} customStyles={menuOptionStyles} onSelect={onPress} disabled={disabled}>
-        {menuOptionIcon}
+        {leadingMenuOptionIcon}
         <Type.Body1 style={[styles.menuOptionText, disabled ? styles.menuOptionTextDisabled : null]}>
           {label}
         </Type.Body1>
+        {trailingMenuOptionIcon}
       </MenuOption>
     );
   };
 
   renderRightAction = (rightAction: RightActionItem) => {
-    const {icon, key, onPress} = rightAction;
+    const {leadingIcon, key, onPress} = rightAction;
 
     return (
       <View style={styles.rightAction} key={key}>
-        <CircleButton icon={icon} onPress={onPress} />
+        <CircleButton allowOverflow icon={leadingIcon} onPress={onPress} />
       </View>
     );
   };
@@ -185,7 +204,9 @@ class TopBar extends React.Component<Props> {
           {ellipsisMenuActions.map(this.renderEllipsisMenuAction)}
         </MenuOptions>
       </Menu>
-    ) : null;
+    ) : (
+      <View style={{width: 8}} />
+    );
 
     return (
       <View style={[styles.container, {backgroundColor: rctshtTheme.colors.primary}]}>
@@ -229,4 +250,5 @@ class TopBar extends React.Component<Props> {
   }
 }
 
+export type {RightActionItem};
 export default withTheme(TopBar);
