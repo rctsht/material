@@ -3,12 +3,9 @@ import * as React from 'react';
 import {StyleSheet, View} from 'react-native';
 
 const styles = {
-  container: {
-    marginVertical: 4,
-  },
   divider: {
     borderTopWidth: StyleSheet.hairlineWidth,
-    borderTopColor: 'rgba(0,0,0,0.54)',
+    borderTopColor: '#e0e0e0',
   },
 };
 
@@ -27,7 +24,7 @@ class ListItemGroup extends React.PureComponent<Props> {
     const propsToApply = {divider, ...rest};
 
     return (
-      <View style={[styles.container, divider ? styles.divider : null]}>
+      <View style={divider ? styles.divider : null}>
         {React.Children.map(children, child => (child ? React.cloneElement(child, propsToApply) : null))}
       </View>
     );

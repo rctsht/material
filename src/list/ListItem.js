@@ -1,8 +1,7 @@
 // @flow strict-local
 import {isFunction, isString} from 'lodash-es';
 import * as React from 'react';
-import {LayoutAnimation, Platform, StyleSheet, TouchableNativeFeedback, View} from 'react-native';
-import color from 'tinycolor2';
+import {LayoutAnimation, StyleSheet, View} from 'react-native';
 
 import {Icon} from '../icon';
 import {type ThemeProps, withTheme} from '../theme';
@@ -26,7 +25,7 @@ const styles = StyleSheet.create({
   },
   divider: {
     borderBottomWidth: StyleSheet.hairlineWidth,
-    borderBottomColor: 'rgba(0,0,0,0.54)',
+    borderBottomColor: '#e0e0e0',
   },
 });
 
@@ -90,24 +89,15 @@ class ListItem extends React.PureComponent<Props, State> {
   };
 
   render() {
-    const {children, divider, label, leadingIcon, expanding, rctshtTheme, trailingIcon} = this.props;
+    const {children, divider, label, leadingIcon, expanding, trailingIcon} = this.props;
     const {expanded} = this.state;
-
-    let background;
-
-    if (Platform.Version >= 21) {
-      const rippleColor = color(rctshtTheme.colors.primary);
-      rippleColor.setAlpha(0.4);
-      // eslint-disable-next-line babel/new-cap
-      background = TouchableNativeFeedback.Ripple(rippleColor.toHex8String(), false);
-    }
 
     let expandingTrailingIcon = null;
 
     if (expanding) {
       expandingTrailingIcon = expanded ? <Icon name="menu-up" /> : <Icon name="menu-down" />;
     }
-    // background={background}
+
     return (
       <View style={divider ? styles.divider : null}>
         <Touchable onPress={this.onPress} style={styles.container} pointerEvents="box-only">
