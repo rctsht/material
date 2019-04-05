@@ -62,7 +62,7 @@ const styles = StyleSheet.create({
 });
 
 type Props = {
-  animationOrigin: 'topLeft' | 'topRight' | 'bottomLeft' | 'bottomRight',
+  animationOrigin: 'top' | 'bottom' | 'left' | 'right' | 'topleft' | 'topright' | 'bottomleft' | 'bottomright',
   children: React.Node,
   getOverlayRef: ((DialogOverlay) => void) => void,
   id: string,
@@ -83,7 +83,7 @@ type State = {
 
 class Dialog extends React.PureComponent<Props, State> {
   static defaultProps = {
-    animationOrigin: 'bottomRight',
+    animationOrigin: 'bottomright',
     children: null,
     isVisible: false,
     maxWidth: null,
@@ -250,8 +250,20 @@ class Dialog extends React.PureComponent<Props, State> {
     if (fullScreen) {
       const {width, height} = Dimensions.get('window');
 
-      const xStart = animationOrigin.includes('Left') ? -width : width;
-      const yStart = animationOrigin.includes('top') ? -height : height;
+      let xStart = 0;
+      let yStart = 0;
+
+      if (animationOrigin.includes('top')) {
+        yStart = -height;
+      } else if (animationOrigin.includes('bottom')) {
+        yStart = height;
+      }
+
+      if (animationOrigin.includes('left')) {
+        xStart = -width;
+      } else if (animationOrigin.includes('right')) {
+        xStart = width;
+      }
 
       translateAnimationX = isVisible
         ? this.animationProgress.interpolate({
