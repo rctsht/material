@@ -10,8 +10,10 @@ import {Touchable} from '../touchable';
 import {Type, typePresets} from '../type';
 
 const styles = StyleSheet.create({
+  container: {
+    overflow: 'hidden',
+  },
   button: {
-    minWidth: 64,
     height: 36,
     paddingLeft: 16,
     paddingRight: 16,
@@ -20,9 +22,11 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   containedButton: {
+    minWidth: 64,
     borderRadius: 3,
   },
   outlinedButton: {
+    minWidth: 64,
     borderRadius: 3,
     borderWidth: 1,
   },
@@ -127,21 +131,22 @@ class Button extends React.PureComponent<ButtonProps> {
     // eslint-disable-next-line babel/new-cap
     const background = TouchableNativeFeedback.SelectableBackground();
 
+    const touchableStyles = StyleSheet.flatten([
+      styles.button,
+      additionalStyles,
+      iconNode != null ? styles.iconButton : null,
+      ...(Array.isArray(style) ? style : [style]),
+    ]);
+
+    const {borderRadius, elevation} = touchableStyles;
+
     return (
-      <Touchable
-        background={background}
-        disabled={disabled}
-        onPress={onPress}
-        style={[
-          styles.button,
-          additionalStyles,
-          iconNode != null ? styles.iconButton : null,
-          ...(Array.isArray(style) ? style : [style]),
-        ]}
-      >
-        {iconNode != null ? <View style={styles.icon}>{iconNode}</View> : null}
-        {labelNode != null ? <View style={styles.label}>{labelNode}</View> : null}
-      </Touchable>
+      <View style={[styles.container, {borderRadius, elevation}]}>
+        <Touchable background={background} disabled={disabled} onPress={onPress} style={touchableStyles}>
+          {iconNode != null ? <View style={styles.icon}>{iconNode}</View> : null}
+          {labelNode != null ? <View style={styles.label}>{labelNode}</View> : null}
+        </Touchable>
+      </View>
     );
   }
 }
