@@ -3,6 +3,8 @@ import * as React from 'react';
 import {PixelRatio, StyleSheet, Text} from 'react-native';
 import {type TextStyleProp} from 'react-native/Libraries/StyleSheet/StyleSheet';
 
+import {type ThemeProps, withTheme} from '../theme';
+
 const styles = StyleSheet.create({
   defaults: {
     fontSize: 14,
@@ -125,6 +127,7 @@ type Props = {
   strike?: boolean,
   underline?: boolean,
   center?: boolean,
+  rctshtTheme: ThemeProps,
 };
 
 class Type extends React.PureComponent<Props> {
@@ -135,63 +138,90 @@ class Type extends React.PureComponent<Props> {
     style: null,
   };
 
-  static H1 = class H1 extends Type {
-    static defaultProps = {...Type.defaultProps, preset: typePresets.h1};
-  };
+  static H1 = withTheme(
+    class H1 extends Type {
+      static defaultProps = {...Type.defaultProps, preset: typePresets.h1};
+    },
+  );
 
-  static H2 = class H2 extends Type {
-    static defaultProps = {...Type.defaultProps, preset: typePresets.h2};
-  };
+  static H2 = withTheme(
+    class H2 extends Type {
+      static defaultProps = {...Type.defaultProps, preset: typePresets.h2};
+    },
+  );
 
-  static H3 = class H3 extends Type {
-    static defaultProps = {...Type.defaultProps, preset: typePresets.h3};
-  };
+  static H3 = withTheme(
+    class H3 extends Type {
+      static defaultProps = {...Type.defaultProps, preset: typePresets.h3};
+    },
+  );
 
-  static H4 = class H4 extends Type {
-    static defaultProps = {...Type.defaultProps, preset: typePresets.h4};
-  };
+  static H4 = withTheme(
+    class H4 extends Type {
+      static defaultProps = {...Type.defaultProps, preset: typePresets.h4};
+    },
+  );
 
-  static H5 = class H5 extends Type {
-    static defaultProps = {...Type.defaultProps, preset: typePresets.h5};
-  };
+  static H5 = withTheme(
+    class H5 extends Type {
+      static defaultProps = {...Type.defaultProps, preset: typePresets.h5};
+    },
+  );
 
-  static H6 = class H6 extends Type {
-    static defaultProps = {...Type.defaultProps, preset: typePresets.h6};
-  };
+  static H6 = withTheme(
+    class H6 extends Type {
+      static defaultProps = {...Type.defaultProps, preset: typePresets.h6};
+    },
+  );
 
-  static Subtitle1 = class Subtitle1 extends Type {
-    static defaultProps = {...Type.defaultProps, preset: typePresets.subtitle1};
-  };
+  static Subtitle1 = withTheme(
+    class Subtitle1 extends Type {
+      static defaultProps = {...Type.defaultProps, preset: typePresets.subtitle1};
+    },
+  );
 
-  static Subtitle2 = class Subtitle2 extends Type {
-    static defaultProps = {...Type.defaultProps, preset: typePresets.subtitle2};
-  };
+  static Subtitle2 = withTheme(
+    class Subtitle2 extends Type {
+      static defaultProps = {...Type.defaultProps, preset: typePresets.subtitle2};
+    },
+  );
 
-  static Body1 = class Body1 extends Type {
-    static defaultProps = {...Type.defaultProps, preset: typePresets.body1};
-  };
+  static Body1 = withTheme(
+    class Body1 extends Type {
+      static defaultProps = {...Type.defaultProps, preset: typePresets.body1};
+    },
+  );
 
-  static Body2 = class Body2 extends Type {
-    static defaultProps = {...Type.defaultProps, preset: typePresets.body2};
-  };
+  static Body2 = withTheme(
+    class Body2 extends Type {
+      static defaultProps = {...Type.defaultProps, preset: typePresets.body2};
+    },
+  );
 
-  static Button = class Button extends Type {
-    static defaultProps = {...Type.defaultProps, preset: typePresets.button};
-  };
+  static Button = withTheme(
+    class Button extends Type {
+      static defaultProps = {...Type.defaultProps, preset: typePresets.button};
+    },
+  );
 
-  static Caption = class Caption extends Type {
-    static defaultProps = {...Type.defaultProps, preset: typePresets.caption};
-  };
+  static Caption = withTheme(
+    class Caption extends Type {
+      static defaultProps = {...Type.defaultProps, preset: typePresets.caption};
+    },
+  );
 
-  static Overline = class Overline extends Type {
-    static defaultProps = {...Type.defaultProps, preset: typePresets.overline};
-  };
+  static Overline = withTheme(
+    class Overline extends Type {
+      static defaultProps = {...Type.defaultProps, preset: typePresets.overline};
+    },
+  );
 
   render() {
-    const {alignToBaseline, children, preset, style, bold, italic, strike, underline, center} = this.props;
+    const {alignToBaseline, children, preset, style, bold, italic, strike, underline, center, rctshtTheme} = this.props;
 
     const textStyle = StyleSheet.flatten([
       styles.defaults,
+      {color: rctshtTheme.colors.onBackground},
       !preset && (!style || (style.fontSize == null && style.lineHeight == null)) ? styles.defaultLineHeight : null,
       preset || null,
       bold ? styles.bold : null,
@@ -230,4 +260,6 @@ class Type extends React.PureComponent<Props> {
   }
 }
 
-export {Type, typePresets};
+const TypeWithTheme = withTheme(Type);
+
+export {TypeWithTheme as Type, typePresets};
