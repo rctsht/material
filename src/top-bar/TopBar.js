@@ -2,6 +2,7 @@
 import * as React from 'react';
 import {Platform, StatusBar, StyleSheet, TouchableNativeFeedback, View} from 'react-native';
 import {Menu, MenuOptions, MenuOption, MenuTrigger} from 'react-native-popup-menu';
+import type {ViewStyleProp} from 'react-native/Libraries/StyleSheet/StyleSheet';
 
 import {CircleButton} from '../button';
 import {Icon} from '../icon';
@@ -13,7 +14,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    backgroundColor: 'red',
     paddingTop: StatusBar.currentHeight,
     minHeight: 56 + StatusBar.currentHeight,
   },
@@ -98,6 +98,7 @@ type Props = {
   onPressLeftIcon: ?() => void,
   rightActions: Array<RightActionItem>,
   rctshtTheme: ThemeProps,
+  style: ViewStyleProp,
 };
 
 class TopBar extends React.Component<Props> {
@@ -170,7 +171,7 @@ class TopBar extends React.Component<Props> {
   };
 
   render() {
-    const {label, leftNode, leftIcon, onPressLeftIcon, rctshtTheme, rightActions} = this.props;
+    const {label, leftNode, leftIcon, onPressLeftIcon, rctshtTheme, rightActions, style} = this.props;
 
     let leftAction =
       typeof leftIcon === 'string' ? <Icon name={leftIcon} size={24} color={rctshtTheme.colors.onPrimary} /> : leftIcon;
@@ -209,7 +210,13 @@ class TopBar extends React.Component<Props> {
     );
 
     return (
-      <View style={[styles.container, {backgroundColor: rctshtTheme.colors.primary}]}>
+      <View
+        style={[
+          styles.container,
+          {backgroundColor: rctshtTheme.colors.primary},
+          ...(Array.isArray(style) ? style : [style]),
+        ]}
+      >
         {leftNode != null ? leftNode : leftAction}
         <View style={[styles.label, leftAction ? null : styles.labelNoLeftAction]}>
           {typeof label === 'string' ? <Type.H6 style={{color: rctshtTheme.colors.onPrimary}}>{label}</Type.H6> : label}
