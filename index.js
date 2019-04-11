@@ -10,6 +10,7 @@ export * from './src/context';
 export * from './src/device';
 export * from './src/dialog';
 export * from './src/divider';
+export * from './src/dropdown';
 export * from './src/global';
 export * from './src/icon';
 export * from './src/image-background';
