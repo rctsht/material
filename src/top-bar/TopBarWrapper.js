@@ -7,17 +7,25 @@ const styles = StyleSheet.create({
     elevation: 4,
     backgroundColor: '#ffffff',
   },
+  noElevation: {
+    elevation: 0,
+  },
 });
 
 type Props = {
   children: React.Node,
+  elevation: boolean,
 };
 
 // eslint-disable-next-line react/prefer-stateless-function
 class TopBarWrapper extends React.Component<Props> {
+  static defaultProps = {
+    elevation: true,
+  };
+
   render() {
-    const {children} = this.props;
-    return <View style={styles.container}>{children}</View>;
+    const {children, elevation} = this.props;
+    return <View style={[styles.container, elevation === false ? styles.noElevation : null]}>{children}</View>;
   }
 }
 
