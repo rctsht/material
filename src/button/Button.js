@@ -141,7 +141,10 @@ class Button extends React.PureComponent<ButtonProps> {
     const {borderRadius, elevation} = touchableStyles;
 
     return (
-      <View style={[styles.container, {borderRadius, elevation}]}>
+      <View
+        style={[styles.container, {borderRadius, elevation}, disabled ? {opacity: 0.25} : null]}
+        needsOffscreenAlphaCompositing
+      >
         <Touchable background={background} disabled={disabled} onPress={onPress} style={touchableStyles}>
           {iconNode != null ? <View style={styles.icon}>{iconNode}</View> : null}
           {labelNode != null ? <View style={styles.label}>{labelNode}</View> : null}
