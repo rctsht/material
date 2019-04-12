@@ -123,6 +123,11 @@ class Picker extends React.PureComponent<Props> {
       // $FlowFixMe
       (isString(trailingIcon) ? <Icon name={trailingIcon} size={24} color={trailingIconColor} /> : trailingIcon);
 
+    let text = required && helperText == null ? '* Required' : helperText || '';
+    if (errorText != null) {
+      text = errorText;
+    }
+
     // {/* TODO Use <Type /> */}
     return (
       <View style={styles.container}>
@@ -158,9 +163,7 @@ class Picker extends React.PureComponent<Props> {
           </View>
           {theTrailingIcon != null ? <View style={styles.trailingIcon}>{theTrailingIcon}</View> : null}
         </View>
-        <Text style={[styles.helperText, errorText != null ? styles.errorText : null]}>
-          {errorText != null || (required && helperText == null ? '* Required' : helperText || '')}
-        </Text>
+        <Text style={[styles.helperText, errorText != null ? styles.errorText : null]}>{text}</Text>
       </View>
     );
   }
