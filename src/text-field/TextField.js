@@ -207,6 +207,11 @@ class TextField extends React.PureComponent<Props, State> {
 
     const theSelectionColor = errorText != null ? '#b00020' : selectionColor;
 
+    let text = required && helperText == null ? '* Required' : helperText || '';
+    if (errorText != null) {
+      text = errorText;
+    }
+
     // {/* TODO Use <Type /> */}
     return (
       <View style={styles.container}>
@@ -250,9 +255,7 @@ class TextField extends React.PureComponent<Props, State> {
           </View>
           {theTrailingIcon != null ? <View style={styles.trailingIcon}>{theTrailingIcon}</View> : null}
         </View>
-        <Text style={[styles.helperText, errorText != null ? styles.errorText : null]}>
-          {errorText != null || (required && helperText == null ? '* Required' : helperText || '')}
-        </Text>
+        <Text style={[styles.helperText, errorText != null ? styles.errorText : null]}>{text}</Text>
       </View>
     );
   }
