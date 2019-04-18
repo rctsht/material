@@ -99,6 +99,12 @@ const styles = StyleSheet.create({
   notCenter: {
     textAlign: 'left',
   },
+  right: {
+    textAlign: 'right',
+  },
+  notRight: {
+    textAlign: 'left',
+  },
 });
 
 const typePresets = {
@@ -127,6 +133,7 @@ type Props = {
   strike?: boolean,
   underline?: boolean,
   center?: boolean,
+  right?: boolean,
   rctshtTheme: ThemeProps,
 };
 
@@ -217,7 +224,19 @@ class Type extends React.PureComponent<Props> {
   );
 
   render() {
-    const {alignToBaseline, children, preset, style, bold, italic, strike, underline, center, rctshtTheme} = this.props;
+    const {
+      alignToBaseline,
+      children,
+      preset,
+      style,
+      bold,
+      italic,
+      strike,
+      underline,
+      center,
+      right,
+      rctshtTheme,
+    } = this.props;
 
     const textStyle = StyleSheet.flatten([
       styles.defaults,
@@ -230,9 +249,11 @@ class Type extends React.PureComponent<Props> {
       underline && !strike ? styles.underline : null,
       strike && underline ? styles.strikeUnderline : null,
       center ? styles.center : null,
+      right ? styles.right : null,
       bold === false ? styles.notBold : null,
       italic === false ? styles.notItalic : null,
       center === false ? styles.notCenter : null,
+      right === false ? styles.notRight : null,
       style,
     ]);
 
