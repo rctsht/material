@@ -1,11 +1,12 @@
 // @flow strict-local
 import {isFunction, isString} from 'lodash-es';
 import * as React from 'react';
-import {LayoutAnimation, Platform, StyleSheet, Text, TouchableNativeFeedback, View} from 'react-native';
+import {LayoutAnimation, Platform, StyleSheet, TouchableNativeFeedback, View} from 'react-native';
 import color from 'tinycolor2';
 
 import {type ThemeProps, withTheme} from '../theme';
 import {Touchable} from '../touchable';
+import {Type} from '../type';
 
 import Checkbox from './Checkbox';
 
@@ -19,6 +20,9 @@ const styles = StyleSheet.create({
   },
   checkbox: {
     marginRight: 32,
+  },
+  text: {
+    flex: 1,
   },
 });
 
@@ -68,7 +72,14 @@ class CheckboxListItem extends React.PureComponent<Props> {
       <Touchable onPress={this.onPress} background={background}>
         <View style={styles.container}>
           <Checkbox selected={selected} style={styles.checkbox} />
-          {isString(label) ? <Text numberOfLines={1}>{label}</Text> : label}
+          {/* $FlowFixMe */}
+          {isString(label) ? (
+            <Type.Body1 numberOfLines={2} style={styles.text}>
+              {label}
+            </Type.Body1>
+          ) : (
+            label
+          )}
         </View>
       </Touchable>
     );
