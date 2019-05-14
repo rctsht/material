@@ -59,7 +59,7 @@ const types = {
   TOGGLE: 'TOGGLE',
 };
 
-export type ButtonProps = {
+type Props = {
   backgroundColor?: string,
   borderColor?: string,
   disabled?: boolean,
@@ -73,10 +73,25 @@ export type ButtonProps = {
   style: ViewStyleProp,
 };
 
-class Button extends React.PureComponent<ButtonProps> {
+type DefaultProps = {
+  backgroundColor?: string,
+  borderColor?: string,
+  disabled?: boolean,
+  icon?: string | React.Node,
+  iconColor?: string,
+  label?: string | React.Node,
+  labelColor?: string,
+  onPress: ?() => void,
+  type?: $Values<typeof types>,
+  style: ViewStyleProp,
+};
+
+export type ButtonProps = $Diff<React.Config<Props, DefaultProps>, {rctshtTheme: ThemeProps | void}>;
+
+class Button extends React.PureComponent<Props> {
   static types = types;
 
-  static defaultProps = {
+  static defaultProps: DefaultProps = {
     backgroundColor: undefined,
     borderColor: undefined,
     disabled: false,
@@ -85,6 +100,7 @@ class Button extends React.PureComponent<ButtonProps> {
     label: null,
     labelColor: undefined,
     onPress: null,
+    style: null,
     type: types.TEXT,
   };
 
@@ -154,4 +170,4 @@ class Button extends React.PureComponent<ButtonProps> {
   }
 }
 
-export default withTheme(Button);
+export default withTheme<React.Config<Props, DefaultProps>, Button>(Button);
