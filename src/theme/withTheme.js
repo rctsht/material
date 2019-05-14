@@ -12,7 +12,7 @@ type Props<Instance> = {
 function withTheme<Config: {}, Instance>(
   Component: React.AbstractComponent<Config, Instance>,
 ): React.AbstractComponent<$Diff<Config, {rctshtTheme: ThemeProps | void}>, Instance> {
-  class ThemedComponent extends React.PureComponent<Config & Props<Instance>> {
+  class ThemedComponent extends React.PureComponent<$Diff<Config, {rctshtTheme: ThemeProps | void}> & Props<Instance>> {
     render() {
       const {forwardedRef, ...rest} = this.props;
 
