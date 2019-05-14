@@ -55,7 +55,7 @@ class ListItem extends React.PureComponent<Props, State> {
     trailingIcon: null,
   };
 
-  constructor(props) {
+  constructor(props: Props) {
     super(props);
 
     const {initialExpanded} = props;
