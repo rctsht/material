@@ -107,6 +107,10 @@ class Dialog extends React.PureComponent<Props, State> {
 
   animationProgress = new Animated.Value(0.1);
 
+  animation: ?CompositeAnimation;
+
+  closing: boolean;
+
   constructor(props: Props) {
     super(props);
 
@@ -194,10 +198,6 @@ class Dialog extends React.PureComponent<Props, State> {
       },
     );
   }
-
-  animation: ?CompositeAnimation;
-
-  closing: boolean;
 
   startCloseAnimation() {
     const {fullScreen} = this.props;
