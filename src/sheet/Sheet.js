@@ -114,8 +114,55 @@ class Sheet extends React.PureComponent<Props, State> {
 
   scrollView = null;
 
-  // Must be before panResponder declaration
-  // eslint-disable-next-line react/sort-comp
+  constructor(props: Props) {
+    super(props);
+
+    const {initialIsVisible, type} = props;
+
+    const {width, height} = Dimensions.get('window');
+
+    let positionX = 0;
+    let positionY = 0;
+
+    if (!initialIsVisible) {
+      if (type === types.LEFT) {
+        positionX = deviceIsPhone ? -width : -320;
+      } else if (type === types.RIGHT) {
+        positionX = deviceIsPhone ? width : 320;
+      }
+    }
+
+    if (!initialIsVisible) {
+      if (type === types.BOTTOM) {
+        positionY = height / 2;
+      }
+    }
+
+    this.positionX = new Animated.Value(positionX);
+
+    this.positionY = new Animated.Value(positionY);
+
+    this.state = {
+      isVisible: initialIsVisible,
+    };
+  }
+
+  componentDidMount() {
+    const {isVisible} = this.state;
+
+    if (isVisible) {
+      BackHandler.addEventListener('hardwareBackPress', this.onBackPress);
+    }
+  }
+
+  componentWillUnmount() {
+    BackHandler.removeEventListener('hardwareBackPress', this.onBackPress);
+
+    if (this.animation) {
+      this.animation.stop();
+    }
+  }
+
   onReleaseOrTerminate = (event: PressEvent, gestureState: GestureState) => {
     const {width, height} = Dimensions.get('window');
     const {type, rctshtTheme} = this.props;
@@ -225,6 +272,8 @@ class Sheet extends React.PureComponent<Props, State> {
     }
   };
 
+  // Must be after onReleaseOrTerminate declaration
+  // eslint-disable-next-line react/sort-comp
   panResponder = PanResponder.create({
     // Ask to be the responder:
     onStartShouldSetPanResponder: () => false,
@@ -252,11 +301,15 @@ class Sheet extends React.PureComponent<Props, State> {
     onStartShouldSetPanResponder: evt => {
       const {type} = this.props;
       const {width} = Dimensions.get('window');
-      return type === types.LEFT
-        ? evt.nativeEvent.pageX < 16
-        : type === types.RIGHT
-        ? evt.nativeEvent.pageX > width - 16
-        : false;
+
+      if (type === types.LEFT) {
+        return evt.nativeEvent.pageX < 16;
+      }
+      if (type === types.RIGHT) {
+        return evt.nativeEvent.pageX > width - 16;
+      }
+
+      return false;
     },
     onStartShouldSetResponderCapture: () => false,
     onMoveShouldSetPanResponder: () => false,
@@ -267,20 +320,21 @@ class Sheet extends React.PureComponent<Props, State> {
       const {width, height} = Dimensions.get('window');
       const {type} = this.props;
 
+      let dx = 0;
+
+      if (type === types.LEFT) {
+        dx = (deviceIsPhone ? -width : -320) + gestureState.dx;
+      } else if (type === types.RIGHT) {
+        dx = (deviceIsPhone ? width : 320) + gestureState.dx;
+      }
+
       Animated.event([
         {
           dx: type === types.BOTTOM ? null : this.positionX,
           dy: type === types.BOTTOM ? this.positionY : null,
         },
       ])({
-        dx:
-          type === types.LEFT
-            ? deviceIsPhone
-              ? -width
-              : -320 + gestureState.dx
-            : type === types.RIGHT
-            ? (deviceIsPhone ? width : 320) + gestureState.dx
-            : 0,
+        dx,
         dy: type === types.BOTTOM ? height / 2 + gestureState.dy : 0,
       });
     },
@@ -509,50 +563,6 @@ class Sheet extends React.PureComponent<Props, State> {
     onShouldBlockNativeResponder: () => true,
   });
 
-  constructor(props: Props) {
-    super(props);
-
-    const {initialIsVisible, type} = props;
-
-    const {width, height} = Dimensions.get('window');
-
-    this.positionX = new Animated.Value(
-      initialIsVisible
-        ? 0
-        : type === types.LEFT
-        ? deviceIsPhone
-          ? -width
-          : -320
-        : type === types.RIGHT
-        ? deviceIsPhone
-          ? width
-          : 320
-        : 0,
-    );
-
-    this.positionY = new Animated.Value(initialIsVisible ? 0 : type === types.BOTTOM ? height / 2 : 0);
-
-    this.state = {
-      isVisible: initialIsVisible,
-    };
-  }
-
-  componentDidMount() {
-    const {isVisible} = this.state;
-
-    if (isVisible) {
-      BackHandler.addEventListener('hardwareBackPress', this.onBackPress);
-    }
-  }
-
-  componentWillUnmount() {
-    BackHandler.removeEventListener('hardwareBackPress', this.onBackPress);
-
-    if (this.animation) {
-      this.animation.stop();
-    }
-  }
-
   onBackPress = () => {
     this.close();
     return true;
@@ -591,19 +601,18 @@ class Sheet extends React.PureComponent<Props, State> {
       this.animation.stop();
     }
 
+    let toValue = 0;
+
+    if (type === types.BOTTOM) {
+      toValue = height / 2;
+    } else if (type === types.LEFT) {
+      toValue = deviceIsPhone ? -width : -320;
+    } else if (type === types.RIGHT) {
+      toValue = deviceIsPhone ? width : 320;
+    }
+
     this.animation = Animated.timing(type === types.BOTTOM ? this.positionY : this.positionX, {
-      toValue:
-        type === types.BOTTOM
-          ? height / 2
-          : type === types.LEFT
-          ? deviceIsPhone
-            ? -width
-            : -320
-          : type === types.RIGHT
-          ? deviceIsPhone
-            ? width
-            : 320
-          : 0,
+      toValue,
       useNativeDriver: true,
       duration: rctshtTheme.animations.medium.out,
     }).start(() => {
@@ -676,6 +685,40 @@ class Sheet extends React.PureComponent<Props, State> {
       />
     );
 
+    let scrimOpacityInputRange = [0, 0];
+    let scrimOpacityOutputRange = [0, 0];
+
+    if (type === types.LEFT) {
+      scrimOpacityInputRange = [deviceIsPhone ? -width : -320, 0];
+      scrimOpacityOutputRange = [0, 1];
+    } else if (type === types.RIGHT) {
+      scrimOpacityInputRange = [0, deviceIsPhone ? width : 320];
+      scrimOpacityOutputRange = [1, 0];
+    }
+
+    const scrimOpacity = this.positionX.interpolate({
+      inputRange: scrimOpacityInputRange,
+      outputRange: scrimOpacityOutputRange,
+      extrapolate: 'clamp',
+    });
+
+    let translateXInputRange = [0, 1];
+    let translateXOutputRange = [0, 1];
+
+    if (type === types.LEFT) {
+      translateXInputRange = [deviceIsPhone ? -width : -320, 0];
+      translateXOutputRange = [deviceIsPhone ? -width : -320, 0];
+    } else if (type === types.RIGHT) {
+      translateXInputRange = [0, deviceIsPhone ? width : 320];
+      translateXOutputRange = [0, deviceIsPhone ? width : 320];
+    }
+
+    const translateX = this.positionX.interpolate({
+      inputRange: translateXInputRange,
+      outputRange: translateXOutputRange,
+      extrapolate: 'clamp',
+    });
+
     return [
       isVisible ? null : (
         <View
@@ -708,16 +751,7 @@ class Sheet extends React.PureComponent<Props, State> {
       modal ? (
         <Scrim
           key="scrim"
-          opacity={this.positionX.interpolate({
-            inputRange:
-              type === types.LEFT
-                ? [deviceIsPhone ? -width : -320, 0]
-                : type === types.RIGHT
-                ? [0, deviceIsPhone ? width : 320]
-                : [0, 0],
-            outputRange: type === types.LEFT ? [0, 1] : type === types.RIGHT ? [1, 0] : [0, 0],
-            extrapolate: 'clamp',
-          })}
+          opacity={scrimOpacity}
           isVisible={isVisible}
           onPress={this.close}
           elevation={16}
@@ -736,21 +770,7 @@ class Sheet extends React.PureComponent<Props, State> {
           {
             transform: [
               {
-                translateX: this.positionX.interpolate({
-                  inputRange:
-                    type === types.LEFT
-                      ? [deviceIsPhone ? -width : -320, 0]
-                      : type === types.RIGHT
-                      ? [0, deviceIsPhone ? width : 320]
-                      : [0, 1],
-                  outputRange:
-                    type === types.LEFT
-                      ? [deviceIsPhone ? -width : -320, 0]
-                      : type === types.RIGHT
-                      ? [0, deviceIsPhone ? width : 320]
-                      : [0, 1],
-                  extrapolate: 'clamp',
-                }),
+                translateX,
               },
               {
                 translateY:

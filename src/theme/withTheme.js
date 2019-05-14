@@ -2,15 +2,16 @@
 import hoistNonReactStatics from 'hoist-non-react-statics';
 import * as React from 'react';
 
-import {ThemeContext} from '.';
+import {type ThemeProps} from './defaults';
+import ThemeContext from './ThemeContext';
 
 type Props<Instance> = {
   forwardedRef: {current: null | Instance} | ((null | Instance) => mixed),
 };
 
-function withTheme<Config, Instance>(
+function withTheme<Config: {}, Instance>(
   Component: React.AbstractComponent<Config, Instance>,
-): React.AbstractComponent<Config, Instance> {
+): React.AbstractComponent<$Diff<Config, {rctshtTheme: ThemeProps | void}>, Instance> {
   class ThemedComponent extends React.PureComponent<Config & Props<Instance>> {
     render() {
       const {forwardedRef, ...rest} = this.props;

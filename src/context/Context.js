@@ -30,6 +30,16 @@ class Context extends React.PureComponent<Props, State> {
     keyboardIsOpen: false,
   };
 
+  dialogOverlayRef: ?DialogOverlay;
+
+  menuOverlayRef: ?MenuOverlay;
+
+  sheetOverlayRef: ?SheetOverlay;
+
+  snackbarOverlayRef: ?SnackbarOverlay;
+
+  globalOverlayRef: ?GlobalOverlay;
+
   componentDidMount() {
     Keyboard.addListener('keyboardDidShow', this.onKeyboardDidShow);
     Keyboard.addListener('keyboardDidHide', this.onKeyboardDidHide);
@@ -170,16 +180,6 @@ class Context extends React.PureComponent<Props, State> {
       this.getGlobalOverlayRefCallbacks = [];
     }
   };
-
-  dialogOverlayRef: ?DialogOverlay;
-
-  menuOverlayRef: ?MenuOverlay;
-
-  sheetOverlayRef: ?SheetOverlay;
-
-  snackbarOverlayRef: ?SnackbarOverlay;
-
-  globalOverlayRef: ?GlobalOverlay;
 
   render() {
     const {children, theme} = this.props;

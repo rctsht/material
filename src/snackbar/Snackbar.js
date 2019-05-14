@@ -63,6 +63,7 @@ const durations = {
 };
 
 type Props = {
+  id: string,
   action?: Button,
   duration?: number,
   label?: string,

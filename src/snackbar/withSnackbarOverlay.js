@@ -8,6 +8,10 @@ import SnackbarOverlay from './SnackbarOverlay';
 
 export default function withSnackbarOverlay(Component: React.ComponentType<*>) {
   class ComponentWithSnackbarOverlay extends React.PureComponent<*> {
+    getOverlayRef: ?((SnackbarOverlay) => void) => void;
+
+    id: string;
+
     constructor(props: *) {
       super(props);
 
@@ -29,10 +33,6 @@ export default function withSnackbarOverlay(Component: React.ComponentType<*>) {
         });
       }
     }
-
-    getOverlayRef: ?((SnackbarOverlay) => void) => void;
-
-    id: string;
 
     renderContent() {
       if (this.getOverlayRef) {

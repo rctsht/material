@@ -32,6 +32,8 @@ class SnackbarOverlay extends React.PureComponent<Props, State> {
 
   queue = [];
 
+  forceRemoveTimeout: ?TimeoutID;
+
   constructor(props: Props) {
     super(props);
 
@@ -103,8 +105,6 @@ class SnackbarOverlay extends React.PureComponent<Props, State> {
       },
     );
   };
-
-  forceRemoveTimeout: ?TimeoutID;
 
   render() {
     const {currentItem} = this.state;

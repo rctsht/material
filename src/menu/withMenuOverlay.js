@@ -8,6 +8,10 @@ import MenuOverlay from './MenuOverlay';
 
 export default function withMenuOverlay(Component: React.ComponentType<*>) {
   class ComponentWithMenuOverlay extends React.PureComponent<*> {
+    getOverlayRef: ?((MenuOverlay) => void) => void;
+
+    id: string;
+
     constructor(props: *) {
       super(props);
 
@@ -29,10 +33,6 @@ export default function withMenuOverlay(Component: React.ComponentType<*>) {
         });
       }
     }
-
-    getOverlayRef: ?((MenuOverlay) => void) => void;
-
-    id: string;
 
     renderContent() {
       if (this.getOverlayRef) {

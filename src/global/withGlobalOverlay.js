@@ -8,6 +8,10 @@ import GlobalOverlay from './GlobalOverlay';
 
 export default function withGlobalOverlay(Component: React.ComponentType<*>) {
   class ComponentWithGlobalOverlay extends React.PureComponent<*> {
+    getOverlayRef: ?((GlobalOverlay) => void) => void;
+
+    id: string;
+
     constructor(props: *) {
       super(props);
 
@@ -29,10 +33,6 @@ export default function withGlobalOverlay(Component: React.ComponentType<*>) {
         });
       }
     }
-
-    getOverlayRef: ?((GlobalOverlay) => void) => void;
-
-    id: string;
 
     renderContent() {
       if (this.getOverlayRef) {

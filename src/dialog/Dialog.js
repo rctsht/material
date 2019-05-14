@@ -360,4 +360,4 @@ class Dialog extends React.PureComponent<Props, State> {
   }
 }
 
-export default withTheme(Dialog);
+export default withTheme<Props, Dialog>(Dialog);

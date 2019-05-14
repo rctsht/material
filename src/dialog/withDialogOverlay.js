@@ -8,6 +8,10 @@ import DialogOverlay from './DialogOverlay';
 
 export default function withDialogOverlay(Component: React.ComponentType<*>) {
   class ComponentWithDialogOverlay extends React.PureComponent<*> {
+    getOverlayRef: ?((DialogOverlay) => void) => void;
+
+    id: string;
+
     constructor(props: *) {
       super(props);
 
@@ -29,10 +33,6 @@ export default function withDialogOverlay(Component: React.ComponentType<*>) {
         });
       }
     }
-
-    getOverlayRef: ?((DialogOverlay) => void) => void;
-
-    id: string;
 
     renderContent() {
       if (this.getOverlayRef) {
