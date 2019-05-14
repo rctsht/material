@@ -4,26 +4,28 @@ import * as React from 'react';
 
 import {ThemeContext} from '.';
 
-function withTheme(Component: React.ComponentType<*>) {
-  class ThemedComponent extends React.PureComponent<*> {
+type Props<Instance> = {
+  forwardedRef: {current: null | Instance} | ((null | Instance) => mixed),
+};
+
+function withTheme<Config, Instance>(
+  Component: React.AbstractComponent<Config, Instance>,
+): React.AbstractComponent<Config, Instance> {
+  class ThemedComponent extends React.PureComponent<Config & Props<Instance>> {
     render() {
-      const {forwardedRef} = this.props;
+      const {forwardedRef, ...rest} = this.props;
 
       return (
         <ThemeContext.Consumer>
-          {theme => <Component {...this.props} ref={forwardedRef} rctshtTheme={theme} />}
+          {theme => <Component {...rest} ref={forwardedRef} rctshtTheme={theme} />}
         </ThemeContext.Consumer>
       );
     }
   }
 
-  type Props = {
-    onRef?: () => ?ThemedComponent,
-  };
   /* eslint-disable react/no-multi-comp */
-  // $FlowFixMe: https://github.com/facebook/flow/issues/6103
-  const ThemedComponentWithForwardRef = React.forwardRef((props: Props, ref) => (
-    <ThemedComponent {...props} forwardedRef={props.onRef || ref} />
+  const ThemedComponentWithForwardRef = React.forwardRef<Config, Instance>((props, ref) => (
+    <ThemedComponent {...props} forwardedRef={ref} />
   ));
   /* eslint-enable react/no-multi-comp */
 
