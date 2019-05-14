@@ -31,8 +31,10 @@ type Props = {
 
 class CircleButton extends React.PureComponent<Props> {
   static defaultProps = {
-    icon: null,
     allowOverflow: false,
+    containerStyle: null,
+    icon: null,
+    useForeground: false,
   };
 
   render() {
