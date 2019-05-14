@@ -33,11 +33,23 @@ class DialogOverlay extends React.PureComponent<Props, State> {
     this.setState({extraProps}, callback);
   };
 
-  addOrUpdateContent = (Component: React.ComponentType<*>, props: {id: string}) => {
-    this.setState(currentState => ({
-      // eslint-disable-next-line react/prop-types
-      contents: [...currentState.contents.filter(content => content.props.id !== props.id), {Component, props}],
-    }));
+  addOrUpdateContent = (Component: React.ComponentType<*>, theProps: {id: string}) => {
+    this.setState(currentState => {
+      if (currentState.contents.some(content => content.props.id === theProps.id)) {
+        return {
+          contents: currentState.contents.map(content => {
+            if (content.props.id === theProps.id) {
+              return {Component, props: theProps};
+            }
+
+            return content;
+          }),
+        };
+      }
+      return {
+        contents: [...currentState.contents, {Component, props: theProps}],
+      };
+    });
   };
 
   removeContent = (id: string) => {
