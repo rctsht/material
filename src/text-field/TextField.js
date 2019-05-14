@@ -212,7 +212,7 @@ class TextField extends React.PureComponent<Props, State> {
       text = errorText;
     }
 
-    // {/* TODO Use <Type /> */}
+    // {/* TODO Use <Type.Default /> */}
     return (
       <View style={styles.container}>
         <View

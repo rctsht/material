@@ -173,12 +173,12 @@ class Chip extends React.PureComponent<Props> {
           {selectedIndicator || thumb}
           <View style={styles.labelWrapper}>
             {isString(label) ? (
-              <Type
+              <Type.Default
                 style={[styles.labelText, highlighted ? {color: rctshtTheme.colors.onPrimary} : null]}
                 numberOfLines={1}
               >
                 {label}
-              </Type>
+              </Type.Default>
             ) : (
               label
             )}

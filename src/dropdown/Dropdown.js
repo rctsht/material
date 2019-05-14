@@ -128,7 +128,7 @@ class Picker extends React.PureComponent<Props> {
       text = errorText;
     }
 
-    // {/* TODO Use <Type /> */}
+    // {/* TODO Use <Type.Default /> */}
     return (
       <View style={styles.container}>
         <View

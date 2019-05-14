@@ -160,14 +160,14 @@ class Snackbar extends React.PureComponent<Props> {
           {opacity: this.opacity},
         ]}
       >
-        <Type
+        <Type.Default
           style={[styles.label, fullWidth ? styles.labelTriple : null]}
           numberOfLines={numberOfLines}
           alignToBaseline={numberOfLines === 2 ? 30 : undefined}
           onLayout={this.onLayoutText}
         >
           {label}
-        </Type>
+        </Type.Default>
         {actionNode ? (
           <View style={[styles.action, fullWidth ? styles.actionFullWidth : null]}>{actionNode}</View>
         ) : null}

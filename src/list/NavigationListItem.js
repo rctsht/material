@@ -72,7 +72,7 @@ class NavigationListItem extends React.PureComponent<Props> {
       <Touchable style={styles.container} onPress={onPress} disabled={active}>
         {active ? <View style={[styles.active, {backgroundColor: `${rctshtTheme.colors.secondary}33`}]} /> : null}
         {iconNode}
-        {isString(label) ? <Type style={styles.label}>{label}</Type> : label}
+        {isString(label) ? <Type.Default style={styles.label}>{label}</Type.Default> : label}
       </Touchable>
     );
   }

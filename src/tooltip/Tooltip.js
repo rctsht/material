@@ -112,7 +112,7 @@ class Tooltip extends React.PureComponent<Props, State> {
         ]}
         onLayout={this.onLayout}
       >
-        <Type preset={typePresets.body2}>{text}</Type>
+        <Type.Default preset={typePresets.body2}>{text}</Type.Default>
       </View>
     );
   }

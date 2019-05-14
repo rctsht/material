@@ -102,9 +102,9 @@ class Button extends React.PureComponent<ButtonProps> {
     // $FlowFixMe
     const iconNode = isString(icon) ? <Icon name={icon} size={18} color={iconColor} /> : icon;
     const labelNode = isString(label) ? (
-      <Type preset={typePresets.button} style={{color: labelColor}}>
+      <Type.Default preset={typePresets.button} style={{color: labelColor}}>
         {label.toUpperCase()}
-      </Type>
+      </Type.Default>
     ) : (
       label
     );
