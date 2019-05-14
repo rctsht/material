@@ -137,91 +137,20 @@ type Props = {
   rctshtTheme: ThemeProps,
 };
 
+type DefaultProps = {
+  alignToBaseline?: number,
+  children?: string | React.Node,
+  preset?: $Values<typeof typePresets>,
+  style?: TextStyleProp,
+};
+
 class Type extends React.PureComponent<Props> {
-  static defaultProps = {
+  static defaultProps: DefaultProps = {
     alignToBaseline: undefined,
     children: null,
     preset: null,
     style: null,
   };
-
-  static H1 = withTheme(
-    class H1 extends Type {
-      static defaultProps = {...Type.defaultProps, preset: typePresets.h1};
-    },
-  );
-
-  static H2 = withTheme(
-    class H2 extends Type {
-      static defaultProps = {...Type.defaultProps, preset: typePresets.h2};
-    },
-  );
-
-  static H3 = withTheme(
-    class H3 extends Type {
-      static defaultProps = {...Type.defaultProps, preset: typePresets.h3};
-    },
-  );
-
-  static H4 = withTheme(
-    class H4 extends Type {
-      static defaultProps = {...Type.defaultProps, preset: typePresets.h4};
-    },
-  );
-
-  static H5 = withTheme(
-    class H5 extends Type {
-      static defaultProps = {...Type.defaultProps, preset: typePresets.h5};
-    },
-  );
-
-  static H6 = withTheme(
-    class H6 extends Type {
-      static defaultProps = {...Type.defaultProps, preset: typePresets.h6};
-    },
-  );
-
-  static Subtitle1 = withTheme(
-    class Subtitle1 extends Type {
-      static defaultProps = {...Type.defaultProps, preset: typePresets.subtitle1};
-    },
-  );
-
-  static Subtitle2 = withTheme(
-    class Subtitle2 extends Type {
-      static defaultProps = {...Type.defaultProps, preset: typePresets.subtitle2};
-    },
-  );
-
-  static Body1 = withTheme(
-    class Body1 extends Type {
-      static defaultProps = {...Type.defaultProps, preset: typePresets.body1};
-    },
-  );
-
-  static Body2 = withTheme(
-    class Body2 extends Type {
-      static defaultProps = {...Type.defaultProps, preset: typePresets.body2};
-    },
-  );
-
-  static Button = withTheme(
-    class Button extends Type {
-      static defaultProps = {...Type.defaultProps, preset: typePresets.button};
-    },
-  );
-
-  static Caption = withTheme(
-    class Caption extends Type {
-      static defaultProps = {...Type.defaultProps, preset: typePresets.caption};
-    },
-  );
-
-  static Overline = withTheme(
-    class Overline extends Type {
-      static defaultProps = {...Type.defaultProps, preset: typePresets.overline};
-    },
-  );
 
   render() {
     const {
@@ -281,6 +210,73 @@ class Type extends React.PureComponent<Props> {
   }
 }
 
-const TypeWithTheme = withTheme(Type);
+const TypeWithTheme = {
+  Default: withTheme<React.Config<Props, DefaultProps>, Type>(Type),
+  H1: withTheme<React.Config<Props, DefaultProps>, Type>(
+    class H1 extends Type {
+      static defaultProps = {...Type.defaultProps, preset: typePresets.h1};
+    },
+  ),
+  H2: withTheme<React.Config<Props, DefaultProps>, Type>(
+    class H2 extends Type {
+      static defaultProps = {...Type.defaultProps, preset: typePresets.h2};
+    },
+  ),
+  H3: withTheme<React.Config<Props, DefaultProps>, Type>(
+    class H3 extends Type {
+      static defaultProps = {...Type.defaultProps, preset: typePresets.h3};
+    },
+  ),
+  H4: withTheme<React.Config<Props, DefaultProps>, Type>(
+    class H4 extends Type {
+      static defaultProps = {...Type.defaultProps, preset: typePresets.h4};
+    },
+  ),
+  H5: withTheme<React.Config<Props, DefaultProps>, Type>(
+    class H5 extends Type {
+      static defaultProps = {...Type.defaultProps, preset: typePresets.h5};
+    },
+  ),
+  H6: withTheme<React.Config<Props, DefaultProps>, Type>(
+    class H6 extends Type {
+      static defaultProps = {...Type.defaultProps, preset: typePresets.h6};
+    },
+  ),
+  Subtitle1: withTheme<React.Config<Props, DefaultProps>, Type>(
+    class Subtitle1 extends Type {
+      static defaultProps = {...Type.defaultProps, preset: typePresets.subtitle1};
+    },
+  ),
+  Subtitle2: withTheme<React.Config<Props, DefaultProps>, Type>(
+    class Subtitle2 extends Type {
+      static defaultProps = {...Type.defaultProps, preset: typePresets.subtitle2};
+    },
+  ),
+  Body1: withTheme<React.Config<Props, DefaultProps>, Type>(
+    class Body1 extends Type {
+      static defaultProps = {...Type.defaultProps, preset: typePresets.body1};
+    },
+  ),
+  Body2: withTheme<React.Config<Props, DefaultProps>, Type>(
+    class Body2 extends Type {
+      static defaultProps = {...Type.defaultProps, preset: typePresets.body2};
+    },
+  ),
+  Button: withTheme<React.Config<Props, DefaultProps>, Type>(
+    class Button extends Type {
+      static defaultProps = {...Type.defaultProps, preset: typePresets.button};
+    },
+  ),
+  Caption: withTheme<React.Config<Props, DefaultProps>, Type>(
+    class Caption extends Type {
+      static defaultProps = {...Type.defaultProps, preset: typePresets.caption};
+    },
+  ),
+  Overline: withTheme<React.Config<Props, DefaultProps>, Type>(
+    class Overline extends Type {
+      static defaultProps = {...Type.defaultProps, preset: typePresets.overline};
+    },
+  ),
+};
 
 export {TypeWithTheme as Type, typePresets};
