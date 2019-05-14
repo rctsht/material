@@ -2,7 +2,7 @@
 import hoistNonReactStatics from 'hoist-non-react-statics';
 import * as React from 'react';
 
-import {KeyboardContext} from '.';
+import KeyboardContext from './KeyboardContext';
 
 type Props<Instance> = {
   forwardedRef: {current: null | Instance} | ((null | Instance) => mixed),
