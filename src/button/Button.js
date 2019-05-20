@@ -23,11 +23,9 @@ const styles = StyleSheet.create({
   },
   containedButton: {
     minWidth: 64,
-    borderRadius: 3,
   },
   outlinedButton: {
     minWidth: 64,
-    borderRadius: 3,
     borderWidth: 1,
   },
   textButton: {
@@ -129,10 +127,18 @@ class Button extends React.PureComponent<Props> {
 
     switch (type) {
       case Button.types.CONTAINED:
-        additionalStyles = {...styles.containedButton, backgroundColor};
+        additionalStyles = {
+          ...styles.containedButton,
+          backgroundColor,
+          borderRadius: rctshtTheme.components.button.borderRadius,
+        };
         break;
       case Button.types.OUTLINED:
-        additionalStyles = {...styles.outlinedButton, borderColor};
+        additionalStyles = {
+          ...styles.outlinedButton,
+          borderColor,
+          borderRadius: rctshtTheme.components.button.borderRadius,
+        };
         break;
       case Button.types.TEXT:
         additionalStyles = styles.textButton;
