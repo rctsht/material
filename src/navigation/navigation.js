@@ -58,8 +58,7 @@ function getNavigation() {
   return navigation._navigation;
 }
 
-// TODO type
-function setNavigation(navigationRef: NavigationContainer<NavigationState, {}, {}>) {
+function setNavigation(navigationRef: ?NavigationContainer<NavigationState, {}, {}>) {
   navigation = navigationRef;
 
   // if (navigation && awaitCallbacks.length) {
