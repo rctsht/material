@@ -112,6 +112,7 @@ type Props = {
   onFocus?: ?() => void,
   onBlur?: ?() => void,
   multiline?: boolean,
+  wrapperBackgroundColor?: string,
 };
 
 type State = {
@@ -195,6 +196,7 @@ class TextField extends React.PureComponent<Props, State> {
       selectionColor,
       forwardedRef,
       multiline,
+      wrapperBackgroundColor,
     } = this.props;
     const {isFocused, height} = this.state;
 
@@ -223,6 +225,9 @@ class TextField extends React.PureComponent<Props, State> {
             isFocused ? {borderBottomColor: rctshtTheme.colors.primary} : null,
             errorText != null ? styles.inputWrapperError : null,
             multiline && height > 0 ? {height: height + 8} : null,
+            wrapperBackgroundColor != null && wrapperBackgroundColor.length > 0
+              ? {backgroundColor: wrapperBackgroundColor}
+              : null,
           ]}
         >
           {leadingIcon != null ? (
