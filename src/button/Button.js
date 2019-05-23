@@ -23,6 +23,7 @@ const styles = StyleSheet.create({
   },
   containedButton: {
     minWidth: 64,
+    elevation: 2,
   },
   outlinedButton: {
     minWidth: 64,
@@ -105,10 +106,10 @@ class Button extends React.PureComponent<Props> {
   render() {
     const {disabled, icon, label, onPress, rctshtTheme, type, style} = this.props;
     const defaultIconLabelColor =
-      type === Button.types.CONTAINED ? rctshtTheme.colors.onSecondary : rctshtTheme.colors.secondary;
+      type === Button.types.CONTAINED ? rctshtTheme.colors.onPrimary : rctshtTheme.colors.primary;
     const {
-      backgroundColor = rctshtTheme.colors.secondary,
-      borderColor = rctshtTheme.colors.secondary,
+      backgroundColor = rctshtTheme.colors.primary,
+      borderColor = rctshtTheme.colors.primary,
       iconColor = defaultIconLabelColor,
       labelColor = defaultIconLabelColor,
     } = this.props;
