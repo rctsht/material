@@ -44,7 +44,19 @@ type ThemeColors = {
 
 type ThemeComponents = {
   button: {
-    borderRadius: number,
+    contained: {
+      borderRadius: number,
+      height: number,
+    },
+    outlined: {
+      borderRadius: number,
+      height: number,
+    },
+  },
+  textField: {
+    filled: {
+      backgroundColor: string,
+    },
   },
 };
 
@@ -103,7 +115,19 @@ const themeDefaults: ThemeProps = {
   },
   components: {
     button: {
-      borderRadius: 3,
+      contained: {
+        borderRadius: 3,
+        height: 36,
+      },
+      outlined: {
+        borderRadius: 3,
+        height: 36,
+      },
+    },
+    textField: {
+      filled: {
+        backgroundColor: '#00000006',
+      },
     },
   },
 };
