@@ -131,14 +131,16 @@ class Button extends React.PureComponent<Props> {
         additionalStyles = {
           ...styles.containedButton,
           backgroundColor,
-          borderRadius: rctshtTheme.components.button.borderRadius,
+          borderRadius: rctshtTheme.components.button.contained.borderRadius,
+          height: rctshtTheme.components.button.contained.height,
         };
         break;
       case Button.types.OUTLINED:
         additionalStyles = {
           ...styles.outlinedButton,
           borderColor,
-          borderRadius: rctshtTheme.components.button.borderRadius,
+          borderRadius: rctshtTheme.components.button.outlined.borderRadius,
+          height: rctshtTheme.components.button.outlined.height,
         };
         break;
       case Button.types.TEXT:
