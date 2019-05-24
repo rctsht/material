@@ -1,10 +1,10 @@
 // @flow strict-local
-import hoistNonReactStatics from 'hoist-non-react-statics';
 import {isString} from 'lodash-es';
 import * as React from 'react';
 import {LayoutAnimation, StyleSheet, Text, TextInput, View} from 'react-native';
 
 import {Icon} from '../icon';
+import {withForwardRef} from '../ref';
 import {type ThemeProps, withTheme} from '../theme';
 
 const styles = StyleSheet.create({
@@ -96,7 +96,13 @@ const styles = StyleSheet.create({
   },
 });
 
+const types = {
+  FILLED: 'FILLED',
+  OUTLINED: 'OUTLINED',
+};
+
 type Props = {
+  type: $Values<typeof types>,
   helperText: string,
   labelText: string,
   errorText: ?string,
@@ -112,7 +118,6 @@ type Props = {
   onFocus?: ?() => void,
   onBlur?: ?() => void,
   multiline?: boolean,
-  wrapperBackgroundColor?: string,
 };
 
 type State = {
@@ -133,10 +138,7 @@ class TextField extends React.PureComponent<Props, State> {
     trailingIconColor: '#00000060',
   };
 
-  static Types = {
-    FILLED: 'FILLED',
-    OUTLINED: 'OUTLINED',
-  };
+  static types = types;
 
   state = {
     isFocused: false,
@@ -196,7 +198,7 @@ class TextField extends React.PureComponent<Props, State> {
       selectionColor,
       forwardedRef,
       multiline,
-      wrapperBackgroundColor,
+      type,
     } = this.props;
     const {isFocused, height} = this.state;
 
@@ -225,9 +227,7 @@ class TextField extends React.PureComponent<Props, State> {
             isFocused ? {borderBottomColor: rctshtTheme.colors.primary} : null,
             errorText != null ? styles.inputWrapperError : null,
             multiline && height > 0 ? {height: height + 8} : null,
-            wrapperBackgroundColor != null && wrapperBackgroundColor.length > 0
-              ? {backgroundColor: wrapperBackgroundColor}
-              : null,
+            type === types.FILLED ? {backgroundColor: rctshtTheme.components.textField.filled.backgroundColor} : null,
           ]}
         >
           {leadingIcon != null ? (
@@ -264,16 +264,6 @@ class TextField extends React.PureComponent<Props, State> {
       </View>
     );
   }
-}
-
-function withForwardRef(Component: React.ComponentType<*>) {
-  function forwardRef(props, ref) {
-    return <Component {...props} forwardedRef={ref} />;
-  }
-
-  hoistNonReactStatics(forwardRef, Component);
-
-  return React.forwardRef(forwardRef);
 }
 
 export default withTheme(withForwardRef(TextField));
