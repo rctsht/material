@@ -53,7 +53,7 @@ class NavigationEvents extends React.PureComponent<Props> {
   addListener = (eventName: string) => {
     const {[EventNameToPropName[eventName]]: listener} = this.props;
     const navigation = getNavigation();
-    if (listener) {
+    if (listener && navigation) {
       this.subscriptions[eventName] = navigation.addListener(eventName, listener);
     }
   };
