@@ -24,20 +24,25 @@ const styles = StyleSheet.create({
   text: {
     flex: 1,
   },
+  textDisabled: {
+    opacity: 0.5,
+  },
 });
 
 type Props = {
   label: string | React.Node,
   onPress: ?(mixed) => void,
-  selected?: boolean,
+  selected: boolean,
   rctshtTheme: ThemeProps,
   value: mixed,
+  disabled: boolean,
 };
 
 class CheckboxListItem extends React.PureComponent<Props> {
   static defaultProps = {
     onPress: null,
     selected: false,
+    disabled: false,
   };
 
   onPress = () => {
@@ -57,7 +62,7 @@ class CheckboxListItem extends React.PureComponent<Props> {
   };
 
   render() {
-    const {label, selected, rctshtTheme} = this.props;
+    const {label, selected, disabled, rctshtTheme} = this.props;
 
     let background;
 
@@ -69,12 +74,11 @@ class CheckboxListItem extends React.PureComponent<Props> {
     }
 
     return (
-      <Touchable onPress={this.onPress} background={background}>
+      <Touchable onPress={this.onPress} background={background} disabled={disabled} pointerEvents="box-only">
         <View style={styles.container}>
-          <Checkbox selected={selected} style={styles.checkbox} />
-          {/* $FlowFixMe */}
+          <Checkbox selected={selected} style={styles.checkbox} disabled={disabled} />
           {isString(label) ? (
-            <Type.Body1 numberOfLines={2} style={styles.text}>
+            <Type.Body1 numberOfLines={2} style={[styles.text, disabled ? styles.textDisabled : null]}>
               {label}
             </Type.Body1>
           ) : (
