@@ -2,21 +2,6 @@
 import {merge} from 'lodash-es';
 import {Easing} from 'react-native';
 
-type ThemeColors = {
-  primary: string,
-  primaryVariant: string,
-  secondary: string,
-  secondaryVariant: string,
-  background: string,
-  surface: string,
-  error: string,
-  onPrimary: string,
-  onSecondary: string,
-  onBackground: string,
-  onSurface: string,
-  onError: string,
-};
-
 type ThemeAnimations = {
   accelerateEasing: (Array<number>, number) => number,
   decelerateEasing: (Array<number>, number) => number,
@@ -42,26 +27,46 @@ type ThemeAnimations = {
   },
 };
 
+type ThemeColors = {
+  primary: string,
+  primaryVariant: string,
+  secondary: string,
+  secondaryVariant: string,
+  background: string,
+  surface: string,
+  error: string,
+  onPrimary: string,
+  onSecondary: string,
+  onBackground: string,
+  onSurface: string,
+  onError: string,
+};
+
+type ThemeComponents = {
+  button: {
+    contained: {
+      borderRadius: number,
+      height: number,
+    },
+    outlined: {
+      borderRadius: number,
+      height: number,
+    },
+  },
+  textField: {
+    filled: {
+      backgroundColor: string,
+    },
+  },
+};
+
 type ThemeProps = {
-  colors: ThemeColors,
   animations: ThemeAnimations,
+  colors: ThemeColors,
+  components: ThemeComponents,
 };
 
 const themeDefaults: ThemeProps = {
-  colors: {
-    primary: '#FFD600',
-    primaryVariant: '#F9A825',
-    secondary: '#FF5A3C',
-    secondaryVariant: '#EF100D',
-    background: '#FFFFFF',
-    surface: '#FFFFFF',
-    error: '#ECB6B6',
-    onPrimary: '#212121',
-    onSecondary: '#FFFFFF',
-    onBackground: '#212121',
-    onSurface: '#212121',
-    onError: '#FFFFFF',
-  },
   animations: {
     // For objects entering the screen
     accelerateEasing: Easing.bezier(0.4, 0.0, 1, 1),
@@ -92,6 +97,37 @@ const themeDefaults: ThemeProps = {
     icon: {
       simple: 200,
       detailed: 500,
+    },
+  },
+  colors: {
+    primary: '#FFD600',
+    primaryVariant: '#F9A825',
+    secondary: '#FF5A3C',
+    secondaryVariant: '#EF100D',
+    background: '#FFFFFF',
+    surface: '#FFFFFF',
+    error: '#ECB6B6',
+    onPrimary: '#212121',
+    onSecondary: '#FFFFFF',
+    onBackground: '#212121',
+    onSurface: '#212121',
+    onError: '#FFFFFF',
+  },
+  components: {
+    button: {
+      contained: {
+        borderRadius: 3,
+        height: 36,
+      },
+      outlined: {
+        borderRadius: 3,
+        height: 36,
+      },
+    },
+    textField: {
+      filled: {
+        backgroundColor: '#00000006',
+      },
     },
   },
 };

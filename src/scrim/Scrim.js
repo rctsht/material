@@ -32,12 +32,20 @@ type Props = {
   onPress: ?() => void,
 };
 
+type DefaultProps = {
+  animated: boolean,
+  elevation: number,
+  isVisible: boolean,
+  opacity: number,
+  onPress: ?() => void,
+};
+
 type State = {
   isVisible: boolean,
 };
 
 class Scrim extends React.PureComponent<Props, State> {
-  static defaultProps = {
+  static defaultProps: DefaultProps = {
     animated: true,
     elevation: 0,
     isVisible: false,
@@ -45,7 +53,9 @@ class Scrim extends React.PureComponent<Props, State> {
     onPress: null,
   };
 
-  constructor(props) {
+  animation: Animated.Value;
+
+  constructor(props: Props) {
     super(props);
 
     const {isVisible} = props;
@@ -57,7 +67,7 @@ class Scrim extends React.PureComponent<Props, State> {
   }
 
   // @TODO remove this or use if opacity prop is undefined
-  componentDidUpdate(prevProps) {
+  componentDidUpdate(prevProps: Props) {
     const {isVisible: prevIsVisible} = prevProps;
     const {isVisible, rctshtTheme} = this.props;
 
@@ -92,8 +102,6 @@ class Scrim extends React.PureComponent<Props, State> {
     }
   }
 
-  animation: Animated.Value;
-
   render() {
     const {animated, elevation, opacity, onPress} = this.props;
     const {isVisible} = this.state;
@@ -116,4 +124,4 @@ class Scrim extends React.PureComponent<Props, State> {
   }
 }
 
-export default withTheme(Scrim);
+export default withTheme<React.Config<Props, DefaultProps>, Scrim>(Scrim);

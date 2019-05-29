@@ -23,11 +23,10 @@ const styles = StyleSheet.create({
   },
   containedButton: {
     minWidth: 64,
-    borderRadius: 3,
+    elevation: 2,
   },
   outlinedButton: {
     minWidth: 64,
-    borderRadius: 3,
     borderWidth: 1,
   },
   textButton: {
@@ -59,7 +58,7 @@ const types = {
   TOGGLE: 'TOGGLE',
 };
 
-export type ButtonProps = {
+type Props = {
   backgroundColor?: string,
   borderColor?: string,
   disabled?: boolean,
@@ -73,10 +72,25 @@ export type ButtonProps = {
   style: ViewStyleProp,
 };
 
-class Button extends React.PureComponent<ButtonProps> {
+type DefaultProps = {
+  backgroundColor?: string,
+  borderColor?: string,
+  disabled?: boolean,
+  icon?: string | React.Node,
+  iconColor?: string,
+  label?: string | React.Node,
+  labelColor?: string,
+  onPress: ?() => void,
+  type?: $Values<typeof types>,
+  style: ViewStyleProp,
+};
+
+export type ButtonProps = $Diff<React.Config<Props, DefaultProps>, {rctshtTheme: ThemeProps | void}>;
+
+class Button extends React.PureComponent<Props> {
   static types = types;
 
-  static defaultProps = {
+  static defaultProps: DefaultProps = {
     backgroundColor: undefined,
     borderColor: undefined,
     disabled: false,
@@ -85,16 +99,17 @@ class Button extends React.PureComponent<ButtonProps> {
     label: null,
     labelColor: undefined,
     onPress: null,
+    style: null,
     type: types.TEXT,
   };
 
   render() {
     const {disabled, icon, label, onPress, rctshtTheme, type, style} = this.props;
     const defaultIconLabelColor =
-      type === Button.types.CONTAINED ? rctshtTheme.colors.onSecondary : rctshtTheme.colors.secondary;
+      type === Button.types.CONTAINED ? rctshtTheme.colors.onPrimary : rctshtTheme.colors.primary;
     const {
-      backgroundColor = rctshtTheme.colors.secondary,
-      borderColor = rctshtTheme.colors.secondary,
+      backgroundColor = rctshtTheme.colors.primary,
+      borderColor = rctshtTheme.colors.primary,
       iconColor = defaultIconLabelColor,
       labelColor = defaultIconLabelColor,
     } = this.props;
@@ -102,9 +117,9 @@ class Button extends React.PureComponent<ButtonProps> {
     // $FlowFixMe
     const iconNode = isString(icon) ? <Icon name={icon} size={18} color={iconColor} /> : icon;
     const labelNode = isString(label) ? (
-      <Type preset={typePresets.button} style={{color: labelColor}}>
+      <Type.Default preset={typePresets.button} style={{color: labelColor}}>
         {label.toUpperCase()}
-      </Type>
+      </Type.Default>
     ) : (
       label
     );
@@ -113,10 +128,20 @@ class Button extends React.PureComponent<ButtonProps> {
 
     switch (type) {
       case Button.types.CONTAINED:
-        additionalStyles = {...styles.containedButton, backgroundColor};
+        additionalStyles = {
+          ...styles.containedButton,
+          backgroundColor,
+          borderRadius: rctshtTheme.components.button.contained.borderRadius,
+          height: rctshtTheme.components.button.contained.height,
+        };
         break;
       case Button.types.OUTLINED:
-        additionalStyles = {...styles.outlinedButton, borderColor};
+        additionalStyles = {
+          ...styles.outlinedButton,
+          borderColor,
+          borderRadius: rctshtTheme.components.button.outlined.borderRadius,
+          height: rctshtTheme.components.button.outlined.height,
+        };
         break;
       case Button.types.TEXT:
         additionalStyles = styles.textButton;
@@ -154,4 +179,4 @@ class Button extends React.PureComponent<ButtonProps> {
   }
 }
 
-export default withTheme(Button);
+export default withTheme<React.Config<Props, DefaultProps>, Button>(Button);

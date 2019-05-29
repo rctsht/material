@@ -77,9 +77,9 @@ class Banner extends React.PureComponent<Props> {
           <View style={[styles.iconWrapper, {backgroundColor: rctshtTheme.colors.primary}]}>
             <Icon name={icon} size={24} color="#ffffff" />
           </View>
-          <Type preset={typePresets.body2} style={styles.text} numberOfLines={2}>
+          <Type.Default preset={typePresets.body2} style={styles.text} numberOfLines={2}>
             {message}
-          </Type>
+          </Type.Default>
         </View>
         <View style={styles.actions}>
           <View style={{flex: 1}} />

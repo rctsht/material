@@ -1,9 +1,11 @@
 // @flow strict-local
 import * as React from 'react';
+import {Keyboard} from 'react-native';
 import {MenuProvider} from 'react-native-popup-menu';
 
 import {DialogContext, DialogOverlay} from '../dialog';
 import {GlobalContext, GlobalOverlay} from '../global';
+import {KeyboardContext} from '../keyboard';
 import {MenuContext, MenuOverlay} from '../menu';
 import {SheetContext, SheetOverlay} from '../sheet';
 import {SnackbarContext, SnackbarOverlay} from '../snackbar';
@@ -14,10 +16,50 @@ type Props = {
   theme?: ThemeProps,
 };
 
-class Context extends React.PureComponent<Props> {
+type State = {
+  keyboardIsOpen: boolean,
+};
+
+class Context extends React.PureComponent<Props, State> {
   static defaultProps = {
     children: null,
     theme: createTheme(),
+  };
+
+  state = {
+    keyboardIsOpen: false,
+  };
+
+  dialogOverlayRef: ?DialogOverlay;
+
+  menuOverlayRef: ?MenuOverlay;
+
+  sheetOverlayRef: ?SheetOverlay;
+
+  snackbarOverlayRef: ?SnackbarOverlay;
+
+  globalOverlayRef: ?GlobalOverlay;
+
+  componentDidMount() {
+    Keyboard.addListener('keyboardDidShow', this.onKeyboardDidShow);
+    Keyboard.addListener('keyboardDidHide', this.onKeyboardDidHide);
+  }
+
+  componentWillUnmount() {
+    Keyboard.removeListener('keyboardDidShow', this.onKeyboardDidShow);
+    Keyboard.removeListener('keyboardDidHide', this.onKeyboardDidHide);
+  }
+
+  onKeyboardDidShow = () => {
+    this.setState({
+      keyboardIsOpen: true,
+    });
+  };
+
+  onKeyboardDidHide = () => {
+    this.setState({
+      keyboardIsOpen: false,
+    });
   };
 
   getDialogOverlayRefCallbacks = [];
@@ -139,39 +181,32 @@ class Context extends React.PureComponent<Props> {
     }
   };
 
-  dialogOverlayRef: ?DialogOverlay;
-
-  menuOverlayRef: ?MenuOverlay;
-
-  sheetOverlayRef: ?SheetOverlay;
-
-  snackbarOverlayRef: ?SnackbarOverlay;
-
-  globalOverlayRef: ?GlobalOverlay;
-
   render() {
     const {children, theme} = this.props;
+    const {keyboardIsOpen} = this.state;
 
     return (
       <MenuProvider>
         {/* $FlowFixMe */}
         <ThemeContext.Provider value={theme}>
-          <GlobalContext.Provider value={this.getGlobalOverlayRef}>
-            <DialogContext.Provider value={this.getDialogOverlayRef}>
-              <SheetContext.Provider value={this.getSheetOverlayRef}>
-                <MenuContext.Provider value={this.getMenuOverlayRef}>
-                  <SnackbarContext.Provider value={this.getSnackbarOverlayRef}>
-                    {children}
-                    <SnackbarOverlay ref={this.setSnackbarOverlayRef} />
-                    <MenuOverlay ref={this.setMenuOverlayRef} />
-                    <SheetOverlay ref={this.setSheetOverlayRef} />
-                    <DialogOverlay ref={this.setDialogOverlayRef} />
-                    <GlobalOverlay ref={this.setGlobalOverlayRef} />
-                  </SnackbarContext.Provider>
-                </MenuContext.Provider>
-              </SheetContext.Provider>
-            </DialogContext.Provider>
-          </GlobalContext.Provider>
+          <KeyboardContext.Provider value={keyboardIsOpen}>
+            <GlobalContext.Provider value={this.getGlobalOverlayRef}>
+              <DialogContext.Provider value={this.getDialogOverlayRef}>
+                <SheetContext.Provider value={this.getSheetOverlayRef}>
+                  <MenuContext.Provider value={this.getMenuOverlayRef}>
+                    <SnackbarContext.Provider value={this.getSnackbarOverlayRef}>
+                      {children}
+                      <SnackbarOverlay ref={this.setSnackbarOverlayRef} />
+                      <MenuOverlay ref={this.setMenuOverlayRef} />
+                      <SheetOverlay ref={this.setSheetOverlayRef} />
+                      <DialogOverlay ref={this.setDialogOverlayRef} />
+                      <GlobalOverlay ref={this.setGlobalOverlayRef} />
+                    </SnackbarContext.Provider>
+                  </MenuContext.Provider>
+                </SheetContext.Provider>
+              </DialogContext.Provider>
+            </GlobalContext.Provider>
+          </KeyboardContext.Provider>
         </ThemeContext.Provider>
       </MenuProvider>
     );

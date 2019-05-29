@@ -17,6 +17,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
+  outerSquareDisabled: {
+    opacity: 0.5,
+  },
   innerSquare: {
     width: 0,
     height: 0,
@@ -35,6 +38,7 @@ type Props = {
   selected?: boolean,
   value?: mixed,
   style: ViewStyleProp,
+  disabled: boolean,
 };
 
 class Checkbox extends React.PureComponent<Props> {
@@ -43,10 +47,15 @@ class Checkbox extends React.PureComponent<Props> {
     selected: false,
     value: null,
     style: null,
+    disabled: false,
   };
 
   onPress = () => {
-    const {onPress, rctshtTheme, value} = this.props;
+    const {disabled, onPress, rctshtTheme, value} = this.props;
+
+    if (disabled) {
+      return;
+    }
 
     LayoutAnimation.configureNext(
       LayoutAnimation.create(
@@ -62,7 +71,7 @@ class Checkbox extends React.PureComponent<Props> {
   };
 
   render() {
-    const {onPress, rctshtTheme, selected, style} = this.props;
+    const {onPress, rctshtTheme, selected, disabled, style} = this.props;
 
     const checkbox = (
       <View
@@ -70,7 +79,9 @@ class Checkbox extends React.PureComponent<Props> {
           styles.outerSquare,
           selected ? {borderColor: rctshtTheme.colors.secondary} : null,
           ...(Array.isArray(style) ? style : [style]),
+          disabled ? styles.outerSquareDisabled : null,
         ]}
+        needsOffscreenAlphaCompositing
       >
         <View
           style={[
@@ -84,7 +95,7 @@ class Checkbox extends React.PureComponent<Props> {
       </View>
     );
 
-    if (isFunction(onPress)) {
+    if (isFunction(onPress) && !disabled) {
       return <TouchableWithoutFeedback onPress={this.onPress}>{checkbox}</TouchableWithoutFeedback>;
     }
 

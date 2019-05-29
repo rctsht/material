@@ -34,6 +34,8 @@ function withPanResponder(Component: React.ComponentType<*>) {
       active: false,
     };
 
+    captureId: ?string;
+
     componentWillUnmount() {
       this.destroyPanResponder();
     }
@@ -120,8 +122,6 @@ function withPanResponder(Component: React.ComponentType<*>) {
         active: false,
       });
     };
-
-    captureId: ?string;
 
     render() {
       const {panResponder, panHandlers, active} = this.state;

@@ -307,7 +307,7 @@ class ChipInput extends React.PureComponent<Props, State> {
           </ScrollView>
         ) : null}
         <View style={styles.textInputWrapper}>
-          {/* @TODO Use <Type /> */}
+          {/* @TODO Use <Type.Default /> */}
           <Text
             style={[
               isFocused || value ? styles.labelShrink : styles.label,
@@ -316,7 +316,7 @@ class ChipInput extends React.PureComponent<Props, State> {
             ]}
           >
             {labelText}
-            {/* @TODO Use <Type />, implement required? */}
+            {/* @TODO Use <Type.Default />, implement required? */}
             {/* {required ? <Text style={styles.asteriskText}>*</Text> : null} */}
           </Text>
           <TextInput

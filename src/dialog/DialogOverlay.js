@@ -9,14 +9,15 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
     bottom: 0,
-    // zIndex: 1000,
-    // elevation: 100,
   },
 });
 
 type Props = {};
 
-type State = {};
+type State = {
+  contents: Array<{Component: React.ComponentType<*>, props: {id: string}}>,
+  extraProps: {},
+};
 
 class DialogOverlay extends React.PureComponent<Props, State> {
   constructor(props: Props) {
@@ -32,10 +33,23 @@ class DialogOverlay extends React.PureComponent<Props, State> {
     this.setState({extraProps}, callback);
   };
 
-  addOrUpdateContent = (Component: React.ComponentType<any>, props: {} = {}) => {
-    this.setState(currentState => ({
-      contents: [...currentState.contents.filter(content => content.props.id !== props.id), {Component, props}],
-    }));
+  addOrUpdateContent = (Component: React.ComponentType<*>, theProps: {id: string}) => {
+    this.setState(currentState => {
+      if (currentState.contents.some(content => content.props.id === theProps.id)) {
+        return {
+          contents: currentState.contents.map(content => {
+            if (content.props.id === theProps.id) {
+              return {Component, props: theProps};
+            }
+
+            return content;
+          }),
+        };
+      }
+      return {
+        contents: [...currentState.contents, {Component, props: theProps}],
+      };
+    });
   };
 
   removeContent = (id: string) => {
@@ -47,7 +61,7 @@ class DialogOverlay extends React.PureComponent<Props, State> {
   render() {
     const {contents, extraProps} = this.state;
 
-    return contents.map(content => {
+    return contents.map<React.Node>(content => {
       const {Component, props} = content;
       return (
         <View style={styles.container} pointerEvents="box-none" key={props.id}>

@@ -35,7 +35,7 @@ const DialogTitle = (props: Props) => {
   return (
     <View>
       <View style={styles.container}>
-        <Type style={styles.title}>{title}</Type>
+        <Type.Default style={styles.title}>{title}</Type.Default>
       </View>
       {divider ? <Divider fullWidth /> : null}
     </View>

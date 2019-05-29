@@ -4,9 +4,8 @@ import * as React from 'react';
 import uuid from 'uuid';
 
 import {getNavigation} from '../navigation';
-import {withTheme} from '../theme';
 
-import type Sheet from './Sheet';
+import typeof Sheet from './Sheet';
 import SheetContext from './SheetContext';
 import SheetOverlay from './SheetOverlay';
 
@@ -14,11 +13,13 @@ type Props = {
   navigation: {},
 };
 
-function withSheetOverlay(Component: React.ComponentType<any>, type: string, global: boolean = false) {
+function withSheetOverlay(Component: React.ComponentType<*>, type: string, global: boolean = false) {
   class ComponentWithSheetOverlay extends React.PureComponent<Props> {
-    id = null;
+    id: string = null;
 
-    getOverlayRef;
+    sheetRef: ?Sheet;
+
+    getOverlayRef: ((SheetOverlay) => void) => void;
 
     constructor(props: Props) {
       super(props);
@@ -57,12 +58,6 @@ function withSheetOverlay(Component: React.ComponentType<any>, type: string, glo
     setSheetRef = (node: ?Sheet) => {
       this.sheetRef = node;
     };
-
-    sheetRef: ?Sheet;
-
-    getOverlayRef: ((SheetOverlay) => void) => void;
-
-    id: string;
 
     renderContent() {
       const navigation = getNavigation();

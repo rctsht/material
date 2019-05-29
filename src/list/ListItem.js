@@ -55,7 +55,7 @@ class ListItem extends React.PureComponent<Props, State> {
     trailingIcon: null,
   };
 
-  constructor(props) {
+  constructor(props: Props) {
     super(props);
 
     const {initialExpanded} = props;
@@ -104,9 +104,9 @@ class ListItem extends React.PureComponent<Props, State> {
           {leadingIcon}
           <View style={styles.label}>
             {isString(label) ? (
-              <Type numberOfLines={1} preset={typePresets.body1}>
+              <Type.Default numberOfLines={1} preset={typePresets.body1}>
                 {label}
-              </Type>
+              </Type.Default>
             ) : (
               label
             )}

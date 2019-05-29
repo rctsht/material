@@ -2,6 +2,7 @@
 import * as React from 'react';
 import {Platform, StyleSheet, TouchableNativeFeedback, View} from 'react-native';
 import type {ViewStyleProp} from 'react-native/Libraries/StyleSheet/StyleSheet';
+import type {PressEvent} from 'react-native/Libraries/Types/CoreEventTypes';
 
 import {Icon} from '../icon';
 import {type ThemeProps, withTheme} from '../theme';
@@ -24,15 +25,20 @@ type Props = {
   allowOverflow: boolean,
   containerStyle: ViewStyleProp,
   icon: React.Node,
-  onPress: () => void,
+  onPress?: ?(PressEvent) => void,
+  onPressIn?: ?(PressEvent) => void,
+  onPressOut?: ?(PressEvent) => void,
+  onLongPress?: ?(PressEvent) => void,
   rctshtTheme: ThemeProps,
   useForeground: boolean,
 };
 
 class CircleButton extends React.PureComponent<Props> {
   static defaultProps = {
-    icon: null,
     allowOverflow: false,
+    containerStyle: null,
+    icon: null,
+    useForeground: false,
   };
 
   render() {
@@ -43,6 +49,9 @@ class CircleButton extends React.PureComponent<Props> {
       rctshtTheme,
       containerStyle,
       useForeground: maybeUseForeground,
+      onPressIn,
+      onPressOut,
+      onLongPress,
       ...rest
     } = this.props;
 
@@ -67,6 +76,9 @@ class CircleButton extends React.PureComponent<Props> {
             ...(Array.isArray(containerStyle) ? containerStyle : [containerStyle]),
           ]}
           onPress={onPress}
+          onPressIn={onPressIn}
+          onPressOut={onPressOut}
+          onLongPress={onLongPress}
           useForeground={useForeground}
         >
           {/* $FlowFixMe */}
