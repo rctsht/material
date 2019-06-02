@@ -32,6 +32,9 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'flex-start',
     justifyContent: 'center',
+    marginLeft: 0,
+  },
+  labelLeftAction: {
     marginLeft: 26,
   },
   labelNoLeftAction: {
@@ -40,6 +43,12 @@ const styles = StyleSheet.create({
   rightAction: {
     marginLeft: 12,
     marginRight: 0,
+  },
+  tag: {
+    flex: 0,
+  },
+  menu: {
+    marginRight: 8,
   },
   menuOptionText: {
     flex: 1,
@@ -67,7 +76,7 @@ const menuTriggerStyles = {
     alignItems: 'center',
     justifyContent: 'center',
     marginLeft: 6,
-    marginRight: 4,
+    marginRight: -4,
   },
   triggerTouchable: {},
 };
@@ -92,8 +101,9 @@ type RightActionItem = {
 };
 
 type Props = {
-  label: string | React.Node,
-  leftIcon: string | React.Node,
+  tag: React.Node,
+  label: React.Node,
+  leftIcon: React.Node,
   leftNode?: React.Node,
   onPressLeftIcon: ?() => void,
   rightActions: Array<RightActionItem>,
@@ -104,6 +114,7 @@ type Props = {
 class TopBar extends React.Component<Props> {
   static defaultProps = {
     rightActions: [],
+    tag: null,
   };
 
   filterRightActionsByShow = (rightAction: RightActionItem) => {
@@ -171,7 +182,7 @@ class TopBar extends React.Component<Props> {
   };
 
   render() {
-    const {label, leftNode, leftIcon, onPressLeftIcon, rctshtTheme, rightActions, style} = this.props;
+    const {label, leftNode, leftIcon, onPressLeftIcon, rctshtTheme, rightActions, style, tag} = this.props;
 
     let leftAction =
       typeof leftIcon === 'string' ? <Icon name={leftIcon} size={24} color={rctshtTheme.colors.onPrimary} /> : leftIcon;
@@ -197,7 +208,7 @@ class TopBar extends React.Component<Props> {
     };
 
     const ellipsisMenu = ellipsisMenuActions.length ? (
-      <Menu>
+      <Menu style={styles.menu}>
         <MenuTrigger customStyles={menuTriggerStyles}>
           <Icon name="dots-vertical" size={24} color={rctshtTheme.colors.onPrimary} />
         </MenuTrigger>
@@ -218,8 +229,23 @@ class TopBar extends React.Component<Props> {
         ]}
       >
         {leftNode != null ? leftNode : leftAction}
-        <View style={[styles.label, leftAction ? null : styles.labelNoLeftAction]}>
-          {typeof label === 'string' ? <Type.H6 style={{color: rctshtTheme.colors.onPrimary}}>{label}</Type.H6> : label}
+        {tag != null ? (
+          <View style={[styles.tag, leftAction ? styles.labelLeftAction : styles.labelNoLeftAction]}>{tag}</View>
+        ) : null}
+        <View
+          style={[
+            styles.label,
+            leftAction && tag == null ? styles.labelLeftAction : null,
+            leftAction || tag != null ? null : styles.labelNoLeftAction,
+          ]}
+        >
+          {typeof label === 'string' ? (
+            <Type.H6 style={{color: rctshtTheme.colors.onPrimary}} numberOfLines={1}>
+              {label}
+            </Type.H6>
+          ) : (
+            label
+          )}
         </View>
         {rightActions.filter(this.filterRightActionsByShow).map(this.renderRightAction)}
         {ellipsisMenu}
