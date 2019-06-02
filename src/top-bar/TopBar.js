@@ -41,6 +41,9 @@ const styles = StyleSheet.create({
     marginLeft: 12,
     marginRight: 0,
   },
+  menu: {
+    marginRight: 8,
+  },
   menuOptionText: {
     flex: 1,
     fontSize: 15,
@@ -67,7 +70,7 @@ const menuTriggerStyles = {
     alignItems: 'center',
     justifyContent: 'center',
     marginLeft: 6,
-    marginRight: 4,
+    marginRight: -4,
   },
   triggerTouchable: {},
 };
@@ -197,7 +200,7 @@ class TopBar extends React.Component<Props> {
     };
 
     const ellipsisMenu = ellipsisMenuActions.length ? (
-      <Menu>
+      <Menu style={styles.menu}>
         <MenuTrigger customStyles={menuTriggerStyles}>
           <Icon name="dots-vertical" size={24} color={rctshtTheme.colors.onPrimary} />
         </MenuTrigger>
