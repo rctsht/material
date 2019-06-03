@@ -114,7 +114,7 @@ type Props = {
   trailingIcon?: string | React.Node,
   trailingIconColor?: string,
   value: string,
-  forwardedRef: (?TextInput) => void,
+  forwardedRef?: (?TextInput) => void,
   onFocus?: ?() => void,
   onBlur?: ?() => void,
   multiline?: boolean,
