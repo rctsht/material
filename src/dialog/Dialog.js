@@ -75,6 +75,7 @@ type Props = {
   renderToolbar: ?() => React.Node,
   noScrollView: boolean,
   scrollViewProps: {},
+  preventOverlayTap: boolean,
 };
 
 type State = {
@@ -93,6 +94,7 @@ class Dialog extends React.PureComponent<Props, State> {
     renderToolbar: null,
     noScrollView: false,
     scrollViewProps: {},
+    preventOverlayTap: false,
   };
 
   static getDerivedStateFromProps(props: Props) {
@@ -236,6 +238,7 @@ class Dialog extends React.PureComponent<Props, State> {
       scrollViewProps,
       isVisible,
       animationOrigin,
+      preventOverlayTap,
     } = this.props;
     const {visible} = this.state;
 
@@ -288,9 +291,13 @@ class Dialog extends React.PureComponent<Props, State> {
         {fullScreen ? null : (
           <TouchableWithoutFeedback
             key="overlay"
-            onPress={() => {
-              this.onClose();
-            }}
+            onPress={
+              preventOverlayTap
+                ? null
+                : () => {
+                    this.onClose();
+                  }
+            }
           >
             <Animated.View
               style={[
