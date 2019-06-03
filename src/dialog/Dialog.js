@@ -33,6 +33,7 @@ const styles = StyleSheet.create({
     margin: 16,
     padding: 0,
     borderRadius: 3,
+    flex: -1,
   },
   modalContainerFullScreen: {
     backgroundColor: '#fff',
