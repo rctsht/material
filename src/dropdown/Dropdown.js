@@ -139,6 +139,7 @@ class Picker extends React.PureComponent<Props> {
             // isFocused ? {borderBottomColor: rctshtTheme.colors.primary} : null,
             errorText != null ? styles.inputWrapperError : null,
             // multiline && height > 0 ? {height: height + 8} : null,
+            {backgroundColor: rctshtTheme.components.textField.filled.backgroundColor},
           ]}
         >
           {leadingIcon != null ? (
