@@ -4,7 +4,7 @@ import {Platform, StatusBar, StyleSheet, TouchableNativeFeedback, View} from 're
 import {Menu, MenuOptions, MenuOption, MenuTrigger} from 'react-native-popup-menu';
 import type {ViewStyleProp} from 'react-native/Libraries/StyleSheet/StyleSheet';
 
-import {CircleButton} from '../button';
+import {Button, CircleButton} from '../button';
 import {Icon} from '../icon';
 import {type ThemeProps, withTheme} from '../theme';
 import {Type} from '../type';
@@ -38,7 +38,7 @@ const styles = StyleSheet.create({
     marginLeft: 26,
   },
   labelNoLeftAction: {
-    marginLeft: 32,
+    marginLeft: 16,
   },
   rightAction: {
     marginLeft: 12,
@@ -172,11 +172,22 @@ class TopBar extends React.Component<Props> {
   };
 
   renderRightAction = (rightAction: RightActionItem) => {
-    const {leadingIcon, key, onPress} = rightAction;
+    const {rctshtTheme} = this.props;
+    const {label, leadingIcon, key, onPress} = rightAction;
 
-    return (
+    return leadingIcon != null ? (
       <View style={styles.rightAction} key={key}>
         <CircleButton allowOverflow icon={leadingIcon} onPress={onPress} />
+      </View>
+    ) : (
+      <View style={styles.rightAction} key={key}>
+        <Button
+          // $FlowFixMe
+          type={Button.types.TEXT}
+          label={label}
+          onPress={onPress}
+          labelColor={rctshtTheme.colors.onPrimary}
+        />
       </View>
     );
   };
