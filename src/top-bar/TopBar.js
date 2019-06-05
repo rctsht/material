@@ -38,7 +38,7 @@ const styles = StyleSheet.create({
     marginLeft: 26,
   },
   labelNoLeftAction: {
-    marginLeft: 32,
+    marginLeft: 16,
   },
   rightAction: {
     marginLeft: 12,
