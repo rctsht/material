@@ -38,7 +38,7 @@ const styles = StyleSheet.create({
     lineHeight: 32,
   },
   presetH6: {
-    fontWeight: '500',
+    fontWeight: 'bold',
     fontSize: 20,
     lineHeight: 32,
   },
@@ -47,7 +47,7 @@ const styles = StyleSheet.create({
     lineHeight: 28,
   },
   presetSubtitle2: {
-    fontWeight: '500',
+    fontWeight: 'bold',
     fontSize: 14,
     lineHeight: 24,
   },
@@ -60,7 +60,7 @@ const styles = StyleSheet.create({
     lineHeight: 20,
   },
   presetButton: {
-    fontWeight: '500',
+    fontWeight: 'bold',
     fontSize: 14,
   },
   presetCaption: {
@@ -68,12 +68,12 @@ const styles = StyleSheet.create({
     lineHeight: 12,
   },
   presetOverline: {
-    fontWeight: '500',
+    fontWeight: 'bold',
     fontSize: 10,
     lineHeight: 10,
   },
   bold: {
-    fontWeight: '500',
+    fontWeight: 'bold',
   },
   notBold: {
     fontWeight: 'normal',
