@@ -1,20 +1,24 @@
 // @flow strict-local
 import * as React from 'react';
-import {StyleSheet, View} from 'react-native';
+import {Dimensions, StyleSheet, View} from 'react-native';
 import uuid from 'uuid';
 
 import {GlobalOverlay, withGlobalOverlay} from '../global';
-import {Type, typePresets} from '../type';
+import {Type} from '../type';
 
 const styles = StyleSheet.create({
   container: {
     borderRadius: 4,
-    paddingHorizontal: 16,
+    paddingHorizontal: 12,
+    paddingVertical: 6,
     backgroundColor: '#616161e6',
     minHeight: 32,
     alignItems: 'center',
     justifyContent: 'center',
     position: 'absolute',
+  },
+  text: {
+    color: '#ffffff',
   },
 });
 
@@ -26,6 +30,9 @@ type Props = {
 
 type State = {
   width: 'auto' | number,
+  height: 'auto' | number,
+  windowWidth: number,
+  windowHeight: number,
 };
 
 class Tooltip extends React.PureComponent<Props, State> {
@@ -83,36 +90,53 @@ class Tooltip extends React.PureComponent<Props, State> {
     context.removeTooltip(id);
   };
 
-  state = {
-    width: 'auto',
-  };
+  constructor(props: Props) {
+    super(props);
+
+    const {width, height} = Dimensions.get('window');
+
+    this.state = {
+      width: 'auto',
+      height: 'auto',
+      windowWidth: width,
+      windowHeight: height,
+    };
+  }
 
   onLayout = event => {
-    const {width} = event.nativeEvent.layout;
+    const {width, height} = event.nativeEvent.layout;
 
     this.setState({
       width,
+      height,
     });
   };
 
   render() {
     const {pageX, pageY, text} = this.props;
-    const {width} = this.state;
+    const {width, height, windowWidth, windowHeight} = this.state;
 
     return (
       <View
         style={[
           styles.container,
           {
-            top: pageY - 32,
-            left: pageX - (width === 'auto' ? 0 : width / 2),
+            maxWidth: Math.min(320, windowWidth - 32),
+            bottom: Math.min(
+              windowHeight - (height === 'auto' ? 0 : height + 16),
+              Math.max(16, windowHeight - pageY + 32),
+            ),
+            left: Math.min(
+              windowWidth - (width === 'auto' ? 0 : width + 16),
+              Math.max(16, pageX - (width === 'auto' ? 0 : width / 2)),
+            ),
             width,
             opacity: width === 'auto' ? 0 : 1,
           },
         ]}
         onLayout={this.onLayout}
       >
-        <Type.Default preset={typePresets.body2}>{text}</Type.Default>
+        <Type.Body2 style={styles.text}>{text}</Type.Body2>
       </View>
     );
   }

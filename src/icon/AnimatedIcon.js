@@ -48,7 +48,7 @@ class Icon extends React.PureComponent<Props, State> {
 
   oldOpacity = new Animated.Value(1);
 
-  componentWillReceiveProps(nextProps: Props) {
+  UNSAFE_componentWillReceiveProps(nextProps: Props) {
     const {rctshtTheme} = nextProps;
 
     this.rotation.setValue(-1);

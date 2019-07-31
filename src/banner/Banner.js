@@ -57,7 +57,7 @@ type Props = {
 };
 
 class Banner extends React.PureComponent<Props> {
-  componentWillReceiveProps(nextProps: Props) {
+  UNSAFE_componentWillReceiveProps(nextProps: Props) {
     const {visible} = this.props;
     const {visible: nextVisible} = nextProps;
 
