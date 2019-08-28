@@ -15,7 +15,11 @@ const styles = StyleSheet.create({
 type Props = {};
 
 type State = {
-  contents: Array<{Component: React.ComponentType<*>, props: {id: string}}>,
+  contents: Array<{
+    // $FlowFixMe
+    Component: React.ComponentType<any>,
+    props: {id: string},
+  }>,
   extraProps: {},
 };
 
@@ -33,7 +37,8 @@ class DialogOverlay extends React.PureComponent<Props, State> {
     this.setState({extraProps}, callback);
   };
 
-  addOrUpdateContent = (Component: React.ComponentType<*>, theProps: {id: string}) => {
+  // $FlowFixMe
+  addOrUpdateContent = (Component: React.ComponentType<any>, theProps: {id: string}) => {
     this.setState(currentState => {
       if (currentState.contents.some(content => content.props.id === theProps.id)) {
         return {
