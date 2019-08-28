@@ -15,13 +15,9 @@ type Props = {
 };
 
 class ListItemGroup extends React.PureComponent<Props> {
-  static defaultProps = {
-    divider: false,
-  };
-
   render() {
     const {children, divider, ...rest} = this.props;
-    const propsToApply = {divider, ...rest};
+    const propsToApply = divider !== undefined ? {divider, ...rest} : {...rest};
 
     return (
       <View style={divider ? styles.divider : null}>
