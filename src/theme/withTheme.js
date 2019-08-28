@@ -11,7 +11,7 @@ type Props<Instance> = {
 
 function withTheme<Config: {}, Instance>(
   Component: React.AbstractComponent<Config, Instance>,
-): React.AbstractComponent<$Diff<Config, {rctshtTheme: ThemeProps | void}>, Instance> {
+): React.AbstractComponent<$Diff<Config, {rctshtTheme: ThemeProps | void}>> {
   class ThemedComponent extends React.PureComponent<$Diff<Config, {rctshtTheme: ThemeProps | void}> & Props<Instance>> {
     render() {
       const {forwardedRef, ...rest} = this.props;
@@ -25,9 +25,10 @@ function withTheme<Config: {}, Instance>(
   }
 
   /* eslint-disable react/no-multi-comp */
-  const ThemedComponentWithForwardRef = React.forwardRef<$Diff<Config, {rctshtTheme: ThemeProps | void}>, Instance>(
-    (props, ref) => <ThemedComponent {...props} forwardedRef={ref} />,
-  );
+  const ThemedComponentWithForwardRef = React.forwardRef<
+    $Diff<Config, {rctshtTheme: ThemeProps | void, ...Props<Instance>}>,
+    Instance,
+  >((props, ref) => <ThemedComponent {...props} forwardedRef={ref} />);
   /* eslint-enable react/no-multi-comp */
 
   hoistNonReactStatics(ThemedComponentWithForwardRef, Component);
