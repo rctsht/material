@@ -63,21 +63,25 @@ const styles = StyleSheet.create({
   },
 });
 
-type Props = {
+type DefaultProps = {|
   animationOrigin: 'top' | 'bottom' | 'left' | 'right' | 'topleft' | 'topright' | 'bottomleft' | 'bottomright',
   children: React.Node,
-  getOverlayRef: ((DialogOverlay) => void) => void,
-  id: string,
   isVisible: boolean,
   maxWidth: ?number,
   noPadding: boolean,
   onClose: ?() => void,
-  rctshtTheme: ThemeProps,
   fullScreen: boolean,
   renderToolbar: ?() => React.Node,
   noScrollView: boolean,
   scrollViewProps: {},
   preventOverlayTap: boolean,
+|};
+
+type Props = {
+  ...DefaultProps,
+  getOverlayRef: ((DialogOverlay) => void) => void,
+  id: string,
+  rctshtTheme: ThemeProps,
 };
 
 type State = {
@@ -85,7 +89,7 @@ type State = {
 };
 
 class Dialog extends React.PureComponent<Props, State> {
-  static defaultProps = {
+  static defaultProps: DefaultProps = {
     animationOrigin: 'bottomright',
     children: null,
     isVisible: false,
@@ -252,7 +256,7 @@ class Dialog extends React.PureComponent<Props, State> {
     let translateAnimationY;
     let opacityAnimation;
 
-    if (fullScreen) {
+    if (fullScreen && animationOrigin) {
       const {width, height} = Dimensions.get('window');
 
       let xStart = 0;
@@ -369,4 +373,4 @@ class Dialog extends React.PureComponent<Props, State> {
   }
 }
 
-export default withTheme<Props, Dialog>(Dialog);
+export default withTheme<React.Config<Props, DefaultProps>, Dialog>(Dialog);

@@ -25,9 +25,9 @@ function withTheme<Config: {}, Instance>(
   }
 
   /* eslint-disable react/no-multi-comp */
-  const ThemedComponentWithForwardRef = React.forwardRef<Config, Instance>((props, ref) => (
-    <ThemedComponent {...props} forwardedRef={ref} />
-  ));
+  const ThemedComponentWithForwardRef = React.forwardRef<$Diff<Config, {rctshtTheme: ThemeProps | void}>, Instance>(
+    (props, ref) => <ThemedComponent {...props} forwardedRef={ref} />,
+  );
   /* eslint-enable react/no-multi-comp */
 
   hoistNonReactStatics(ThemedComponentWithForwardRef, Component);
