@@ -6,8 +6,12 @@ import uuid from 'uuid';
 import DialogContext from './DialogContext';
 import DialogOverlay from './DialogOverlay';
 
-export default function withDialogOverlay(Component: React.ComponentType<*>) {
-  class ComponentWithDialogOverlay extends React.PureComponent<*> {
+export default function withDialogOverlay<Config: {}>(
+  Component: React.ComponentType<Config>,
+): React.ComponentType<$Diff<Config, {id: string | void, getOverlayRef: (DialogOverlay => void) | void}>> {
+  class ComponentWithDialogOverlay extends React.PureComponent<
+    $Diff<Config, {id: string | void, getOverlayRef: (DialogOverlay => void) | void}>,
+  > {
     getOverlayRef: ?((DialogOverlay) => void) => void;
 
     id: string;
@@ -37,7 +41,11 @@ export default function withDialogOverlay(Component: React.ComponentType<*>) {
     renderContent() {
       if (this.getOverlayRef) {
         this.getOverlayRef(overlay => {
-          overlay.addOrUpdateContent(Component, {...this.props, id: this.id, getOverlayRef: this.getOverlayRef});
+          overlay.addOrUpdateContent<Config>(Component, {
+            ...this.props,
+            id: this.id,
+            getOverlayRef: this.getOverlayRef,
+          });
         });
       }
     }
