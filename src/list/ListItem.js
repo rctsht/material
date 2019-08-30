@@ -29,16 +29,21 @@ const styles = StyleSheet.create({
   },
 });
 
-type Props = {
+type DefaultProps = {|
   children: React.Node,
   divider: boolean,
   expanding: boolean,
   initialExpanded: boolean,
-  label: string | React.Node,
   leadingIcon: React.Node,
   onPress: ?() => void,
-  rctshtTheme: ThemeProps,
+  selected: boolean,
   trailingIcon: React.Node,
+|}
+
+type Props = {
+  ...DefaultProps,
+  label: string | React.Node,
+  rctshtTheme: ThemeProps,
 };
 
 type State = {
@@ -46,7 +51,9 @@ type State = {
 };
 
 class ListItem extends React.PureComponent<Props, State> {
-  static defaultProps = {
+  static defaultProps: DefaultProps = {
+    children: null,
+    divider: false,
     initialExpanded: false,
     expanding: false,
     onPress: null,
@@ -121,4 +128,4 @@ class ListItem extends React.PureComponent<Props, State> {
   }
 }
 
-export default withTheme(ListItem);
+export default withTheme<React.Config<Props, DefaultProps>, ListItem>(ListItem);
