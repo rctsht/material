@@ -173,11 +173,11 @@ class TopBar extends React.Component<Props> {
 
   renderRightAction = (rightAction: RightActionItem) => {
     const {rctshtTheme} = this.props;
-    const {label, leadingIcon, key, onPress} = rightAction;
+    const {disabled, label, leadingIcon, key, onPress} = rightAction;
 
     return leadingIcon != null ? (
       <View style={styles.rightAction} key={key}>
-        <CircleButton allowOverflow icon={leadingIcon} onPress={onPress} />
+        <CircleButton allowOverflow icon={leadingIcon} onPress={onPress} disabled={disabled}/>
       </View>
     ) : (
       <View style={styles.rightAction} key={key}>
@@ -187,6 +187,7 @@ class TopBar extends React.Component<Props> {
           label={label}
           onPress={onPress}
           labelColor={rctshtTheme.colors.onPrimary}
+          disabled={disabled}
         />
       </View>
     );
