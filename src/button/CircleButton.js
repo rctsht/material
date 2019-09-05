@@ -31,6 +31,7 @@ type Props = {
   onLongPress?: ?(PressEvent) => void,
   rctshtTheme: ThemeProps,
   useForeground: boolean,
+  disabled: boolean,
 };
 
 class CircleButton extends React.PureComponent<Props> {
@@ -39,6 +40,7 @@ class CircleButton extends React.PureComponent<Props> {
     containerStyle: null,
     icon: null,
     useForeground: false,
+    disabled: false,
   };
 
   render() {
@@ -52,6 +54,7 @@ class CircleButton extends React.PureComponent<Props> {
       onPressIn,
       onPressOut,
       onLongPress,
+      disabled,
       ...rest
     } = this.props;
 
@@ -65,8 +68,10 @@ class CircleButton extends React.PureComponent<Props> {
         style={[
           styles.container,
           allowOverflow ? null : styles.overflowHidden,
+          disabled ? {opacity: 0.25} : null,
           ...(Array.isArray(containerStyle) ? containerStyle : [containerStyle]),
         ]}
+        needsOffscreenAlphaCompositing
       >
         <Touchable
           background={background}
@@ -80,6 +85,7 @@ class CircleButton extends React.PureComponent<Props> {
           onPressOut={onPressOut}
           onLongPress={onLongPress}
           useForeground={useForeground}
+          disabled={disabled}
         >
           {/* $FlowFixMe */}
           {icon || <Icon size={24} color={rctshtTheme.colors.primary} {...rest} />}
