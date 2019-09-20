@@ -177,18 +177,11 @@ class TopBar extends React.Component<Props> {
 
     return leadingIcon != null ? (
       <View style={styles.rightAction} key={key}>
-        <CircleButton allowOverflow icon={leadingIcon} onPress={onPress} disabled={disabled}/>
+        <CircleButton allowOverflow icon={leadingIcon} onPress={onPress} disabled={disabled} />
       </View>
     ) : (
       <View style={styles.rightAction} key={key}>
-        <Button
-          // $FlowFixMe
-          type={Button.types.TEXT}
-          label={label}
-          onPress={onPress}
-          labelColor={rctshtTheme.colors.onPrimary}
-          disabled={disabled}
-        />
+        <Button.Text label={label} onPress={onPress} labelColor={rctshtTheme.colors.onPrimary} disabled={disabled} />
       </View>
     );
   };

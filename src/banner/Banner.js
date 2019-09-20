@@ -87,7 +87,7 @@ class Banner extends React.PureComponent<Props> {
             const {key = index, ...rest} = action;
             return (
               <View style={styles.actionButtonWrapper} key={key}>
-                <Button {...rest} />
+                <Button.Text {...rest} />
               </View>
             );
           })}

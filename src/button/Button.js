@@ -1,4 +1,6 @@
 // @flow strict-local
+/* eslint-disable max-classes-per-file */
+/* eslint-disable react/static-property-placement */
 import {isString} from 'lodash-es';
 import * as React from 'react';
 import {StyleSheet, TouchableNativeFeedback, View} from 'react-native';
@@ -179,4 +181,27 @@ class Button extends React.PureComponent<Props> {
   }
 }
 
-export default withTheme<React.Config<Props, DefaultProps>, Button>(Button);
+const ButtonWithTheme = {
+  Text: withTheme<React.Config<Props, DefaultProps>, Button>(
+    class Text extends Button {
+      static defaultProps = {...Button.defaultProps, type: Button.types.TEXT};
+    },
+  ),
+  Contained: withTheme<React.Config<Props, DefaultProps>, Button>(
+    class Contained extends Button {
+      static defaultProps = {...Button.defaultProps, type: Button.types.CONTAINED};
+    },
+  ),
+  Outlined: withTheme<React.Config<Props, DefaultProps>, Button>(
+    class Outlined extends Button {
+      static defaultProps = {...Button.defaultProps, type: Button.types.OUTLINED};
+    },
+  ),
+  Toggle: withTheme<React.Config<Props, DefaultProps>, Button>(
+    class Toggle extends Button {
+      static defaultProps = {...Button.defaultProps, type: Button.types.TOGGLE};
+    },
+  ),
+};
+
+export default ButtonWithTheme;

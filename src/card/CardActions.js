@@ -69,7 +69,7 @@ class CardActions extends React.Component<Props> {
     const [leftActions, rightActions] = partition(actions, action => action.align === 'left');
 
     // $FlowFixMe
-    const renderAction = action => <Button key={`content-${action.id}`} {...action} type={Button.types.TEXT} />;
+    const renderAction = action => <Button.Text key={`content-${action.id}`} {...action} />;
 
     return (
       <View>

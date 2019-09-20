@@ -149,7 +149,7 @@ class Snackbar extends React.PureComponent<Props> {
       }
     };
 
-    const actionNode = action ? <Button type={Button.types.TEXT} {...action} onPress={onPress} /> : null;
+    const actionNode = action ? <Button.Text {...action} onPress={onPress} /> : null;
 
     return (
       <Animated.View
