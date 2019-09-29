@@ -142,4 +142,4 @@ class Tooltip extends React.PureComponent<Props, State> {
   }
 }
 
-export default withGlobalOverlay(Tooltip);
+export default withGlobalOverlay(Tooltip, 'tooltip');
