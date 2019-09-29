@@ -1,6 +1,6 @@
 // @flow strict-local
 import * as React from 'react';
-import {ScrollView, StyleSheet, View} from 'react-native';
+import {FlatList, StyleSheet, View} from 'react-native';
 import type AnimatedInterpolation from 'react-native/Libraries/Animated/src/nodes/AnimatedInterpolation';
 import type {LayoutEvent, PressEvent} from 'react-native/Libraries/Types/CoreEventTypes';
 
@@ -105,8 +105,9 @@ class PickerList extends React.PureComponent<Props, State> {
     });
   };
 
-  renderItem = (item: Item, index: number) => {
+  renderItem = (options: {item: Item, index: number}) => {
     const {onPressListItem, renderListItem, selectedValue} = this.props;
+    const {item, index} = options;
 
     return (
       <PickerListItem
@@ -157,7 +158,7 @@ class PickerList extends React.PureComponent<Props, State> {
           onMoveShouldSetResponder={() => true}
           onMoveShouldSetResponderCapture={() => true}
         />
-        <ScrollView
+        <FlatList
           style={[
             styles.pickerList,
             {
@@ -173,14 +174,21 @@ class PickerList extends React.PureComponent<Props, State> {
           ]}
           onLayout={this.onLayoutList}
           keyboardShouldPersistTaps="handled"
-        >
-          {showCaret
-            ? renderSelectedItem({index: selectedItemIndex, item: selectedItem, selected: true, open: true})
-            : null}
-          {showCaret ? <Divider fullWidth /> : null}
-          {items && items.length > 0 ? items.map(this.renderItem) : null}
-          {typeof renderFooter === 'function' ? renderFooter() : null}
-        </ScrollView>
+          ListHeaderComponent={() => {
+            return (
+              <View>
+                {showCaret
+                  ? renderSelectedItem({index: selectedItemIndex, item: selectedItem, selected: true, open: true})
+                  : null}
+                {showCaret ? <Divider fullWidth /> : null}
+              </View>
+            );
+          }}
+          ListFooterComponent={renderFooter}
+          data={items}
+          renderItem={this.renderItem}
+          keyExtractor={item => (typeof item.value === 'string' ? item.value : 'null')}
+        />
       </View>
     );
   }
