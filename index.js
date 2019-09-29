@@ -31,3 +31,4 @@ export * from './src/tooltip';
 export * from './src/top-bar';
 export * from './src/touchable';
 export * from './src/type';
+export * from './src/types';
