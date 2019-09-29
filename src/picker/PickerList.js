@@ -27,6 +27,7 @@ const styles = StyleSheet.create({
 });
 
 type Item = {
+  disabled?: boolean,
   label: string,
   value: ?string,
 };
@@ -35,8 +36,9 @@ type Props = {
   isVisible: boolean,
   items: Array<Item>,
   onClose?: ?() => void,
-  onPressListItem?: ?(event: PressEvent, value: ?string) => void,
+  onPressListItem?: ?(event: PressEvent, item: Item) => void,
   pickerWidth: number,
+  pickerHeight: number,
   pickerX: number,
   pickerY: number,
   renderFooter?: ?() => React.Node,
@@ -53,6 +55,7 @@ type State = {
   height: number,
   listWidth: number,
   listHeight: number,
+  showCaret: boolean,
 };
 
 class PickerList extends React.PureComponent<Props, State> {
@@ -66,6 +69,7 @@ class PickerList extends React.PureComponent<Props, State> {
       height: windowHeight,
       listWidth: 0,
       listHeight: 0,
+      showCaret: true,
     };
   }
 
@@ -80,10 +84,24 @@ class PickerList extends React.PureComponent<Props, State> {
 
   onLayoutList = (event: LayoutEvent) => {
     const {width: listWidth, height: listHeight} = event.nativeEvent.layout;
+    const {pickerX, pickerY, pickerHeight} = this.props;
 
-    this.setState({
-      listWidth,
-      listHeight,
+    this.setState(oldState => {
+      const {width, height, showCaret} = oldState;
+
+      let newShowCaret;
+
+      if (showCaret) {
+        newShowCaret = pickerY + listHeight <= height - 16 && pickerX + listWidth <= width - 16;
+      } else {
+        newShowCaret = pickerY + listHeight + pickerHeight <= height - 16 && pickerX + listWidth <= width - 16;
+      }
+
+      return {
+        listWidth,
+        listHeight,
+        showCaret: newShowCaret,
+      };
     });
   };
 
@@ -108,6 +126,7 @@ class PickerList extends React.PureComponent<Props, State> {
       items,
       onClose,
       pickerWidth,
+      pickerHeight,
       pickerX,
       pickerY,
       renderFooter,
@@ -116,7 +135,7 @@ class PickerList extends React.PureComponent<Props, State> {
       selectedValue,
     } = this.props;
 
-    const {width, height, listWidth, listHeight} = this.state;
+    const {width, height, listWidth, listHeight, showCaret} = this.state;
 
     if (!isVisible) {
       return null;
@@ -124,8 +143,6 @@ class PickerList extends React.PureComponent<Props, State> {
 
     const selectedItem = items.find(item => item.value === selectedValue);
     const selectedItemIndex = items.indexOf(selectedItem);
-
-    const showCaret = pickerY + listHeight <= height - 16 && pickerX + listWidth <= width - 16;
 
     return (
       <View style={styles.container} onLayout={this.onLayout}>
@@ -145,8 +162,8 @@ class PickerList extends React.PureComponent<Props, State> {
             styles.pickerList,
             {
               position: 'absolute',
-              top: pickerY + listHeight > height - 16 ? undefined : pickerY,
-              bottom: pickerY + listHeight > height - 16 ? 16 : undefined,
+              top: pickerY + listHeight + (showCaret ? 0 : pickerHeight) > height - 16 ? undefined : pickerY,
+              bottom: pickerY + listHeight + (showCaret ? 0 : pickerHeight) > height - 16 ? 16 : undefined,
               left: pickerX + listWidth > width - 16 ? undefined : pickerX,
               right: pickerX + listWidth > width - 16 ? 16 : undefined,
               minWidth: Math.max(200, pickerWidth),
@@ -160,7 +177,7 @@ class PickerList extends React.PureComponent<Props, State> {
           {showCaret
             ? renderSelectedItem({index: selectedItemIndex, item: selectedItem, selected: true, open: true})
             : null}
-          <Divider fullWidth />
+          {showCaret ? <Divider fullWidth /> : null}
           {items && items.length > 0 ? items.map(this.renderItem) : null}
           {typeof renderFooter === 'function' ? renderFooter() : null}
         </ScrollView>

@@ -11,7 +11,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    paddingRight: 8,
+    paddingHorizontal: 8,
   },
   item: {
     padding: 8,
@@ -23,6 +23,7 @@ const styles = StyleSheet.create({
 });
 
 type Item = {
+  disabled?: boolean,
   label: string,
   value: ?string,
 };
@@ -30,7 +31,7 @@ type Item = {
 type Props = {
   index: number,
   item: Item,
-  onPressListItem?: ?(event: PressEvent, value: ?string) => void,
+  onPressListItem?: ?(event: PressEvent, item: Item) => void,
   renderListItem?: ?({item: Item, selected: boolean}) => React.Node,
   selectedValue: ?string,
 };
@@ -38,10 +39,9 @@ type Props = {
 class PickerListItem extends React.PureComponent<Props> {
   onPress = (event: PressEvent) => {
     const {item, onPressListItem} = this.props;
-    const {value} = item;
 
     if (typeof onPressListItem === 'function') {
-      onPressListItem(event, value);
+      onPressListItem(event, item);
     }
   };
 
@@ -57,7 +57,7 @@ class PickerListItem extends React.PureComponent<Props> {
     } else {
       content = (
         <View style={styles.item}>
-          <Type.Body1 bold={selected} style={item.value == null ? styles.disabled : null} numberOfLines={2}>
+          <Type.Body1 bold={selected} style={item.disabled === true ? styles.disabled : null} numberOfLines={2}>
             {item.label}
           </Type.Body1>
         </View>

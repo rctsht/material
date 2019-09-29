@@ -19,7 +19,12 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    paddingRight: 8,
+    paddingHorizontal: 8,
+    minHeight: 48,
+    elevation: 1,
+  },
+  containerOpen: {
+    elevation: 0,
   },
   selectedItem: {
     padding: 8,
@@ -31,6 +36,7 @@ const styles = StyleSheet.create({
 });
 
 type Item = {
+  disabled?: boolean,
   label: string,
   value: ?string,
 };
@@ -41,13 +47,14 @@ type Props = {
   rctshtTheme: ThemeProps,
   renderFooter?: ?() => React.Node,
   renderListItem?: ?({item: Item, selected: boolean}) => React.Node,
-  renderSelectedItem?: ?({item?: Item, selected: boolean}) => React.Node,
+  renderSelectedItem?: ?({index: number, item?: Item, selected: boolean}) => React.Node,
   value: ?string,
 };
 
 type State = {
   open: boolean,
   pickerWidth: number,
+  pickerHeight: number,
   pickerX: number,
   pickerY: number,
   windowWidth: number,
@@ -71,6 +78,7 @@ class Picker extends React.PureComponent<Props, State> {
     this.state = {
       open: false,
       pickerWidth: 0,
+      pickerHeight: 0,
       pickerX: 0,
       pickerY: 0,
       windowWidth: width,
@@ -155,18 +163,19 @@ class Picker extends React.PureComponent<Props, State> {
   };
 
   onLayout = (event: LayoutEvent) => {
-    const {width} = event.nativeEvent.layout;
+    const {width, height} = event.nativeEvent.layout;
 
     this.setState({
       pickerWidth: width,
+      pickerHeight: height,
     });
   };
 
-  onPressListItem = (event: PressEvent, value?: string) => {
+  onPressListItem = (event: PressEvent, item: Item) => {
     const {onChangeValue} = this.props;
 
-    if (value != null && typeof onChangeValue === 'function') {
-      onChangeValue(value);
+    if (item.disabled !== true && typeof onChangeValue === 'function') {
+      onChangeValue(item.value);
     }
 
     this.close();
@@ -176,7 +185,7 @@ class Picker extends React.PureComponent<Props, State> {
     this.viewRef = node;
   };
 
-  renderSelectedItem = (options: {item?: Item, selected: boolean, open?: boolean}) => {
+  renderSelectedItem = (options: {index: number, item?: Item, selected: boolean, open?: boolean}) => {
     const {item, selected, open = false} = options;
     const {renderSelectedItem} = this.props;
 
@@ -185,12 +194,12 @@ class Picker extends React.PureComponent<Props, State> {
     if (typeof renderSelectedItem === 'function') {
       content = renderSelectedItem(options);
     } else {
-      const {label, value} = item || {label: '', value: null};
+      const {label, disabled} = item || {label: '', value: null, disabled: false};
 
       // Default renderer
       content = (
         <View style={styles.selectedItem}>
-          <Type.Body1 bold={selected} style={value == null ? styles.disabled : null} numberOfLines={1}>
+          <Type.Body1 bold={selected} style={disabled === true ? styles.disabled : null} numberOfLines={1}>
             {label}
           </Type.Body1>
         </View>
@@ -198,7 +207,7 @@ class Picker extends React.PureComponent<Props, State> {
     }
 
     return (
-      <Touchable onPress={open ? this.close : this.open} style={styles.container}>
+      <Touchable onPress={open ? this.close : this.open} style={[styles.container, open ? styles.containerOpen : null]}>
         {content}
         <Icon name={open ? 'menu-up' : 'menu-down'} size={24} />
       </Touchable>
@@ -207,7 +216,7 @@ class Picker extends React.PureComponent<Props, State> {
 
   render() {
     const {items, renderFooter, renderListItem, value} = this.props;
-    const {open, pickerWidth, pickerX, pickerY, windowWidth, windowHeight} = this.state;
+    const {open, pickerWidth, pickerHeight, pickerX, pickerY, windowWidth, windowHeight} = this.state;
 
     const selectedItem = items.find(item => item.value === value);
 
@@ -226,6 +235,7 @@ class Picker extends React.PureComponent<Props, State> {
           onClose={this.onClosePickerList}
           onPressListItem={this.onPressListItem}
           pickerWidth={pickerWidth}
+          pickerHeight={pickerHeight}
           pickerX={pickerX}
           pickerY={pickerY}
           renderFooter={renderFooter}
