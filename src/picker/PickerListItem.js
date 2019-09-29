@@ -3,7 +3,6 @@ import * as React from 'react';
 import {StyleSheet, View} from 'react-native';
 import type {PressEvent} from 'react-native/Libraries/Types/CoreEventTypes';
 
-import {Icon} from '../icon';
 import {Touchable} from '../touchable';
 import {Type} from '../type';
 
@@ -29,7 +28,7 @@ type Item = {
 };
 
 type Props = {
-  showCaret: boolean,
+  index: number,
   item: Item,
   onPressListItem?: ?(event: PressEvent, value: ?string) => void,
   renderListItem?: ?({item: Item, selected: boolean}) => React.Node,
@@ -47,14 +46,14 @@ class PickerListItem extends React.PureComponent<Props> {
   };
 
   render() {
-    const {showCaret, item, renderListItem, selectedValue} = this.props;
+    const {index, item, renderListItem, selectedValue} = this.props;
 
     const selected = item.value != null && selectedValue === item.value;
 
     let content;
 
     if (typeof renderListItem === 'function') {
-      content = renderListItem({item, selected});
+      content = renderListItem({index, item, selected});
     } else {
       content = (
         <View style={styles.item}>
@@ -68,7 +67,6 @@ class PickerListItem extends React.PureComponent<Props> {
     return (
       <Touchable onPress={this.onPress} style={styles.container}>
         {content}
-        {showCaret ? <Icon name="menu-up" size={24} /> : null}
       </Touchable>
     );
   }

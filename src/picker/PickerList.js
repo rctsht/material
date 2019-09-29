@@ -4,6 +4,7 @@ import {ScrollView, StyleSheet, View} from 'react-native';
 import type AnimatedInterpolation from 'react-native/Libraries/Animated/src/nodes/AnimatedInterpolation';
 import type {LayoutEvent, PressEvent} from 'react-native/Libraries/Types/CoreEventTypes';
 
+import {Divider} from '../divider';
 import {withGlobalOverlay} from '../global';
 import {Scrim} from '../scrim';
 
@@ -39,6 +40,7 @@ type Props = {
   pickerX: number,
   pickerY: number,
   renderListItem?: ?({item: Item, selected: boolean}) => React.Node,
+  renderSelectedItem: (options: {item?: Item, selected: boolean, open: boolean}) => void,
   scrimOpacity: number | AnimatedInterpolation,
   selectedValue: ?string,
   windowWidth: number,
@@ -85,16 +87,12 @@ class PickerList extends React.PureComponent<Props, State> {
   };
 
   renderItem = (item: Item, index: number) => {
-    const {onPressListItem, pickerX, pickerY, renderListItem, selectedValue} = this.props;
-
-    const {width, height, listWidth, listHeight} = this.state;
-
-    const showCaret = index === 0 && pickerY + listHeight <= height && pickerX + listWidth <= width;
+    const {onPressListItem, renderListItem, selectedValue} = this.props;
 
     return (
       <PickerListItem
         key={item.value}
-        showCaret={showCaret}
+        index={index}
         item={item}
         selectedValue={selectedValue}
         renderListItem={renderListItem}
@@ -104,13 +102,28 @@ class PickerList extends React.PureComponent<Props, State> {
   };
 
   render() {
-    const {isVisible, items, onClose, pickerWidth, pickerX, pickerY, scrimOpacity} = this.props;
+    const {
+      isVisible,
+      items,
+      onClose,
+      pickerWidth,
+      pickerX,
+      pickerY,
+      renderSelectedItem,
+      scrimOpacity,
+      selectedValue,
+    } = this.props;
 
     const {width, height, listWidth, listHeight} = this.state;
 
     if (!isVisible) {
       return null;
     }
+
+    const selectedItem = items.find(item => item.value === selectedValue);
+    const selectedItemIndex = items.indexOf(selectedItem);
+
+    const showCaret = pickerY + listHeight <= height - 16 && pickerX + listWidth <= width - 16;
 
     return (
       <View style={styles.container} onLayout={this.onLayout}>
@@ -130,18 +143,22 @@ class PickerList extends React.PureComponent<Props, State> {
             styles.pickerList,
             {
               position: 'absolute',
-              top: pickerY + listHeight > height ? undefined : pickerY,
-              bottom: pickerY + listHeight > height ? 16 : undefined,
-              left: pickerX + listWidth > width ? undefined : pickerX,
-              right: pickerX + listWidth > width ? 16 : undefined,
-              minWidth: pickerWidth,
-              maxWidth: width - 32,
+              top: pickerY + listHeight > height - 16 ? undefined : pickerY,
+              bottom: pickerY + listHeight > height - 16 ? 16 : undefined,
+              left: pickerX + listWidth > width - 16 ? undefined : pickerX,
+              right: pickerX + listWidth > width - 16 ? 16 : undefined,
+              minWidth: Math.max(200, pickerWidth),
+              maxWidth: Math.min(width - 32, pickerWidth),
               maxHeight: height - 32,
             },
           ]}
           onLayout={this.onLayoutList}
           keyboardShouldPersistTaps="handled"
         >
+          {showCaret
+            ? renderSelectedItem({index: selectedItemIndex, item: selectedItem, selected: true, open: true})
+            : null}
+          <Divider fullWidth />
           {items && items.length > 0 ? items.map(this.renderItem) : null}
         </ScrollView>
       </View>

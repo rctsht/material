@@ -1,7 +1,6 @@
 // @flow strict-local
 import * as React from 'react';
 import {Animated, BackHandler, Dimensions, StatusBar, StyleSheet, View} from 'react-native';
-import type {ViewStyleProp} from 'react-native/Libraries/StyleSheet/StyleSheet';
 import type {LayoutEvent, PressEvent} from 'react-native/Libraries/Types/CoreEventTypes';
 
 import {Icon} from '../icon';
@@ -42,7 +41,6 @@ type Props = {
   rctshtTheme: ThemeProps,
   renderListItem?: ?({item: Item, selected: boolean}) => React.Node,
   renderSelectedItem?: ?({item?: Item, selected: boolean}) => React.Node,
-  style: ViewStyleProp,
   value: ?string,
 };
 
@@ -177,28 +175,37 @@ class Picker extends React.PureComponent<Props, State> {
     this.viewRef = node;
   };
 
-  renderSelectedItem = (options: {item?: Item, selected: boolean}) => {
-    const {item, selected} = options;
+  renderSelectedItem = (options: {item?: Item, selected: boolean, open?: boolean}) => {
+    const {item, selected, open = false} = options;
     const {renderSelectedItem} = this.props;
 
+    let content;
+
     if (typeof renderSelectedItem === 'function') {
-      return renderSelectedItem(options);
+      content = renderSelectedItem(options);
+    } else {
+      const {label, value} = item || {label: '', value: null};
+
+      // Default renderer
+      content = (
+        <View style={styles.selectedItem}>
+          <Type.Body1 bold={selected} style={value == null ? styles.disabled : null} numberOfLines={1}>
+            {label}
+          </Type.Body1>
+        </View>
+      );
     }
 
-    const {label, value} = item || {label: '', value: null};
-
-    // Default renderer
     return (
-      <View style={styles.selectedItem}>
-        <Type.Body1 bold={selected} style={value == null ? styles.disabled : null} numberOfLines={1}>
-          {label}
-        </Type.Body1>
-      </View>
+      <Touchable onPress={open ? this.close : this.open} style={styles.container}>
+        {content}
+        <Icon name={open ? 'menu-up' : 'menu-down'} size={24} />
+      </Touchable>
     );
   };
 
   render() {
-    const {items, renderListItem, style, value} = this.props;
+    const {items, renderListItem, value} = this.props;
     const {open, pickerWidth, pickerX, pickerY, windowWidth, windowHeight} = this.state;
 
     const selectedItem = items.find(item => item.value === value);
@@ -206,10 +213,11 @@ class Picker extends React.PureComponent<Props, State> {
     return (
       <>
         <View ref={this.setViewRef} onLayout={this.onLayout}>
-          <Touchable onPress={this.open} style={[styles.container, ...(Array.isArray(style) ? style : [style])]}>
-            {this.renderSelectedItem({item: selectedItem, selected: selectedItem ? selectedItem.value != null : false})}
-            <Icon name="menu-down" size={24} />
-          </Touchable>
+          {this.renderSelectedItem({
+            index: items.indexOf(selectedItem),
+            item: selectedItem,
+            selected: selectedItem ? selectedItem.value != null : false,
+          })}
         </View>
         <PickerList
           isVisible={open}
@@ -220,6 +228,7 @@ class Picker extends React.PureComponent<Props, State> {
           pickerX={pickerX}
           pickerY={pickerY}
           renderListItem={renderListItem}
+          renderSelectedItem={this.renderSelectedItem}
           scrimOpacity={this.scrimOpacity}
           selectedValue={value}
           windowWidth={windowWidth}
