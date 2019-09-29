@@ -17,9 +17,11 @@ const styles = StyleSheet.create({
 let context = null;
 
 type State = {
+  extraProps: {},
+  // $FlowFixMe
+  menus: Array<{Component: React.ComponentType<any>, props: {}}>,
   // $FlowFixMe
   tooltips: Array<{Component: React.ComponentType<any>, props: {}}>,
-  extraProps: {},
 };
 
 // $FlowFixMe
@@ -31,8 +33,9 @@ class GlobalOverlay extends React.PureComponent<any, State> {
     super(props);
 
     this.state = {
-      tooltips: [],
       extraProps: {},
+      menus: [],
+      tooltips: [],
     };
   }
 
@@ -65,18 +68,71 @@ class GlobalOverlay extends React.PureComponent<any, State> {
     }));
   };
 
-  render() {
-    const {tooltips, extraProps} = this.state;
+  // $FlowFixMe
+  addOrUpdateMenu = (Component: React.ComponentType<any>, props: {} = {}) => {
+    this.setState(currentState => ({
+      menus: [...currentState.menus.filter(menu => menu.props.id !== props.id), {Component, props}],
+    }));
+  };
 
-    return tooltips.map<React.Node>(tooltip => {
-      const {Component, props} = tooltip;
-      return (
-        <View style={styles.container} pointerEvents="box-none" key={props.id}>
-          {/* eslint-disable-next-line react/jsx-props-no-spreading */}
-          <Component {...extraProps} {...props} />
-        </View>
-      );
-    });
+  removeMenu = (id: string) => {
+    this.setState(currentState => ({
+      menus: currentState.menus.filter(menu => menu.props.id !== id),
+    }));
+  };
+
+  // $FlowFixMe
+  addOrUpdate = (type: 'menu' | 'tooltip', Component: React.ComponentType<any>, props: {} = {}) => {
+    switch (type) {
+      case 'tooltip':
+        this.addOrUpdateTooltip(Component, props);
+        break;
+      case 'menu':
+        this.addOrUpdateMenu(Component, props);
+        break;
+      default:
+        break;
+    }
+  };
+
+  remove = (type: 'menu' | 'tooltip', id: string) => {
+    switch (type) {
+      case 'tooltip':
+        this.removeTooltip(id);
+        break;
+      case 'menu':
+        this.removeMenu(id);
+        break;
+      default:
+        break;
+    }
+  };
+
+  render() {
+    const {menus, tooltips, extraProps} = this.state;
+
+    return (
+      <>
+        {tooltips.map<React.Node>(tooltip => {
+          const {Component, props} = tooltip;
+          return (
+            <View style={styles.container} pointerEvents="box-none" key={props.id}>
+              {/* eslint-disable-next-line react/jsx-props-no-spreading */}
+              <Component {...extraProps} {...props} />
+            </View>
+          );
+        })}
+        {menus.map<React.Node>(tooltip => {
+          const {Component, props} = tooltip;
+          return (
+            <View style={styles.container} pointerEvents="box-none" key={props.id}>
+              {/* eslint-disable-next-line react/jsx-props-no-spreading */}
+              <Component {...extraProps} {...props} />
+            </View>
+          );
+        })}
+      </>
+    );
   }
 }
 
