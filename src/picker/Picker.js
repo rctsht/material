@@ -39,6 +39,7 @@ type Props = {
   items: Array<Item>,
   onChangeValue?: ?(value: ?string) => void,
   rctshtTheme: ThemeProps,
+  renderFooter?: ?() => React.Node,
   renderListItem?: ?({item: Item, selected: boolean}) => React.Node,
   renderSelectedItem?: ?({item?: Item, selected: boolean}) => React.Node,
   value: ?string,
@@ -205,7 +206,7 @@ class Picker extends React.PureComponent<Props, State> {
   };
 
   render() {
-    const {items, renderListItem, value} = this.props;
+    const {items, renderFooter, renderListItem, value} = this.props;
     const {open, pickerWidth, pickerX, pickerY, windowWidth, windowHeight} = this.state;
 
     const selectedItem = items.find(item => item.value === value);
@@ -227,6 +228,7 @@ class Picker extends React.PureComponent<Props, State> {
           pickerWidth={pickerWidth}
           pickerX={pickerX}
           pickerY={pickerY}
+          renderFooter={renderFooter}
           renderListItem={renderListItem}
           renderSelectedItem={this.renderSelectedItem}
           scrimOpacity={this.scrimOpacity}

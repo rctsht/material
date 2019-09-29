@@ -39,6 +39,7 @@ type Props = {
   pickerWidth: number,
   pickerX: number,
   pickerY: number,
+  renderFooter?: ?() => React.Node,
   renderListItem?: ?({item: Item, selected: boolean}) => React.Node,
   renderSelectedItem: (options: {item?: Item, selected: boolean, open: boolean}) => void,
   scrimOpacity: number | AnimatedInterpolation,
@@ -109,6 +110,7 @@ class PickerList extends React.PureComponent<Props, State> {
       pickerWidth,
       pickerX,
       pickerY,
+      renderFooter,
       renderSelectedItem,
       scrimOpacity,
       selectedValue,
@@ -160,6 +162,7 @@ class PickerList extends React.PureComponent<Props, State> {
             : null}
           <Divider fullWidth />
           {items && items.length > 0 ? items.map(this.renderItem) : null}
+          {typeof renderFooter === 'function' ? renderFooter() : null}
         </ScrollView>
       </View>
     );
