@@ -234,7 +234,7 @@ class Picker extends React.PureComponent<Props, State> {
           {this.renderSelectedItem({
             index: items.indexOf(selectedItem),
             item: selectedItem,
-            selected: selectedItem ? selectedItem.value != null : false,
+            selected: selectedItem ? selectedItem.disabled !== true : false,
           })}
         </View>
         {disabled ? null : (

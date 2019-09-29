@@ -48,7 +48,7 @@ class PickerListItem extends React.PureComponent<Props> {
   render() {
     const {index, item, renderListItem, selectedValue} = this.props;
 
-    const selected = item.value != null && selectedValue === item.value;
+    const selected = item.disabled !== true && selectedValue === item.value;
 
     let content;
 
