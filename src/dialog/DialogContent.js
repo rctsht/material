@@ -31,7 +31,7 @@ type Props = {
 const DialogContent = (props: Props) => {
   const {children, padContent} = props;
 
-  if (!children) {
+  if (children == null) {
     return null;
   }
 
@@ -46,7 +46,12 @@ const DialogContent = (props: Props) => {
   }
 
   return (
-    <View style={viewStyles} {...props}>
+    // $FlowFixMe
+    <View
+      style={viewStyles}
+      // eslint-disable-next-line react/jsx-props-no-spreading
+      {...props}
+    >
       {children}
     </View>
   );

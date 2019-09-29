@@ -36,10 +36,6 @@ class Icon extends React.PureComponent<Props, State> {
     style: null,
   };
 
-  state = {
-    oldProps: null,
-  };
-
   rotation = new Animated.Value(0);
 
   oldRotation = new Animated.Value(0);
@@ -48,6 +44,15 @@ class Icon extends React.PureComponent<Props, State> {
 
   oldOpacity = new Animated.Value(1);
 
+  constructor(props: Props) {
+    super(props);
+
+    this.state = {
+      oldProps: null,
+    };
+  }
+
+  // eslint-disable-next-line camelcase
   UNSAFE_componentWillReceiveProps(nextProps: Props) {
     const {rctshtTheme} = nextProps;
 
@@ -125,7 +130,11 @@ class Icon extends React.PureComponent<Props, State> {
             ],
           }}
         >
-          <MaterialIcon {...this.props} style={[styles.noShadow, style, halfWidth ? {marginLeft: -size / 4} : null]} />
+          <MaterialIcon
+            // eslint-disable-next-line react/jsx-props-no-spreading
+            {...this.props}
+            style={[styles.noShadow, style, halfWidth ? {marginLeft: -size / 4} : null]}
+          />
         </Animated.View>
         {oldProps ? (
           <Animated.View
@@ -147,6 +156,7 @@ class Icon extends React.PureComponent<Props, State> {
             }}
           >
             <MaterialIcon
+              // eslint-disable-next-line react/jsx-props-no-spreading
               {...oldProps}
               style={[styles.noShadow, oldProps.style, oldProps.halfWidth ? {marginLeft: -oldSize / 4} : null]}
             />

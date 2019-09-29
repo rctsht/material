@@ -158,14 +158,14 @@ class Button extends React.PureComponent<Props> {
     // eslint-disable-next-line babel/new-cap
     const background = TouchableNativeFeedback.SelectableBackground();
 
-    const touchableStyles = StyleSheet.flatten([
+    const touchableStyles = [
       styles.button,
       additionalStyles,
       iconNode != null ? styles.iconButton : null,
       ...(Array.isArray(style) ? style : [style]),
-    ]);
+    ]
 
-    const {borderRadius, elevation} = touchableStyles;
+    const {borderRadius, elevation} = StyleSheet.flatten(touchableStyles) || {};
 
     return (
       <View

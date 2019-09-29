@@ -6,7 +6,11 @@ export default function withForwardRef<Config: {}, Instance>(
   Component: React.AbstractComponent<Config, Instance>,
 ): React.AbstractComponent<Config, Instance> {
   const ComponentWithForwardRef = React.forwardRef<Config, Instance>((props, ref) => (
-    <Component {...props} forwardedRef={ref} />
+    <Component
+      // eslint-disable-next-line react/jsx-props-no-spreading
+      {...props}
+      forwardedRef={ref}
+    />
   ));
 
   hoistNonReactStatics(ComponentWithForwardRef, Component);

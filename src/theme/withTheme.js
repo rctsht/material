@@ -18,7 +18,14 @@ function withTheme<Config: {}, Instance>(
 
       return (
         <ThemeContext.Consumer>
-          {theme => <Component {...rest} ref={forwardedRef} rctshtTheme={theme} />}
+          {theme => (
+            <Component
+              // eslint-disable-next-line react/jsx-props-no-spreading
+              {...rest}
+              ref={forwardedRef}
+              rctshtTheme={theme}
+            />
+          )}
         </ThemeContext.Consumer>
       );
     }
@@ -26,9 +33,16 @@ function withTheme<Config: {}, Instance>(
 
   /* eslint-disable react/no-multi-comp */
   const ThemedComponentWithForwardRef = React.forwardRef<
+    // $FlowFixMe
     $Diff<Config, {rctshtTheme: ThemeProps | void, ...Props<Instance>}>,
     Instance,
-  >((props, ref) => <ThemedComponent {...props} forwardedRef={ref} />);
+  >((props, ref) => (
+    <ThemedComponent
+      // eslint-disable-next-line react/jsx-props-no-spreading
+      {...props}
+      forwardedRef={ref}
+    />
+  ));
   /* eslint-enable react/no-multi-comp */
 
   hoistNonReactStatics(ThemedComponentWithForwardRef, Component);

@@ -284,6 +284,7 @@ class Sheet extends React.PureComponent<Props, State> {
     onPanResponderGrant: () => {},
     onPanResponderMove: (evt, gestureState) => {
       const {type} = this.props;
+      // $FlowFixMe
       Animated.event([
         {
           dx: type === types.BOTTOM ? null : this.positionX,
@@ -297,6 +298,7 @@ class Sheet extends React.PureComponent<Props, State> {
     onShouldBlockNativeResponder: () => true,
   });
 
+  // $FlowFixMe
   panResponder2 = PanResponder.create({
     onStartShouldSetPanResponder: evt => {
       const {type} = this.props;
@@ -328,6 +330,7 @@ class Sheet extends React.PureComponent<Props, State> {
         dx = (deviceIsPhone ? width : 320) + gestureState.dx;
       }
 
+      // $FlowFixMe
       Animated.event([
         {
           dx: type === types.BOTTOM ? null : this.positionX,
@@ -582,6 +585,7 @@ class Sheet extends React.PureComponent<Props, State> {
         isVisible: true,
       },
       () => {
+        // $FlowFixMe
         this.animation = Animated.timing(type === types.BOTTOM ? this.positionY : this.positionX, {
           toValue: 0,
           useNativeDriver: true,
@@ -611,6 +615,7 @@ class Sheet extends React.PureComponent<Props, State> {
       toValue = deviceIsPhone ? width : 320;
     }
 
+    // $FlowFixMe
     this.animation = Animated.timing(type === types.BOTTOM ? this.positionY : this.positionX, {
       toValue,
       useNativeDriver: true,
@@ -638,9 +643,9 @@ class Sheet extends React.PureComponent<Props, State> {
     this.scrollView = node;
   };
 
-  positionX: typeof Animated.Value;
+  positionX: Animated.Value;
 
-  positionY: typeof Animated.Value;
+  positionY: Animated.Value;
 
   animation: CompositeAnimation;
 
@@ -663,19 +668,24 @@ class Sheet extends React.PureComponent<Props, State> {
     const contentStyles = [
       styles.common.container,
       styles[type].container,
+      // $FlowFixMe
       deviceIsPhone ? styles[type].containerPhone : styles[type].containerTablet,
       type === types.BOTTOM ? {maxHeight: height / 2} : null,
       ...userStyle,
     ];
 
     const scrollView = (
+      // $FlowFixMe
       <ScrollView
+        // eslint-disable-next-line react/jsx-props-no-spreading
         {...this.props}
         style={type !== types.BOTTOM ? contentStyles : null}
         onMoveShouldSetResponder={(event, gestureState) =>
+          // $FlowFixMe
           Math.abs(gestureState.dy) > 10 && Math.abs(gestureState.dy) > Math.abs(gestureState.dx)
         }
         onMoveShouldSetResponderCapture={(event, gestureState) =>
+          // $FlowFixMe
           Math.abs(gestureState.dy) > 10 && Math.abs(gestureState.dy) > Math.abs(gestureState.dx)
         }
         onStartShouldSetResponder={() => false}
@@ -723,6 +733,7 @@ class Sheet extends React.PureComponent<Props, State> {
       isVisible ? null : (
         <View
           key="edgel"
+          // eslint-disable-next-line react/jsx-props-no-spreading
           {...this.panResponder2.panHandlers}
           style={{
             position: 'absolute',
@@ -737,6 +748,7 @@ class Sheet extends React.PureComponent<Props, State> {
       isVisible ? null : (
         <View
           key="edger"
+          // eslint-disable-next-line react/jsx-props-no-spreading
           {...this.panResponder2.panHandlers}
           style={{
             position: 'absolute',
@@ -785,6 +797,7 @@ class Sheet extends React.PureComponent<Props, State> {
             ],
           },
         ]}
+        // eslint-disable-next-line react/jsx-props-no-spreading
         {...this.panResponder.panHandlers}
       >
         {type !== types.BOTTOM ? scrollView : null}

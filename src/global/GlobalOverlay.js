@@ -16,9 +16,17 @@ const styles = StyleSheet.create({
 
 let context = null;
 
-class GlobalOverlay extends React.PureComponent<any> {
+type State = {
+  // $FlowFixMe
+  tooltips: Array<{Component: React.ComponentType<any>, props: {}}>,
+  extraProps: {},
+};
+
+// $FlowFixMe
+class GlobalOverlay extends React.PureComponent<any, State> {
   static getContext = () => context;
 
+  // $FlowFixMe
   constructor(props: any) {
     super(props);
 
@@ -40,10 +48,11 @@ class GlobalOverlay extends React.PureComponent<any> {
     context = null;
   }
 
-  setExtraProps = (extraProps: {} = {}, callback: Function) => {
+  setExtraProps = (extraProps: {} = {}, callback: () => void) => {
     this.setState({extraProps}, callback);
   };
 
+  // $FlowFixMe
   addOrUpdateTooltip = (Component: React.ComponentType<any>, props: {} = {}) => {
     this.setState(currentState => ({
       tooltips: [...currentState.tooltips.filter(tooltip => tooltip.props.id !== props.id), {Component, props}],
@@ -59,10 +68,11 @@ class GlobalOverlay extends React.PureComponent<any> {
   render() {
     const {tooltips, extraProps} = this.state;
 
-    return tooltips.map(tooltip => {
+    return tooltips.map<React.Node>(tooltip => {
       const {Component, props} = tooltip;
       return (
         <View style={styles.container} pointerEvents="box-none" key={props.id}>
+          {/* eslint-disable-next-line react/jsx-props-no-spreading */}
           <Component {...extraProps} {...props} />
         </View>
       );

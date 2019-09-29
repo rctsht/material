@@ -1,4 +1,5 @@
 // @flow strict-local
+/* eslint-disable max-classes-per-file */
 import * as React from 'react';
 import {PixelRatio, StyleSheet, Text} from 'react-native';
 import {type TextStyleProp} from 'react-native/Libraries/StyleSheet/StyleSheet';
@@ -167,10 +168,12 @@ class Type extends React.PureComponent<Props> {
       rctshtTheme,
     } = this.props;
 
-    const textStyle = StyleSheet.flatten([
+    const textStyle = [
       styles.defaults,
       {color: rctshtTheme.colors.onBackground},
-      !preset && (!style || (style.fontSize == null && style.lineHeight == null)) ? styles.defaultLineHeight : null,
+      !preset && (style == null || (style.fontSize == null && style.lineHeight == null))
+        ? styles.defaultLineHeight
+        : null,
       preset || null,
       bold ? styles.bold : null,
       italic ? styles.italic : null,
@@ -184,14 +187,15 @@ class Type extends React.PureComponent<Props> {
       center === false ? styles.notCenter : null,
       right === false ? styles.notRight : null,
       style,
-    ]);
+    ];
 
+    let marginTop;
     // In order to support certain Material Design guidelines where a text block is offset N dp to the baseline, we can
     // set the alignToBaseline prop to N and the baseline of the text will be offset from the previous element by that
     // value. This alignment isn't pixel perfect due to the padding within the font itself, as well as the device font
     // scaling settings, but it's a good approximation.
     if (alignToBaseline != null && Number.isInteger(alignToBaseline)) {
-      const {lineHeight, fontSize} = textStyle;
+      const {lineHeight, fontSize} = {lineHeight: 24, fontSize: 16, ...StyleSheet.flatten(textStyle)};
 
       const fontScale = PixelRatio.getFontScale();
 
@@ -199,11 +203,16 @@ class Type extends React.PureComponent<Props> {
       const adjustedFontSize = fontSize * fontScale;
       const adjustedLineToFontPadding = (adjustedLineHeight - adjustedFontSize) / 2;
 
-      textStyle.marginTop = alignToBaseline - adjustedLineHeight + adjustedLineToFontPadding;
+      marginTop = alignToBaseline - adjustedLineHeight + adjustedLineToFontPadding;
     }
 
     return (
-      <Text {...this.props} style={textStyle}>
+      // $FlowFixMe
+      <Text
+        // eslint-disable-next-line react/jsx-props-no-spreading
+        {...this.props}
+        style={[textStyle, marginTop != null ? {marginTop} : null]}
+      >
         {children}
       </Text>
     );

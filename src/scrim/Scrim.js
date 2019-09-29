@@ -1,6 +1,7 @@
 // @flow strict-local
 import * as React from 'react';
 import {Animated, StyleSheet, TouchableWithoutFeedback, View} from 'react-native';
+import type AnimatedInterpolation from 'react-native/Libraries/Animated/src/nodes/AnimatedInterpolation';
 
 import {type ThemeProps, withTheme} from '../theme';
 
@@ -28,7 +29,7 @@ type Props = {
   elevation: number,
   isVisible: boolean,
   rctshtTheme: ThemeProps,
-  opacity: number,
+  opacity: number | AnimatedInterpolation,
   onPress: ?() => void,
 };
 
@@ -36,7 +37,7 @@ type DefaultProps = {
   animated: boolean,
   elevation: number,
   isVisible: boolean,
-  opacity: number,
+  opacity: number | AnimatedInterpolation,
   onPress: ?() => void,
 };
 

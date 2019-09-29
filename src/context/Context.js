@@ -26,10 +26,6 @@ class Context extends React.PureComponent<Props, State> {
     theme: createTheme(),
   };
 
-  state = {
-    keyboardIsOpen: false,
-  };
-
   dialogOverlayRef: ?DialogOverlay;
 
   menuOverlayRef: ?MenuOverlay;
@@ -39,6 +35,13 @@ class Context extends React.PureComponent<Props, State> {
   snackbarOverlayRef: ?SnackbarOverlay;
 
   globalOverlayRef: ?GlobalOverlay;
+
+  constructor(props: Props) {
+    super(props);
+    this.state = {
+      keyboardIsOpen: false,
+    };
+  }
 
   componentDidMount() {
     Keyboard.addListener('keyboardDidShow', this.onKeyboardDidShow);

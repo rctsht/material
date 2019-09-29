@@ -101,7 +101,11 @@ class ChipGroup extends React.PureComponent<Props, State> {
       : {style: styles.containerWrap};
 
     return (
-      <WrapperComponent {...wrapperProps}>
+      // $FlowFixMe
+      <WrapperComponent
+        // eslint-disable-next-line react/jsx-props-no-spreading
+        {...wrapperProps}
+      >
         {React.Children.map(children, child => (
           <View style={styles.chipWrapper}>
             {React.cloneElement(child, {

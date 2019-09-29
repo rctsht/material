@@ -57,7 +57,11 @@ class RadioButtonGroup extends React.PureComponent<Props, State> {
     const {selectedValue} = this.state;
 
     return (
-      <View {...this.props}>
+      // $FlowFixMe
+      <View
+        // eslint-disable-next-line react/jsx-props-no-spreading
+        {...this.props}
+      >
         {React.Children.map(children, child =>
           React.cloneElement(child, {
             selected: selectedValue === child.props.value,

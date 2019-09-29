@@ -132,7 +132,6 @@ class Picker extends React.PureComponent<Props> {
     return (
       <View style={styles.container}>
         <View
-          id="1"
           style={[
             styles.inputWrapper,
             // isFocused ? styles.inputWrapperFocused : null,

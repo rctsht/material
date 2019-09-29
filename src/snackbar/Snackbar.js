@@ -64,13 +64,18 @@ const durations = {
 
 type Props = {
   id: string,
-  action?: Button,
+  action?: ?typeof Button,
   duration?: number,
   label?: string,
-  onClose?: Function,
+  onClose?: ?(string) => void,
 };
 
-class Snackbar extends React.PureComponent<Props> {
+type State = {
+  fullWidth: boolean,
+  numberOfLines: number,
+};
+
+class Snackbar extends React.PureComponent<Props, State> {
   static durations = durations;
 
   static defaultProps = {
@@ -80,15 +85,20 @@ class Snackbar extends React.PureComponent<Props> {
     onClose: null,
   };
 
-  state = {
-    fullWidth: false,
-    numberOfLines: 3,
-  };
-
   opacity = new Animated.Value(0);
+
+  constructor(props: Props) {
+    super(props);
+
+    this.state = {
+      fullWidth: false,
+      numberOfLines: 3,
+    };
+  }
 
   componentDidMount() {}
 
+  // $FlowFixMe
   onLayoutText = (event: React.SyntheticEvent<Object>) => {
     const {height} = event.nativeEvent.layout;
     const {duration} = this.props;
@@ -107,7 +117,9 @@ class Snackbar extends React.PureComponent<Props> {
             toValue: 1,
             duration: 300,
           }).start(() => {
+            // $FlowFixMe
             if (duration !== 0 && !this.fadedOut) {
+              // $FlowFixMe
               this.fadeOutAnimation = this.fadeOut(duration);
             }
           });
@@ -136,20 +148,29 @@ class Snackbar extends React.PureComponent<Props> {
     const {fullWidth, numberOfLines} = this.state;
 
     const onPress = event => {
+      // $FlowFixMe
       if (this.fadeOutAnimation) {
         this.fadeOutAnimation.stop();
       }
 
+      // $FlowFixMe
       this.fadedOut = true;
 
       this.fadeOut();
 
+      // $FlowFixMe
       if (action.onPress) {
         action.onPress(event);
       }
     };
 
-    const actionNode = action ? <Button.Text {...action} onPress={onPress} /> : null;
+    const actionNode = action ? (
+      <Button.Text
+        // eslint-disable-next-line react/jsx-props-no-spreading
+        {...action}
+        onPress={onPress}
+      />
+    ) : null;
 
     return (
       <Animated.View

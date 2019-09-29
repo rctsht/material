@@ -62,7 +62,15 @@ class MenuOverlay extends React.PureComponent<Props, State> {
       <View style={styles.container} pointerEvents="box-none">
         {contents.map(content => {
           const {Component, props} = content;
-          return <Component {...extraProps} {...props} key={props.id} />;
+          return (
+            <Component
+              // eslint-disable-next-line react/jsx-props-no-spreading
+              {...extraProps}
+              // eslint-disable-next-line react/jsx-props-no-spreading
+              {...props}
+              key={props.id}
+            />
+          );
         })}
       </View>
     );

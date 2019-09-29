@@ -17,7 +17,12 @@ const styles = StyleSheet.create({
 
 type Props = {};
 
-class SheetOverlay extends React.PureComponent<Props> {
+type State = {
+  // $FlowFixMe
+  contents: Array<{Component: React.ComponentType<any>, props: {}}>,
+};
+
+class SheetOverlay extends React.PureComponent<Props, State> {
   constructor(props: Props) {
     super(props);
 
@@ -27,9 +32,11 @@ class SheetOverlay extends React.PureComponent<Props> {
   }
 
   addOrUpdateSheet = (options: {} = {}) => {
+    // $FlowFixMe
     const {type, Component, props = {}, overlayId, navigationKey} = options;
     this.setState(currentState => ({
       contents: [
+        // $FlowFixMe
         ...currentState.contents.filter(content => content.overlayId !== overlayId),
         {overlayId, navigationKey, type, Component, props},
       ],
@@ -38,6 +45,7 @@ class SheetOverlay extends React.PureComponent<Props> {
 
   removeSheet = (overlayId: string) => {
     this.setState(currentState => ({
+      // $FlowFixMe
       contents: currentState.contents.filter(content => content.overlayId !== overlayId),
     }));
   };
@@ -47,13 +55,20 @@ class SheetOverlay extends React.PureComponent<Props> {
 
     const currentNavigationKey = getCurrentNavigationKey() || 'RCTSHT_UNKNOWN_NAVIGATION_KEY';
 
+    // $FlowFixMe
     const activeContent = find(contents, content => content.navigationKey === currentNavigationKey);
+    // $FlowFixMe
     const globalContent = find(contents, content => content.navigationKey === 'GLOBAL');
     const {Component, props} = activeContent || globalContent || contents[0] || {}; // XXX remove contents[0]
 
     return (
       <View style={styles.container} pointerEvents="box-none">
-        {Component ? <Component {...props} /> : null}
+        {Component ? (
+          <Component
+            // eslint-disable-next-line react/jsx-props-no-spreading
+            {...props}
+          />
+        ) : null}
       </View>
     );
   }

@@ -88,7 +88,14 @@ class CircleButton extends React.PureComponent<Props> {
           disabled={disabled}
         >
           {/* $FlowFixMe */}
-          {icon || <Icon size={24} color={rctshtTheme.colors.primary} {...rest} />}
+          {icon || (
+            <Icon
+              size={24}
+              color={rctshtTheme.colors.primary}
+              // eslint-disable-next-line react/jsx-props-no-spreading
+              {...rest}
+            />
+          )}
         </Touchable>
       </View>
     );

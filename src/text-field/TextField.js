@@ -140,10 +140,14 @@ class TextField extends React.PureComponent<Props, State> {
 
   static types = types;
 
-  state = {
-    isFocused: false,
-    height: 0,
-  };
+  constructor(props: Props) {
+    super(props);
+
+    this.state = {
+      isFocused: false,
+      height: 0,
+    };
+  }
 
   onFocus = () => {
     const {onFocus} = this.props;
@@ -220,7 +224,6 @@ class TextField extends React.PureComponent<Props, State> {
     return (
       <View style={styles.container}>
         <View
-          id="1"
           style={[
             styles.inputWrapper,
             isFocused ? styles.inputWrapperFocused : null,
@@ -248,7 +251,9 @@ class TextField extends React.PureComponent<Props, State> {
               {labelText}
               {required ? <Text style={styles.asteriskText}>*</Text> : null}
             </Text>
+            {/* $FlowFixMe */}
             <TextInput
+              // eslint-disable-next-line react/jsx-props-no-spreading
               {...this.props}
               ref={forwardedRef}
               onFocus={this.onFocus}

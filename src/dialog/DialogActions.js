@@ -68,8 +68,13 @@ class DialogActions extends React.Component<Props> {
 
     const [leftActions, rightActions] = partition(actions, action => action.align === 'left');
 
-    // $FlowFixMe
-    const renderAction = action => <Button.Text key={`content-${action.id}`} {...action} />;
+    const renderAction = action => (
+      <Button.Text
+        key={`content-${action.id}`}
+        // eslint-disable-next-line react/jsx-props-no-spreading
+        {...action}
+      />
+    );
 
     return (
       <View>

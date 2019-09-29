@@ -3,9 +3,9 @@ import {merge} from 'lodash-es';
 import {Easing} from 'react-native';
 
 type ThemeAnimations = {
-  accelerateEasing: (Array<number>, number) => number,
-  decelerateEasing: (Array<number>, number) => number,
-  standardEasing: (Array<number>, number) => number,
+  accelerateEasing: number => number,
+  decelerateEasing: number => number,
+  standardEasing: number => number,
   medium: {
     in: number,
     out: number,

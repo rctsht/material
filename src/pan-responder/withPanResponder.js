@@ -20,7 +20,7 @@ const maybeCallFunctionWithGestureState = fn => (event, gestureState) => {
 type Props = {};
 type State = {
   panResponder: ?{
-    getInteractionHandle: () => {},
+    getInteractionHandle: () => ?number,
   },
   panHandlers: ?{},
   active: boolean,
@@ -28,13 +28,17 @@ type State = {
 
 function withPanResponder(Component: React.ComponentType<*>) {
   class ComponentWithPanResponder extends React.PureComponent<Props, State> {
-    state = {
-      panResponder: null,
-      panHandlers: null,
-      active: false,
-    };
-
     captureId: ?string;
+
+    constructor(props: Props) {
+      super(props);
+
+      this.state = {
+        panResponder: null,
+        panHandlers: null,
+        active: false,
+      };
+    }
 
     componentWillUnmount() {
       this.destroyPanResponder();
@@ -112,8 +116,9 @@ function withPanResponder(Component: React.ComponentType<*>) {
     destroyPanResponder = () => {
       const {panResponder} = this.state;
 
-      if (panResponder && panResponder.getInteractionHandle()) {
-        InteractionManager.clearInteractionHandle(panResponder.getInteractionHandle());
+      const interactionHandle = panResponder ? panResponder.getInteractionHandle() : null;
+      if (interactionHandle != null) {
+        InteractionManager.clearInteractionHandle(interactionHandle);
       }
 
       this.setState({
@@ -133,6 +138,7 @@ function withPanResponder(Component: React.ComponentType<*>) {
           rctshtCapturePanResponder={this.capturePanResponder}
           rctshtReleasePanResponder={this.releasePanResponder}
           rctshtPanResponderActive={active}
+          // eslint-disable-next-line react/jsx-props-no-spreading
           {...this.props}
         />
       );

@@ -348,6 +348,7 @@ class Dialog extends React.PureComponent<Props, State> {
                 <ScrollView
                   style={styles.scrollView}
                   contentContainerStyle={styles.scrollViewContent}
+                  // eslint-disable-next-line react/jsx-props-no-spreading
                   {...scrollViewProps}
                 >
                   {children}

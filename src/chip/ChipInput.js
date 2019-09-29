@@ -136,14 +136,18 @@ class ChipInput extends React.PureComponent<Props, State> {
     renderNewValueSuggestion: null,
   };
 
-  state = {
-    isFocused: false,
-    suggestions: [],
-    selectedValues: [],
-    value: '',
-  };
-
   textInput = null;
+
+  constructor(props: Props) {
+    super(props);
+
+    this.state = {
+      isFocused: false,
+      suggestions: [],
+      selectedValues: [],
+      value: '',
+    };
+  }
 
   getSuggestions = (input, selectedValues) => {
     const {suggestions} = this.props;
@@ -319,7 +323,9 @@ class ChipInput extends React.PureComponent<Props, State> {
             {/* @TODO Use <Type.Default />, implement required? */}
             {/* {required ? <Text style={styles.asteriskText}>*</Text> : null} */}
           </Text>
+          {/* $FlowFixMe */}
           <TextInput
+            // eslint-disable-next-line react/jsx-props-no-spreading
             {...rest}
             ref={this.setTextInputRef}
             style={styles.textInput}

@@ -18,29 +18,29 @@ export default function withSnackbarOverlay(Component: React.ComponentType<*>) {
       this.id = uuid.v4();
     }
 
-    componentDidMount() {
-      this.renderContent();
-    }
-
-    componentDidUpdate() {
-      this.renderContent();
-    }
-
-    componentWillUnmount() {
-      if (this.getOverlayRef) {
-        this.getOverlayRef(overlay => {
-          overlay.removeContent(this.id);
-        });
-      }
-    }
-
-    renderContent() {
-      if (this.getOverlayRef) {
-        this.getOverlayRef(overlay => {
-          overlay.addOrUpdateContent(Component, {...this.props, id: this.id, getOverlayRef: this.getOverlayRef});
-        });
-      }
-    }
+    // componentDidMount() {
+    //   this.renderContent();
+    // }
+    //
+    // componentDidUpdate() {
+    //   this.renderContent();
+    // }
+    //
+    // componentWillUnmount() {
+    //   if (this.getOverlayRef) {
+    //     this.getOverlayRef(overlay => {
+    //       overlay.removeContent(this.id);
+    //     });
+    //   }
+    // }
+    //
+    // renderContent() {
+    //   if (this.getOverlayRef) {
+    //     this.getOverlayRef(overlay => {
+    //       overlay.addOrUpdateContent(Component, {...this.props, id: this.id, getOverlayRef: this.getOverlayRef});
+    //     });
+    //   }
+    // }
 
     render() {
       return (

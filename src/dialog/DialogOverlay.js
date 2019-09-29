@@ -70,7 +70,12 @@ class DialogOverlay extends React.PureComponent<Props, State> {
       const {Component, props} = content;
       return (
         <View style={styles.container} pointerEvents="box-none" key={props.id}>
-          <Component {...extraProps} {...props} />
+          <Component
+            // eslint-disable-next-line react/jsx-props-no-spreading
+            {...extraProps}
+            // eslint-disable-next-line react/jsx-props-no-spreading
+            {...props}
+          />
         </View>
       );
     });

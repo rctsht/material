@@ -42,6 +42,7 @@ class Icon extends React.PureComponent<Props> {
 
     const icon = (
       <MaterialIcon
+        // eslint-disable-next-line react/jsx-props-no-spreading
         {...this.props}
         style={[
           styles.noShadow,

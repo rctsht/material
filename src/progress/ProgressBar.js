@@ -42,11 +42,13 @@ class ProgressBar extends React.PureComponent<Props> {
           easing: rctshtTheme.animations.decelerateEasing,
           duration: 1750,
           delay: 250,
+          useNativeDriver: false,
         }),
         Animated.timing(this.animation2, {
           toValue: 1,
           easing: rctshtTheme.animations.accelerateEasing,
           duration: 2000,
+          useNativeDriver: false,
         }),
       ]),
     ).start();
@@ -59,7 +61,12 @@ class ProgressBar extends React.PureComponent<Props> {
     backgroundColor.setAlpha(0.4);
 
     return (
-      <View {...this.props} style={[styles.container, style]}>
+      // $FlowFixMe
+      <View
+        // eslint-disable-next-line react/jsx-props-no-spreading
+        {...this.props}
+        style={[styles.container, style]}
+      >
         <View style={[styles.background, {backgroundColor: backgroundColor.toHex8String()}]}>
           <Animated.View
             style={[

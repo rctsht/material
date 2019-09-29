@@ -38,12 +38,13 @@ class ImageBackground extends React.Component<Props> {
     return (
       <View accessibilityIgnoresInvertColors style={style}>
         <Animated.Image
+          // eslint-disable-next-line react/jsx-props-no-spreading
           {...props}
           style={[
             StyleSheet.absoluteFill,
             {
-              width: (style && style.width) || 0,
-              height: (style && style.height) || 0,
+              width: style != null && style.width != null ? style.width : 0,
+              height: style != null && style.height != null ? style.height : 0,
             },
             imageStyle,
             {

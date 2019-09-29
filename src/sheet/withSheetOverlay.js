@@ -15,11 +15,11 @@ type Props = {
 
 function withSheetOverlay(Component: React.ComponentType<*>, type: string, global: boolean = false) {
   class ComponentWithSheetOverlay extends React.PureComponent<Props> {
-    id: string = null;
+    id: ?string = null;
 
     sheetRef: ?Sheet;
 
-    getOverlayRef: ((SheetOverlay) => void) => void;
+    getOverlayRef: ?((SheetOverlay) => void) => void;
 
     constructor(props: Props) {
       super(props);
@@ -38,19 +38,23 @@ function withSheetOverlay(Component: React.ComponentType<*>, type: string, globa
     componentWillUnmount() {
       if (this.getOverlayRef) {
         this.getOverlayRef(overlay => {
-          overlay.removeSheet(this.id);
+          if (this.id != null) {
+            overlay.removeSheet(this.id);
+          }
         });
       }
     }
 
     open = () => {
       if (this.sheetRef) {
+        // $FlowFixMe
         this.sheetRef.open();
       }
     };
 
     close = () => {
       if (this.sheetRef) {
+        // $FlowFixMe
         this.sheetRef.close();
       }
     };

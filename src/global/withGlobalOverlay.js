@@ -29,6 +29,7 @@ export default function withGlobalOverlay(Component: React.ComponentType<*>) {
     componentWillUnmount() {
       if (this.getOverlayRef) {
         this.getOverlayRef(overlay => {
+          // $FlowFixMe // TODO is this used?
           overlay.removeContent(this.id);
         });
       }
@@ -37,6 +38,7 @@ export default function withGlobalOverlay(Component: React.ComponentType<*>) {
     renderContent() {
       if (this.getOverlayRef) {
         this.getOverlayRef(overlay => {
+          // $FlowFixMe // TODO is this used?
           overlay.addOrUpdateContent(Component, {...this.props, id: this.id, getOverlayRef: this.getOverlayRef});
         });
       }

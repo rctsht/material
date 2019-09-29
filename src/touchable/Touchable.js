@@ -5,7 +5,7 @@ import {type ViewStyleProp} from 'react-native/Libraries/StyleSheet/StyleSheet';
 
 type Props = {
   children: React.Node,
-  pointerEvents?: string,
+  pointerEvents?: ?('auto' | 'box-none' | 'box-only' | 'none'),
   style: ViewStyleProp,
 };
 
@@ -14,7 +14,10 @@ function Touchable(props: Props) {
     const {children, pointerEvents, style} = props;
 
     return (
-      <TouchableNativeFeedback {...props}>
+      <TouchableNativeFeedback
+        // eslint-disable-next-line react/jsx-props-no-spreading
+        {...props}
+      >
         <View style={style} pointerEvents={pointerEvents}>
           {children}
         </View>
@@ -22,7 +25,13 @@ function Touchable(props: Props) {
     );
   }
 
-  return <TouchableOpacity {...props} />;
+  return (
+    // $FlowFixMe
+    <TouchableOpacity
+      // eslint-disable-next-line react/jsx-props-no-spreading
+      {...props}
+    />
+  );
 }
 
 Touchable.defaultProps = {

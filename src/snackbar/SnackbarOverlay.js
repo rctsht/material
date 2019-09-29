@@ -117,7 +117,12 @@ class SnackbarOverlay extends React.PureComponent<Props, State> {
 
     return (
       <View style={styles.container} pointerEvents="box-none">
-        <Component {...props} key={key} />;
+        <Component
+          // eslint-disable-next-line react/jsx-props-no-spreading
+          {...props}
+          key={key}
+        />
+        ;
       </View>
     );
   }

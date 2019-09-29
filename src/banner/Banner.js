@@ -57,6 +57,7 @@ type Props = {
 };
 
 class Banner extends React.PureComponent<Props> {
+  // eslint-disable-next-line camelcase
   UNSAFE_componentWillReceiveProps(nextProps: Props) {
     const {visible} = this.props;
     const {visible: nextVisible} = nextProps;
@@ -87,7 +88,10 @@ class Banner extends React.PureComponent<Props> {
             const {key = index, ...rest} = action;
             return (
               <View style={styles.actionButtonWrapper} key={key}>
-                <Button.Text {...rest} />
+                <Button.Text
+                  // eslint-disable-next-line react/jsx-props-no-spreading
+                  {...rest}
+                />
               </View>
             );
           })}

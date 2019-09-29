@@ -15,7 +15,14 @@ function withKeyboard<Config, Instance>(Component: React.AbstractComponent<Confi
 
       return (
         <KeyboardContext.Consumer>
-          {keyboardIsOpen => <Component {...rest} ref={forwardedRef} rctshtKeyboardIsOpen={keyboardIsOpen} />}
+          {keyboardIsOpen => (
+            <Component
+              // eslint-disable-next-line react/jsx-props-no-spreading
+              {...rest}
+              ref={forwardedRef}
+              rctshtKeyboardIsOpen={keyboardIsOpen}
+            />
+          )}
         </KeyboardContext.Consumer>
       );
     }
@@ -23,6 +30,7 @@ function withKeyboard<Config, Instance>(Component: React.AbstractComponent<Confi
 
   /* eslint-disable react/no-multi-comp */
   const KeyboardedComponentWithForwardRef = React.forwardRef<Config, Instance>((props, ref) => (
+    // eslint-disable-next-line react/jsx-props-no-spreading
     <KeyboardedComponent {...props} forwardedRef={ref} />
   ));
   /* eslint-enable react/no-multi-comp */

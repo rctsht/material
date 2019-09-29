@@ -24,7 +24,8 @@
     "react/no-unescaped-entities": 0,
     "react/require-default-props": 0,
     "react/default-props-match-prop-types": 0,
-    "flow-header/flow-header": 2
+    "flow-header/flow-header": 2,
+    "react/static-property-placement": ["warn", "static public field"]
   },
   "env": {
     "react-native/react-native": true

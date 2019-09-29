@@ -9,7 +9,13 @@ export default function withScreen(Component: React.ComponentType<*>) {
     render() {
       return (
         <ScreenContext.Consumer>
-          {screenEvents => <Component {...this.props} rctshtScreenEvents={screenEvents} />}
+          {screenEvents => (
+            <Component
+              // eslint-disable-next-line react/jsx-props-no-spreading
+              {...this.props}
+              rctshtScreenEvents={screenEvents}
+            />
+          )}
         </ScreenContext.Consumer>
       );
     }
