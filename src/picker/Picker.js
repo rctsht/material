@@ -1,8 +1,11 @@
 // @flow strict-local
 import * as React from 'react';
-import {Dimensions, StyleSheet, View} from 'react-native';
-import type {LayoutEvent} from 'react-native/Libraries/Types/CoreEventTypes';
+import {Animated, BackHandler, Dimensions, StatusBar, StyleSheet, View} from 'react-native';
+import type {ViewStyleProp} from 'react-native/Libraries/StyleSheet/StyleSheet';
+import type {LayoutEvent, PressEvent} from 'react-native/Libraries/Types/CoreEventTypes';
 
+import {Icon} from '../icon';
+import {type ThemeProps, withTheme} from '../theme';
 import {Touchable} from '../touchable';
 import {Type} from '../type';
 import type {DimensionsEvent} from '../types';
@@ -10,7 +13,22 @@ import type {DimensionsEvent} from '../types';
 import PickerList from './PickerList';
 
 const styles = StyleSheet.create({
-  container: {},
+  container: {
+    borderRadius: 8,
+    overflow: 'hidden',
+    backgroundColor: '#ffffff',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingRight: 8,
+  },
+  selectedItem: {
+    padding: 8,
+    flex: 1,
+  },
+  disabled: {
+    color: '#999999',
+  },
 });
 
 type Item = {
@@ -20,16 +38,17 @@ type Item = {
 
 type Props = {
   items: Array<Item>,
-  onChangeValue: (value: ?string) => void,
-  renderListItem: ({item: Item, selected: boolean}) => React.Node,
-  renderSelectedItem: ({item?: Item, selected: boolean}) => React.Node,
-  selectedValue: string,
+  onChangeValue?: ?(value: ?string) => void,
+  rctshtTheme: ThemeProps,
+  renderListItem?: ?({item: Item, selected: boolean}) => React.Node,
+  renderSelectedItem?: ?({item?: Item, selected: boolean}) => React.Node,
+  style: ViewStyleProp,
+  value: ?string,
 };
 
 type State = {
   open: boolean,
   pickerWidth: number,
-  pickerHeight: number,
   pickerX: number,
   pickerY: number,
   windowWidth: number,
@@ -37,6 +56,12 @@ type State = {
 };
 
 class Picker extends React.PureComponent<Props, State> {
+  backHandler: {
+    remove: () => void,
+  };
+
+  scrimOpacity = new Animated.Value(0);
+
   viewRef: ?View;
 
   constructor(props: Props) {
@@ -47,7 +72,6 @@ class Picker extends React.PureComponent<Props, State> {
     this.state = {
       open: false,
       pickerWidth: 0,
-      pickerHeight: 0,
       pickerX: 0,
       pickerY: 0,
       windowWidth: width,
@@ -60,24 +84,61 @@ class Picker extends React.PureComponent<Props, State> {
   }
 
   componentWillUnmount() {
+    if (this.backHandler) {
+      this.backHandler.remove();
+    }
     Dimensions.removeEventListener('change', this.onChangeDimensions);
   }
+
+  handleBackPress = () => {
+    this.close();
+    return true;
+  };
 
   open = () => {
     if (this.viewRef) {
       this.viewRef.measureInWindow((x, y) => {
-        this.setState({
-          open: true,
-          pickerX: x,
-          pickerY: y,
-        });
+        this.backHandler = BackHandler.addEventListener('hardwareBackPress', this.handleBackPress);
+        this.scrimOpacity.setValue(0);
+        // eslint-disable-next-line react/no-did-update-set-state
+        const {width, height} = Dimensions.get('window');
+        this.setState(
+          {
+            open: true,
+            pickerX: x,
+            pickerY: y + StatusBar.currentHeight,
+            windowWidth: width,
+            windowHeight: height,
+          },
+          () => {
+            const {rctshtTheme} = this.props;
+            Animated.timing(this.scrimOpacity, {
+              toValue: 1,
+              duration: rctshtTheme.animations.dialog.in,
+              easing: rctshtTheme.animations.decelerateEasing,
+              useNativeDriver: true,
+            }).start();
+          },
+        );
       });
     }
   };
 
   close = () => {
-    this.setState({
-      open: false,
+    const {rctshtTheme} = this.props;
+    this.scrimOpacity.setValue(1);
+    Animated.timing(this.scrimOpacity, {
+      toValue: 0,
+      duration: rctshtTheme.animations.dialog.out,
+      easing: rctshtTheme.animations.accelerateEasing,
+      useNativeDriver: true,
+    }).start(() => {
+      if (this.backHandler) {
+        this.backHandler.remove();
+      }
+      this.setState({
+        open: false,
+      });
     });
   };
 
@@ -95,12 +156,21 @@ class Picker extends React.PureComponent<Props, State> {
   };
 
   onLayout = (event: LayoutEvent) => {
-    const {width, height} = event.nativeEvent.layout;
+    const {width} = event.nativeEvent.layout;
 
     this.setState({
       pickerWidth: width,
-      pickerHeight: height,
     });
+  };
+
+  onPressListItem = (event: PressEvent, value?: string) => {
+    const {onChangeValue} = this.props;
+
+    if (value != null && typeof onChangeValue === 'function') {
+      onChangeValue(value);
+    }
+
+    this.close();
   };
 
   setViewRef = (node: ?View) => {
@@ -115,58 +185,43 @@ class Picker extends React.PureComponent<Props, State> {
       return renderSelectedItem(options);
     }
 
-    const {label} = item || {label: ''};
+    const {label, value} = item || {label: '', value: null};
 
     // Default renderer
-    return <Type.Body1 bold={selected}>{label}</Type.Body1>;
-  };
-
-  renderListItem = (options: {item: Item, selected: boolean}) => {
-    const {item, selected} = options;
-    const {renderListItem} = this.props;
-
-    const {label, value} = item;
-
-    let content = null;
-    if (typeof renderListItem === 'function') {
-      content = renderListItem(options);
-    } else {
-      content = <Type.Body1 bold={selected}>{label}</Type.Body1>;
-    }
-
-    const onPress = () => {
-      const {onChangeValue} = this.props;
-
-      if (typeof onChangeValue === 'function') {
-        onChangeValue(value);
-      }
-    };
-
-    // Default renderer
-    return <Touchable onPress={onPress}>{content}</Touchable>;
+    return (
+      <View style={styles.selectedItem}>
+        <Type.Body1 bold={selected} style={value == null ? styles.disabled : null} numberOfLines={1}>
+          {label}
+        </Type.Body1>
+      </View>
+    );
   };
 
   render() {
-    const {selectedValue, items} = this.props;
-    const {open, pickerWidth, pickerHeight, pickerX, pickerY, windowWidth, windowHeight} = this.state;
+    const {items, renderListItem, style, value} = this.props;
+    const {open, pickerWidth, pickerX, pickerY, windowWidth, windowHeight} = this.state;
 
-    const selectedItem = items.find(item => item.value === selectedValue);
+    const selectedItem = items.find(item => item.value === value);
 
     return (
       <>
-        <View ref={this.setViewRef} onLayout={this.onLayout} style={styles.container}>
-          {this.renderSelectedItem({item: selectedItem, selected: true})}
+        <View ref={this.setViewRef} onLayout={this.onLayout}>
+          <Touchable onPress={this.open} style={[styles.container, ...(Array.isArray(style) ? style : [style])]}>
+            {this.renderSelectedItem({item: selectedItem, selected: selectedItem ? selectedItem.value != null : false})}
+            <Icon name="menu-down" size={24} />
+          </Touchable>
         </View>
         <PickerList
           isVisible={open}
           items={items}
           onClose={this.onClosePickerList}
+          onPressListItem={this.onPressListItem}
           pickerWidth={pickerWidth}
-          pickerHeight={pickerHeight}
           pickerX={pickerX}
           pickerY={pickerY}
-          renderListItem={this.renderListItem}
-          selectedValue={selectedValue}
+          renderListItem={renderListItem}
+          scrimOpacity={this.scrimOpacity}
+          selectedValue={value}
           windowWidth={windowWidth}
           windowHeight={windowHeight}
         />
@@ -175,4 +230,4 @@ class Picker extends React.PureComponent<Props, State> {
   }
 }
 
-export default Picker;
+export default withTheme(Picker);

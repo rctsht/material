@@ -3,11 +3,24 @@ import * as React from 'react';
 import {StyleSheet, View} from 'react-native';
 import type {PressEvent} from 'react-native/Libraries/Types/CoreEventTypes';
 
+import {Icon} from '../icon';
 import {Touchable} from '../touchable';
 import {Type} from '../type';
 
 const styles = StyleSheet.create({
-  container: {},
+  container: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingRight: 8,
+  },
+  item: {
+    padding: 8,
+    flex: 1,
+  },
+  disabled: {
+    color: '#999999',
+  },
 });
 
 type Item = {
@@ -16,6 +29,7 @@ type Item = {
 };
 
 type Props = {
+  showCaret: boolean,
   item: Item,
   onPressListItem?: ?(event: PressEvent, value: ?string) => void,
   renderListItem?: ?({item: Item, selected: boolean}) => React.Node,
@@ -33,9 +47,9 @@ class PickerListItem extends React.PureComponent<Props> {
   };
 
   render() {
-    const {item, renderListItem, selectedValue} = this.props;
+    const {showCaret, item, renderListItem, selectedValue} = this.props;
 
-    const selected = selectedValue === item.value;
+    const selected = item.value != null && selectedValue === item.value;
 
     let content;
 
@@ -43,15 +57,18 @@ class PickerListItem extends React.PureComponent<Props> {
       content = renderListItem({item, selected});
     } else {
       content = (
-        <View>
-          <Type.Body1>{item.label}</Type.Body1>
+        <View style={styles.item}>
+          <Type.Body1 bold={selected} style={item.value == null ? styles.disabled : null} numberOfLines={2}>
+            {item.label}
+          </Type.Body1>
         </View>
       );
     }
 
     return (
-      <Touchable onPress={selected ? null : this.onPress} style={[styles.container]}>
+      <Touchable onPress={this.onPress} style={styles.container}>
         {content}
+        {showCaret ? <Icon name="menu-up" size={24} /> : null}
       </Touchable>
     );
   }
