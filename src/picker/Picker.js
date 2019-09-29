@@ -26,6 +26,9 @@ const styles = StyleSheet.create({
   containerOpen: {
     elevation: 0,
   },
+  containerDisabled: {
+    opacity: 0.25,
+  },
   selectedItem: {
     padding: 8,
     flex: 1,
@@ -42,6 +45,7 @@ type Item = {
 };
 
 type Props = {
+  disabled?: boolean,
   items: Array<Item>,
   onChangeValue?: ?(value: ?string) => void,
   rctshtTheme: ThemeProps,
@@ -187,7 +191,7 @@ class Picker extends React.PureComponent<Props, State> {
 
   renderSelectedItem = (options: {index: number, item?: Item, selected: boolean, open?: boolean}) => {
     const {item, selected, open = false} = options;
-    const {renderSelectedItem} = this.props;
+    const {disabled: pickerDisabled, renderSelectedItem} = this.props;
 
     let content;
 
@@ -207,7 +211,11 @@ class Picker extends React.PureComponent<Props, State> {
     }
 
     return (
-      <Touchable onPress={open ? this.close : this.open} style={[styles.container, open ? styles.containerOpen : null]}>
+      <Touchable
+        onPress={open ? this.close : this.open}
+        style={[styles.container, open ? styles.containerOpen : null, pickerDisabled ? styles.containerDisabled : null]}
+        needsOffscreenAlphaCompositing
+      >
         {content}
         <Icon name={open ? 'menu-up' : 'menu-down'} size={24} />
       </Touchable>
@@ -215,37 +223,39 @@ class Picker extends React.PureComponent<Props, State> {
   };
 
   render() {
-    const {items, renderFooter, renderListItem, value} = this.props;
+    const {disabled, items, renderFooter, renderListItem, value} = this.props;
     const {open, pickerWidth, pickerHeight, pickerX, pickerY, windowWidth, windowHeight} = this.state;
 
     const selectedItem = items.find(item => item.value === value);
 
     return (
       <>
-        <View ref={this.setViewRef} onLayout={this.onLayout}>
+        <View ref={this.setViewRef} onLayout={this.onLayout} pointerEvents={disabled ? 'none' : 'auto'}>
           {this.renderSelectedItem({
             index: items.indexOf(selectedItem),
             item: selectedItem,
             selected: selectedItem ? selectedItem.value != null : false,
           })}
         </View>
-        <PickerList
-          isVisible={open}
-          items={items}
-          onClose={this.onClosePickerList}
-          onPressListItem={this.onPressListItem}
-          pickerWidth={pickerWidth}
-          pickerHeight={pickerHeight}
-          pickerX={pickerX}
-          pickerY={pickerY}
-          renderFooter={renderFooter}
-          renderListItem={renderListItem}
-          renderSelectedItem={this.renderSelectedItem}
-          scrimOpacity={this.scrimOpacity}
-          selectedValue={value}
-          windowWidth={windowWidth}
-          windowHeight={windowHeight}
-        />
+        {disabled ? null : (
+          <PickerList
+            isVisible={open}
+            items={items}
+            onClose={this.onClosePickerList}
+            onPressListItem={this.onPressListItem}
+            pickerWidth={pickerWidth}
+            pickerHeight={pickerHeight}
+            pickerX={pickerX}
+            pickerY={pickerY}
+            renderFooter={renderFooter}
+            renderListItem={renderListItem}
+            renderSelectedItem={this.renderSelectedItem}
+            scrimOpacity={this.scrimOpacity}
+            selectedValue={value}
+            windowWidth={windowWidth}
+            windowHeight={windowHeight}
+          />
+        )}
       </>
     );
   }
