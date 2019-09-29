@@ -19,6 +19,7 @@ export * from './src/list';
 export {default as Log} from './src/log';
 export * from './src/menu';
 export * from './src/navigation';
+export * from './src/picker';
 export * from './src/progress';
 export * from './src/radio-button';
 export * from './src/screen';
