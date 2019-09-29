@@ -6,7 +6,7 @@ import uuid from 'uuid';
 import GlobalContext from './GlobalContext';
 import GlobalOverlay from './GlobalOverlay';
 
-export default function withGlobalOverlay(Component: React.ComponentType<*>) {
+export default function withGlobalOverlay(Component: React.ComponentType<*>, type: 'tooltip' | 'menu') {
   class ComponentWithGlobalOverlay extends React.PureComponent<*> {
     getOverlayRef: ?((GlobalOverlay) => void) => void;
 
@@ -29,8 +29,7 @@ export default function withGlobalOverlay(Component: React.ComponentType<*>) {
     componentWillUnmount() {
       if (this.getOverlayRef) {
         this.getOverlayRef(overlay => {
-          // $FlowFixMe // TODO is this used?
-          overlay.removeContent(this.id);
+          overlay.remove(type, this.id);
         });
       }
     }
@@ -38,8 +37,7 @@ export default function withGlobalOverlay(Component: React.ComponentType<*>) {
     renderContent() {
       if (this.getOverlayRef) {
         this.getOverlayRef(overlay => {
-          // $FlowFixMe // TODO is this used?
-          overlay.addOrUpdateContent(Component, {...this.props, id: this.id, getOverlayRef: this.getOverlayRef});
+          overlay.addOrUpdate(type, Component, {...this.props, id: this.id, getOverlayRef: this.getOverlayRef});
         });
       }
     }
