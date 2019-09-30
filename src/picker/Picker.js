@@ -51,7 +51,7 @@ type Props = {
   rctshtTheme: ThemeProps,
   renderFooter?: ?() => React.Node,
   renderListItem?: ?({item: Item, selected: boolean}) => React.Node,
-  renderSelectedItem?: ?({index: number, item?: Item, selected: boolean}) => React.Node,
+  renderSelectedItem?: ?({index: number, item: Item, selected: boolean}) => React.Node,
   value: ?string,
 };
 
@@ -190,13 +190,15 @@ class Picker extends React.PureComponent<Props, State> {
   };
 
   renderSelectedItem = (options: {index: number, item?: Item, selected: boolean, open?: boolean}) => {
-    const {item, selected, open = false} = options;
+    const {index, item, selected, open = false} = options;
     const {disabled: pickerDisabled, renderSelectedItem} = this.props;
 
     let content;
 
-    if (typeof renderSelectedItem === 'function') {
-      content = renderSelectedItem(options);
+    if (item == null) {
+      content = null;
+    } else if (typeof renderSelectedItem === 'function') {
+      content = renderSelectedItem({index, item, selected, open});
     } else {
       const {label, disabled} = item || {label: '', value: null, disabled: false};
 
