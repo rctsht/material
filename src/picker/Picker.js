@@ -50,7 +50,7 @@ type Props = {
   onChangeValue?: ?(value: ?string) => void,
   rctshtTheme: ThemeProps,
   renderFooter?: ?() => React.Node,
-  renderListItem?: ?({item: Item, selected: boolean}) => React.Node,
+  renderListItem?: ?({index: number, item: Item, selected: boolean}) => React.Node,
   renderSelectedItem?: ?({index: number, item: Item, selected: boolean}) => React.Node,
   value: ?string,
 };
@@ -215,7 +215,11 @@ class Picker extends React.PureComponent<Props, State> {
     return (
       <Touchable
         onPress={open ? this.close : this.open}
-        style={[styles.container, open ? styles.containerOpen : null, pickerDisabled ? styles.containerDisabled : null]}
+        style={[
+          styles.container,
+          open ? styles.containerOpen : null,
+          pickerDisabled === true ? styles.containerDisabled : null,
+        ]}
         needsOffscreenAlphaCompositing
       >
         {content}
