@@ -1,6 +1,6 @@
 // @flow strict-local
 import * as React from 'react';
-import {Animated, BackHandler, Dimensions, StatusBar, StyleSheet, View} from 'react-native';
+import {ActivityIndicator, Animated, BackHandler, Dimensions, StatusBar, StyleSheet, View} from 'react-native';
 import type {LayoutEvent, PressEvent} from 'react-native/Libraries/Types/CoreEventTypes';
 
 import {Icon} from '../icon';
@@ -29,6 +29,9 @@ const styles = StyleSheet.create({
   containerDisabled: {
     opacity: 0.25,
   },
+  containerLoading: {
+    justifyContent: 'center',
+  },
   selectedItem: {
     padding: 8,
     flex: 1,
@@ -47,6 +50,7 @@ type Item = {
 type Props = {
   disabled?: boolean,
   items: Array<Item>,
+  loading: boolean,
   onChangeValue?: ?(value: ?string) => void,
   rctshtTheme: ThemeProps,
   renderFooter?: ?() => React.Node,
@@ -229,7 +233,7 @@ class Picker extends React.PureComponent<Props, State> {
   };
 
   render() {
-    const {disabled, items, renderFooter, renderListItem, value} = this.props;
+    const {disabled, items, loading, renderFooter, renderListItem, value} = this.props;
     const {open, pickerWidth, pickerHeight, pickerX, pickerY, windowWidth, windowHeight} = this.state;
 
     const selectedItem = items.find(item => item.value === value);
@@ -237,11 +241,17 @@ class Picker extends React.PureComponent<Props, State> {
     return (
       <>
         <View ref={this.setViewRef} onLayout={this.onLayout} pointerEvents={disabled ? 'none' : 'auto'}>
-          {this.renderSelectedItem({
-            index: items.indexOf(selectedItem),
-            item: selectedItem,
-            selected: selectedItem ? selectedItem.disabled !== true : false,
-          })}
+          {loading ? (
+            <View style={[styles.container, styles.containerLoading]}>
+              <ActivityIndicator size="small" color="#3c3f43" />
+            </View>
+          ) : (
+            this.renderSelectedItem({
+              index: items.indexOf(selectedItem),
+              item: selectedItem,
+              selected: selectedItem ? selectedItem.disabled !== true : false,
+            })
+          )}
         </View>
         {disabled ? null : (
           <PickerList
