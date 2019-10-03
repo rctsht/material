@@ -209,7 +209,7 @@ class Picker extends React.PureComponent<Props, State> {
       // Default renderer
       content = (
         <View style={styles.selectedItem}>
-          <Type.Body1 bold={selected} style={disabled === true ? styles.disabled : null} numberOfLines={1}>
+          <Type.Body1 bold={selected && !disabled} style={disabled === true ? styles.disabled : null} numberOfLines={1}>
             {label}
           </Type.Body1>
         </View>
