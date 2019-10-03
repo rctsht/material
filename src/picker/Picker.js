@@ -182,11 +182,13 @@ class Picker extends React.PureComponent<Props, State> {
   onPressListItem = (event: PressEvent, item: Item) => {
     const {onChangeValue} = this.props;
 
-    if (item.disabled !== true && typeof onChangeValue === 'function') {
-      onChangeValue(item.value);
-    }
-
     this.close();
+
+    if (item.disabled !== true && typeof onChangeValue === 'function') {
+      requestAnimationFrame(() => {
+        onChangeValue(item.value);
+      });
+    }
   };
 
   setViewRef = (node: ?View) => {
