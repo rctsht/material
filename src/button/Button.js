@@ -4,6 +4,7 @@
 import {isString} from 'lodash-es';
 import * as React from 'react';
 import {StyleSheet, TouchableNativeFeedback, View} from 'react-native';
+import type {PressEvent} from 'react-native/Libraries/Types/CoreEventTypes'
 import type {ViewStyleProp} from 'react-native/Libraries/StyleSheet/StyleSheet';
 
 import {Icon} from '../icon';
@@ -68,7 +69,7 @@ type Props = {
   iconColor?: string,
   label?: string | React.Node,
   labelColor?: string,
-  onPress: ?() => void,
+  onPress: ?(event: PressEvent) => void,
   rctshtTheme: ThemeProps,
   type?: $Values<typeof types>,
   style: ViewStyleProp,
@@ -82,7 +83,7 @@ type DefaultProps = {
   iconColor?: string,
   label?: string | React.Node,
   labelColor?: string,
-  onPress: ?() => void,
+  onPress: ?(event: PressEvent) => void,
   type?: $Values<typeof types>,
   style: ViewStyleProp,
 };
