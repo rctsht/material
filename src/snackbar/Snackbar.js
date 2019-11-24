@@ -72,6 +72,7 @@ type Props = {
   duration?: number,
   label?: string,
   onClose?: ?(string) => void,
+  offsetY: number,
 };
 
 type State = {
@@ -80,6 +81,10 @@ type State = {
 };
 
 class Snackbar extends React.PureComponent<Props, State> {
+  static defaultProps = {
+    offsetY: 8,
+  };
+
   static show = props => {
     const context = GlobalOverlay.getContext();
 
@@ -128,8 +133,6 @@ class Snackbar extends React.PureComponent<Props, State> {
     };
   }
 
-  componentDidMount() {}
-
   // $FlowFixMe
   onLayoutText = (event: React.SyntheticEvent<Object>) => {
     const {height} = event.nativeEvent.layout;
@@ -176,7 +179,7 @@ class Snackbar extends React.PureComponent<Props, State> {
     });
 
   render() {
-    const {action, label} = this.props;
+    const {action, label, offsetY} = this.props;
     const {fullWidth, numberOfLines} = this.state;
 
     const onPress = event => {
@@ -211,7 +214,10 @@ class Snackbar extends React.PureComponent<Props, State> {
           numberOfLines === 2 ? styles.snackbarMultilineDouble : null,
           numberOfLines === 1 ? {flexWrap: 'nowrap'} : null,
           fullWidth && actionNode ? styles.snackbarMultilineTriple : null,
-          {opacity: this.opacity},
+          {
+            opacity: this.opacity,
+            bottom: offsetY,
+          },
         ]}
         pointerEvents="box-none"
       >
