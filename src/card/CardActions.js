@@ -48,13 +48,13 @@ class CardActions extends React.Component<Props> {
     divider: false,
   };
 
+  onPressActionDebounced: Action => void;
+
   constructor(props: Props) {
     super(props);
 
     this.onPressActionDebounced = debounce(this.onPressAction, 500);
   }
-
-  onPressActionDebounced: Action => void;
 
   onPressAction = (action: Action) => {
     Keyboard.dismiss();

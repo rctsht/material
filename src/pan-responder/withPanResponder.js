@@ -30,6 +30,12 @@ function withPanResponder(Component: React.ComponentType<*>) {
   class ComponentWithPanResponder extends React.PureComponent<Props, State> {
     captureId: ?string;
 
+    onDragStart: ?({}) => void;
+
+    onDragMove: ?({}) => void;
+
+    onDragEnd: ?({}) => void;
+
     constructor(props: Props) {
       super(props);
 
@@ -43,12 +49,6 @@ function withPanResponder(Component: React.ComponentType<*>) {
     componentWillUnmount() {
       this.destroyPanResponder();
     }
-
-    onDragStart: ?({}) => void;
-
-    onDragMove: ?({}) => void;
-
-    onDragEnd: ?({}) => void;
 
     initPanResponder = () => {
       const panResponder = PanResponder.create({

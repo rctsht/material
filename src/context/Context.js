@@ -33,6 +33,14 @@ class Context extends React.PureComponent<Props, State> {
 
   globalOverlayRef: ?GlobalOverlay;
 
+  getDialogOverlayRefCallbacks = [];
+
+  getMenuOverlayRefCallbacks = [];
+
+  getSheetOverlayRefCallbacks = [];
+
+  getGlobalOverlayRefCallbacks = [];
+
   constructor(props: Props) {
     super(props);
     this.state = {
@@ -62,8 +70,6 @@ class Context extends React.PureComponent<Props, State> {
     });
   };
 
-  getDialogOverlayRefCallbacks = [];
-
   getDialogOverlayRef = (cb: DialogOverlay => void) => {
     if (this.dialogOverlayRef) {
       cb(this.dialogOverlayRef);
@@ -85,8 +91,6 @@ class Context extends React.PureComponent<Props, State> {
       this.getDialogOverlayRefCallbacks = [];
     }
   };
-
-  getMenuOverlayRefCallbacks = [];
 
   getMenuOverlayRef = (cb: MenuOverlay => void) => {
     if (this.menuOverlayRef) {
@@ -110,8 +114,6 @@ class Context extends React.PureComponent<Props, State> {
     }
   };
 
-  getSheetOverlayRefCallbacks = [];
-
   getSheetOverlayRef = (cb: SheetOverlay => void) => {
     if (this.sheetOverlayRef) {
       cb(this.sheetOverlayRef);
@@ -133,8 +135,6 @@ class Context extends React.PureComponent<Props, State> {
       this.getSheetOverlayRefCallbacks = [];
     }
   };
-
-  getGlobalOverlayRefCallbacks = [];
 
   getGlobalOverlayRef = (cb: GlobalOverlay => void) => {
     if (this.globalOverlayRef) {

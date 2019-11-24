@@ -68,10 +68,10 @@ const durations = {
 
 type Props = {
   id: string,
-  action?: {},
-  duration?: number,
-  label?: string,
-  onClose?: ?(string) => void,
+  action: ?{},
+  duration: number,
+  label: string,
+  onClose: ?(string) => void,
   offsetY: number,
 };
 
@@ -81,7 +81,13 @@ type State = {
 };
 
 class Snackbar extends React.PureComponent<Props, State> {
+  static durations = durations;
+
   static defaultProps = {
+    action: null,
+    duration: durations.SHORT,
+    label: '',
+    onClose: null,
     offsetY: 8,
   };
 
@@ -111,15 +117,6 @@ class Snackbar extends React.PureComponent<Props, State> {
     }
 
     context.removeSnackbar(id);
-  };
-
-  static durations = durations;
-
-  static defaultProps = {
-    action: null,
-    duration: durations.SHORT,
-    label: '',
-    onClose: null,
   };
 
   opacity = new Animated.Value(0);
