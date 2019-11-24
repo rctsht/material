@@ -4,8 +4,8 @@
 import {isString} from 'lodash-es';
 import * as React from 'react';
 import {StyleSheet, TouchableNativeFeedback, View} from 'react-native';
-import type {PressEvent} from 'react-native/Libraries/Types/CoreEventTypes'
 import type {ViewStyleProp} from 'react-native/Libraries/StyleSheet/StyleSheet';
+import type {PressEvent} from 'react-native/Libraries/Types/CoreEventTypes';
 
 import {Icon} from '../icon';
 import {type ThemeProps, withTheme} from '../theme';
@@ -164,14 +164,14 @@ class Button extends React.PureComponent<Props> {
       additionalStyles,
       iconNode != null ? styles.iconButton : null,
       ...(Array.isArray(style) ? style : [style]),
-    ]
+    ];
 
     const {borderRadius, elevation} = StyleSheet.flatten(touchableStyles) || {};
 
     return (
       <View
         style={[styles.container, {borderRadius, elevation}, disabled ? {opacity: 0.25} : null]}
-        needsOffscreenAlphaCompositing
+        needsOffscreenAlphaCompositing={disabled}
       >
         <Touchable background={background} disabled={disabled} onPress={onPress} style={touchableStyles}>
           {iconNode != null ? <View style={styles.icon}>{iconNode}</View> : null}
