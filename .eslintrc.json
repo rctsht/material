@@ -25,7 +25,42 @@
     "react/require-default-props": 0,
     "react/default-props-match-prop-types": 0,
     "flow-header/flow-header": 2,
-    "react/static-property-placement": ["warn", "static public field"]
+    "react/static-property-placement": ["warn", "static public field"],
+    "react/sort-comp": [
+      1,
+      {
+        "order": ["static-variables", "static-methods", "instance-variables", "lifecycle", "everything-else", "render"],
+        "groups": {
+          "lifecycle": [
+            "displayName",
+            "propTypes",
+            "contextTypes",
+            "childContextTypes",
+            "mixins",
+            "statics",
+            "defaultProps",
+            "constructor",
+            "getDefaultProps",
+            "state",
+            "getInitialState",
+            "getChildContext",
+            "getDerivedStateFromProps",
+            "componentWillMount",
+            "UNSAFE_componentWillMount",
+            "componentDidMount",
+            "componentWillReceiveProps",
+            "UNSAFE_componentWillReceiveProps",
+            "shouldComponentUpdate",
+            "componentWillUpdate",
+            "UNSAFE_componentWillUpdate",
+            "getSnapshotBeforeUpdate",
+            "componentDidUpdate",
+            "componentDidCatch",
+            "componentWillUnmount"
+          ]
+        }
+      }
+    ]
   },
   "env": {
     "react-native/react-native": true
