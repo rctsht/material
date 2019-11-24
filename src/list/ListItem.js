@@ -27,6 +27,9 @@ const styles = StyleSheet.create({
     borderBottomWidth: StyleSheet.hairlineWidth,
     borderBottomColor: '#e0e0e0',
   },
+  disabled: {
+    opacity: 0.25,
+  },
 });
 
 type DefaultProps = {|
@@ -38,7 +41,8 @@ type DefaultProps = {|
   onPress: ?() => void,
   selected: boolean,
   trailingIcon: React.Node,
-|}
+  disabled: boolean,
+|};
 
 type Props = {
   ...DefaultProps,
@@ -60,6 +64,7 @@ class ListItem extends React.PureComponent<Props, State> {
     selected: false,
     leadingIcon: null,
     trailingIcon: null,
+    disabled: false,
   };
 
   constructor(props: Props) {
@@ -96,7 +101,7 @@ class ListItem extends React.PureComponent<Props, State> {
   };
 
   render() {
-    const {children, divider, label, leadingIcon, expanding, trailingIcon} = this.props;
+    const {children, divider, label, leadingIcon, expanding, trailingIcon, disabled} = this.props;
     const {expanded} = this.state;
 
     let expandingTrailingIcon = null;
@@ -106,8 +111,11 @@ class ListItem extends React.PureComponent<Props, State> {
     }
 
     return (
-      <View style={divider ? styles.divider : null}>
-        <Touchable onPress={this.onPress} style={styles.container} pointerEvents="box-only">
+      <View
+        style={[divider ? styles.divider : null, disabled ? styles.disabled : null]}
+        needsOffscreenAlphaCompositing={disabled}
+      >
+        <Touchable onPress={this.onPress} disabled={disabled} style={styles.container} pointerEvents="box-only">
           {leadingIcon}
           <View style={styles.label}>
             {isString(label) ? (
