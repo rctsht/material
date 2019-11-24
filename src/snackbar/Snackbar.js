@@ -22,9 +22,9 @@ const styles = StyleSheet.create({
     paddingRight: 8,
     elevation: 6,
     position: 'absolute',
-    left: 0,
-    right: 0,
-    bottom: 0,
+    left: 8,
+    right: 8,
+    bottom: 8,
   },
   snackbarMultilineDouble: {
     alignItems: 'flex-start',
@@ -178,8 +178,6 @@ class Snackbar extends React.PureComponent<Props, State> {
   render() {
     const {action, label} = this.props;
     const {fullWidth, numberOfLines} = this.state;
-
-    console.log('XXX', label, fullWidth, numberOfLines);
 
     const onPress = event => {
       // $FlowFixMe
