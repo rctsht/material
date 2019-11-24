@@ -8,7 +8,6 @@ import {GlobalContext, GlobalOverlay} from '../global';
 import {KeyboardContext} from '../keyboard';
 import {MenuContext, MenuOverlay} from '../menu';
 import {SheetContext, SheetOverlay} from '../sheet';
-import {SnackbarContext, SnackbarOverlay} from '../snackbar';
 import {createTheme, ThemeContext, type ThemeProps} from '../theme';
 
 type Props = {
@@ -31,8 +30,6 @@ class Context extends React.PureComponent<Props, State> {
   menuOverlayRef: ?MenuOverlay;
 
   sheetOverlayRef: ?SheetOverlay;
-
-  snackbarOverlayRef: ?SnackbarOverlay;
 
   globalOverlayRef: ?GlobalOverlay;
 
@@ -137,30 +134,6 @@ class Context extends React.PureComponent<Props, State> {
     }
   };
 
-  getSnackbarOverlayRefCallbacks = [];
-
-  getSnackbarOverlayRef = (cb: SnackbarOverlay => void) => {
-    if (this.snackbarOverlayRef) {
-      cb(this.snackbarOverlayRef);
-    } else {
-      this.getSnackbarOverlayRefCallbacks.push(cb);
-    }
-  };
-
-  setSnackbarOverlayRef = (node: ?SnackbarOverlay) => {
-    this.snackbarOverlayRef = node;
-
-    if (this.snackbarOverlayRef) {
-      this.getSnackbarOverlayRefCallbacks.forEach(cb => {
-        if (this.snackbarOverlayRef) {
-          cb(this.snackbarOverlayRef);
-        }
-      });
-
-      this.getSnackbarOverlayRefCallbacks = [];
-    }
-  };
-
   getGlobalOverlayRefCallbacks = [];
 
   getGlobalOverlayRef = (cb: GlobalOverlay => void) => {
@@ -197,14 +170,11 @@ class Context extends React.PureComponent<Props, State> {
               <DialogContext.Provider value={this.getDialogOverlayRef}>
                 <SheetContext.Provider value={this.getSheetOverlayRef}>
                   <MenuContext.Provider value={this.getMenuOverlayRef}>
-                    <SnackbarContext.Provider value={this.getSnackbarOverlayRef}>
-                      {children}
-                      <SnackbarOverlay ref={this.setSnackbarOverlayRef} />
-                      <MenuOverlay ref={this.setMenuOverlayRef} />
-                      <SheetOverlay ref={this.setSheetOverlayRef} />
-                      <DialogOverlay ref={this.setDialogOverlayRef} />
-                      <GlobalOverlay ref={this.setGlobalOverlayRef} />
-                    </SnackbarContext.Provider>
+                    {children}
+                    <MenuOverlay ref={this.setMenuOverlayRef} />
+                    <SheetOverlay ref={this.setSheetOverlayRef} />
+                    <DialogOverlay ref={this.setDialogOverlayRef} />
+                    <GlobalOverlay ref={this.setGlobalOverlayRef} />
                   </MenuContext.Provider>
                 </SheetContext.Provider>
               </DialogContext.Provider>

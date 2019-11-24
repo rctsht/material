@@ -21,6 +21,8 @@ type State = {
   // $FlowFixMe
   menus: Array<{Component: React.ComponentType<any>, props: {}}>,
   // $FlowFixMe
+  snackbars: Array<{Component: React.ComponentType<any>, props: {}}>,
+  // $FlowFixMe
   tooltips: Array<{Component: React.ComponentType<any>, props: {}}>,
 };
 
@@ -35,6 +37,7 @@ class GlobalOverlay extends React.PureComponent<any, State> {
     this.state = {
       extraProps: {},
       menus: [],
+      snackbars: [],
       tooltips: [],
     };
   }
@@ -56,19 +59,6 @@ class GlobalOverlay extends React.PureComponent<any, State> {
   };
 
   // $FlowFixMe
-  addOrUpdateTooltip = (Component: React.ComponentType<any>, props: {} = {}) => {
-    this.setState(currentState => ({
-      tooltips: [...currentState.tooltips.filter(tooltip => tooltip.props.id !== props.id), {Component, props}],
-    }));
-  };
-
-  removeTooltip = (id: string) => {
-    this.setState(currentState => ({
-      tooltips: currentState.tooltips.filter(tooltip => tooltip.props.id !== id),
-    }));
-  };
-
-  // $FlowFixMe
   addOrUpdateMenu = (Component: React.ComponentType<any>, props: {} = {}) => {
     this.setState(currentState => ({
       menus: [...currentState.menus.filter(menu => menu.props.id !== props.id), {Component, props}],
@@ -82,26 +72,58 @@ class GlobalOverlay extends React.PureComponent<any, State> {
   };
 
   // $FlowFixMe
-  addOrUpdate = (type: 'menu' | 'tooltip', Component: React.ComponentType<any>, props: {} = {}) => {
+  addOrUpdateSnackbar = (Component: React.ComponentType<any>, props: {} = {}) => {
+    this.setState(currentState => ({
+      snackbars: [...currentState.snackbars.filter(snackbar => snackbar.props.id !== props.id), {Component, props}],
+    }));
+  };
+
+  removeSnackbar = (id: string) => {
+    this.setState(currentState => ({
+      snackbars: currentState.snackbars.filter(snackbar => snackbar.props.id !== id),
+    }));
+  };
+
+  // $FlowFixMe
+  addOrUpdateTooltip = (Component: React.ComponentType<any>, props: {} = {}) => {
+    this.setState(currentState => ({
+      tooltips: [...currentState.tooltips.filter(tooltip => tooltip.props.id !== props.id), {Component, props}],
+    }));
+  };
+
+  removeTooltip = (id: string) => {
+    this.setState(currentState => ({
+      tooltips: currentState.tooltips.filter(tooltip => tooltip.props.id !== id),
+    }));
+  };
+
+  // $FlowFixMe
+  addOrUpdate = (type: 'menu' | 'snackbar' | 'tooltip', Component: React.ComponentType<any>, props: {} = {}) => {
     switch (type) {
-      case 'tooltip':
-        this.addOrUpdateTooltip(Component, props);
-        break;
       case 'menu':
         this.addOrUpdateMenu(Component, props);
+        break;
+      case 'snackbar':
+        this.addOrUpdateSnackbar(Component, props);
+        break;
+      case 'tooltip':
+        this.addOrUpdateTooltip(Component, props);
         break;
       default:
         break;
     }
   };
 
-  remove = (type: 'menu' | 'tooltip', id: string) => {
+  remove = (type: 'menu' | 'snackbar' | 'tooltip', id: string) => {
     switch (type) {
-      case 'tooltip':
-        this.removeTooltip(id);
-        break;
       case 'menu':
         this.removeMenu(id);
+        break;
+      case 'snackbar':
+        this.removeSnackbar(id);
+        break;
+      case 'tooltip':
+        this.removeTooltip(id);
         break;
       default:
         break;
@@ -109,7 +131,7 @@ class GlobalOverlay extends React.PureComponent<any, State> {
   };
 
   render() {
-    const {menus, tooltips, extraProps} = this.state;
+    const {menus, snackbars, tooltips, extraProps} = this.state;
 
     return (
       <>
@@ -122,8 +144,17 @@ class GlobalOverlay extends React.PureComponent<any, State> {
             </View>
           );
         })}
-        {menus.map<React.Node>(tooltip => {
-          const {Component, props} = tooltip;
+        {menus.map<React.Node>(menu => {
+          const {Component, props} = menu;
+          return (
+            <View style={styles.container} pointerEvents="box-none" key={props.id}>
+              {/* eslint-disable-next-line react/jsx-props-no-spreading */}
+              <Component {...extraProps} {...props} />
+            </View>
+          );
+        })}
+        {snackbars.map<React.Node>(snackbar => {
+          const {Component, props} = snackbar;
           return (
             <View style={styles.container} pointerEvents="box-none" key={props.id}>
               {/* eslint-disable-next-line react/jsx-props-no-spreading */}

@@ -6,7 +6,7 @@ import uuid from 'uuid';
 import GlobalContext from './GlobalContext';
 import GlobalOverlay from './GlobalOverlay';
 
-export default function withGlobalOverlay(Component: React.ComponentType<*>, type: 'tooltip' | 'menu') {
+export default function withGlobalOverlay(Component: React.ComponentType<*>, type: 'menu' | 'snackbar' | 'tooltip') {
   class ComponentWithGlobalOverlay extends React.PureComponent<*> {
     getOverlayRef: ?((GlobalOverlay) => void) => void;
 

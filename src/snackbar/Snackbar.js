@@ -1,11 +1,11 @@
 // @flow strict-local
 import * as React from 'react';
 import {Animated, StyleSheet, View} from 'react-native';
+import uuid from 'uuid';
 
 import {Button} from '../button';
+import {GlobalOverlay, withGlobalOverlay} from '../global';
 import {Type} from '../type';
-
-import withSnackbarOverlay from './withSnackbarOverlay';
 
 const labelLineHeight = 20;
 
@@ -21,6 +21,10 @@ const styles = StyleSheet.create({
     paddingLeft: 16,
     paddingRight: 8,
     elevation: 6,
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    bottom: 0,
   },
   snackbarMultilineDouble: {
     alignItems: 'flex-start',
@@ -33,10 +37,10 @@ const styles = StyleSheet.create({
   },
   label: {
     flex: 1,
-    marginRight: 8,
     color: '#e5e5e5',
     fontSize: 14,
     lineHeight: labelLineHeight,
+    marginRight: 8,
   },
   labelTriple: {
     flex: 0,
@@ -64,7 +68,7 @@ const durations = {
 
 type Props = {
   id: string,
-  action?: ?typeof Button,
+  action?: {},
   duration?: number,
   label?: string,
   onClose?: ?(string) => void,
@@ -76,6 +80,34 @@ type State = {
 };
 
 class Snackbar extends React.PureComponent<Props, State> {
+  static show = props => {
+    const context = GlobalOverlay.getContext();
+
+    if (!context) {
+      return null;
+    }
+
+    const theProps = props;
+
+    if (!theProps.id) {
+      theProps.id = uuid.v4();
+    }
+
+    context.addOrUpdateSnackbar(Snackbar, props);
+
+    return theProps.id;
+  };
+
+  static hide = id => {
+    const context = GlobalOverlay.getContext();
+
+    if (!context) {
+      return;
+    }
+
+    context.removeSnackbar(id);
+  };
+
   static durations = durations;
 
   static defaultProps = {
@@ -147,6 +179,8 @@ class Snackbar extends React.PureComponent<Props, State> {
     const {action, label} = this.props;
     const {fullWidth, numberOfLines} = this.state;
 
+    console.log('XXX', label, fullWidth, numberOfLines);
+
     const onPress = event => {
       // $FlowFixMe
       if (this.fadeOutAnimation) {
@@ -177,24 +211,29 @@ class Snackbar extends React.PureComponent<Props, State> {
         style={[
           styles.snackbar,
           numberOfLines === 2 ? styles.snackbarMultilineDouble : null,
-          fullWidth ? styles.snackbarMultilineTriple : null,
+          numberOfLines === 1 ? {flexWrap: 'nowrap'} : null,
+          fullWidth && actionNode ? styles.snackbarMultilineTriple : null,
           {opacity: this.opacity},
         ]}
+        pointerEvents="box-none"
       >
         <Type.Default
           style={[styles.label, fullWidth ? styles.labelTriple : null]}
           numberOfLines={numberOfLines}
           alignToBaseline={numberOfLines === 2 ? 30 : undefined}
           onLayout={this.onLayoutText}
+          pointerEvents="none"
         >
           {label}
         </Type.Default>
         {actionNode ? (
-          <View style={[styles.action, fullWidth ? styles.actionFullWidth : null]}>{actionNode}</View>
+          <View style={[styles.action, fullWidth ? styles.actionFullWidth : null]} pointerEvents="box-none">
+            {actionNode}
+          </View>
         ) : null}
       </Animated.View>
     );
   }
 }
 
-export default withSnackbarOverlay(Snackbar);
+export default withGlobalOverlay(Snackbar, 'snackbar');
