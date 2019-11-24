@@ -358,6 +358,7 @@ class Dialog extends React.PureComponent<Props, State> {
           </Animated.View>
         ) : (
           <Animated.View
+            needsOffscreenAlphaCompositing
             style={[
               styles.modalContainer,
               noPadding ? styles.modalContainerNoPadding : null,
