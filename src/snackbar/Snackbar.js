@@ -172,6 +172,7 @@ class Snackbar extends React.PureComponent<Props, State> {
         if (onClose) {
           onClose(id);
         }
+        Snackbar.hide(id);
       }
     });
 
