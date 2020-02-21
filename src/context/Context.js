@@ -2,6 +2,7 @@
 import * as React from 'react';
 import {Keyboard} from 'react-native';
 import {MenuProvider} from 'react-native-popup-menu';
+import {SafeAreaProvider} from 'react-native-safe-area-context';
 
 import {DialogContext, DialogOverlay} from '../dialog';
 import {GlobalContext, GlobalOverlay} from '../global';
@@ -163,24 +164,26 @@ class Context extends React.PureComponent<Props, State> {
 
     return (
       <MenuProvider>
-        {/* $FlowFixMe */}
-        <ThemeContext.Provider value={theme}>
-          <KeyboardContext.Provider value={keyboardIsOpen}>
-            <GlobalContext.Provider value={this.getGlobalOverlayRef}>
-              <DialogContext.Provider value={this.getDialogOverlayRef}>
-                <SheetContext.Provider value={this.getSheetOverlayRef}>
-                  <MenuContext.Provider value={this.getMenuOverlayRef}>
-                    {children}
-                    <MenuOverlay ref={this.setMenuOverlayRef} />
-                    <SheetOverlay ref={this.setSheetOverlayRef} />
-                    <DialogOverlay ref={this.setDialogOverlayRef} />
-                    <GlobalOverlay ref={this.setGlobalOverlayRef} />
-                  </MenuContext.Provider>
-                </SheetContext.Provider>
-              </DialogContext.Provider>
-            </GlobalContext.Provider>
-          </KeyboardContext.Provider>
-        </ThemeContext.Provider>
+        <SafeAreaProvider>
+          {/* $FlowFixMe */}
+          <ThemeContext.Provider value={theme}>
+            <KeyboardContext.Provider value={keyboardIsOpen}>
+              <GlobalContext.Provider value={this.getGlobalOverlayRef}>
+                <DialogContext.Provider value={this.getDialogOverlayRef}>
+                  <SheetContext.Provider value={this.getSheetOverlayRef}>
+                    <MenuContext.Provider value={this.getMenuOverlayRef}>
+                      {children}
+                      <MenuOverlay ref={this.setMenuOverlayRef} />
+                      <SheetOverlay ref={this.setSheetOverlayRef} />
+                      <DialogOverlay ref={this.setDialogOverlayRef} />
+                      <GlobalOverlay ref={this.setGlobalOverlayRef} />
+                    </MenuContext.Provider>
+                  </SheetContext.Provider>
+                </DialogContext.Provider>
+              </GlobalContext.Provider>
+            </KeyboardContext.Provider>
+          </ThemeContext.Provider>
+        </SafeAreaProvider>
       </MenuProvider>
     );
   }
