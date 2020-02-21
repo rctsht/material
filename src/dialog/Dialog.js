@@ -4,6 +4,7 @@ import {Animated, BackHandler, Dimensions, ScrollView, StyleSheet, TouchableWith
 import type {CompositeAnimation} from 'react-native/Libraries/Animated/src/AnimatedImplementation';
 
 import {type ThemeProps, withTheme} from '../theme';
+import {ShadowUtil} from '../util';
 
 import DialogOverlay from './DialogOverlay';
 
@@ -27,7 +28,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(0,0,0,0.68)',
   },
   modalContainer: {
-    elevation: 24,
+    ...ShadowUtil.getStylesForElevation(24),
     backgroundColor: '#fff',
     overflow: 'hidden',
     marginHorizontal: 16,

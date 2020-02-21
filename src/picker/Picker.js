@@ -8,6 +8,7 @@ import {type ThemeProps, withTheme} from '../theme';
 import {Touchable} from '../touchable';
 import {Type} from '../type';
 import type {DimensionsEvent} from '../types';
+import {ShadowUtil} from '../util';
 
 import PickerList from './PickerList';
 
@@ -21,10 +22,10 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     paddingHorizontal: 8,
     minHeight: 48,
-    elevation: 1,
+    ...ShadowUtil.getStylesForElevation(1),
   },
   containerOpen: {
-    elevation: 0,
+    ...ShadowUtil.getStylesForElevation(0),
   },
   containerDisabled: {
     opacity: 0.25,

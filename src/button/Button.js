@@ -11,6 +11,7 @@ import {Icon} from '../icon';
 import {type ThemeProps, withTheme} from '../theme';
 import {Touchable} from '../touchable';
 import {Type, typePresets} from '../type';
+import {ShadowUtil} from '../util';
 
 const styles = StyleSheet.create({
   container: {
@@ -26,7 +27,7 @@ const styles = StyleSheet.create({
   },
   containedButton: {
     minWidth: 64,
-    elevation: 2,
+    ...ShadowUtil.getStylesForElevation(2),
   },
   outlinedButton: {
     minWidth: 64,
@@ -166,8 +167,19 @@ class Button extends React.PureComponent<Props> {
       ...(Array.isArray(style) ? style : [style]),
     ];
 
-    const {borderRadius, elevation, margin, marginTop, marginLeft, marginRight, marginBottom} =
-      StyleSheet.flatten(touchableStyles) || {};
+    const {
+      borderRadius,
+      elevation,
+      shadowColor,
+      shadowOffset,
+      shadowOpacity,
+      shadowRadius,
+      margin,
+      marginTop,
+      marginLeft,
+      marginRight,
+      marginBottom,
+    } = StyleSheet.flatten(touchableStyles) || {};
 
     touchableStyles.push({margin: 0, marginTop: 0, marginLeft: 0, marginRight: 0, marginBottom: 0});
 
@@ -175,7 +187,19 @@ class Button extends React.PureComponent<Props> {
       <View
         style={[
           styles.container,
-          {borderRadius, elevation, margin, marginTop, marginLeft, marginRight, marginBottom},
+          {
+            borderRadius,
+            elevation,
+            shadowColor,
+            shadowOffset,
+            shadowOpacity,
+            shadowRadius,
+            margin,
+            marginTop,
+            marginLeft,
+            marginRight,
+            marginBottom,
+          },
           disabled ? {opacity: 0.25} : null,
         ]}
         needsOffscreenAlphaCompositing={disabled}

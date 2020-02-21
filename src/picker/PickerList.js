@@ -7,6 +7,7 @@ import type {LayoutEvent, PressEvent} from 'react-native/Libraries/Types/CoreEve
 import {Divider} from '../divider';
 import {withGlobalOverlay} from '../global';
 import {Scrim} from '../scrim';
+import {ShadowUtil} from '../util';
 
 import PickerListItem from './PickerListItem';
 
@@ -20,7 +21,7 @@ const styles = StyleSheet.create({
   },
   pickerList: {
     backgroundColor: '#ffffff',
-    elevation: 8,
+    ...ShadowUtil.getStylesForElevation(8),
     borderRadius: 8,
     overflow: 'hidden',
   },

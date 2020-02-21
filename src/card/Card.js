@@ -3,14 +3,16 @@ import * as React from 'react';
 import {StyleSheet, View} from 'react-native';
 import type {ViewStyleProp} from 'react-native/Libraries/StyleSheet/StyleSheet';
 
+import {ShadowUtil} from '../util';
+
 const styles = StyleSheet.create({
   container: {
-    elevation: 1,
+    ...ShadowUtil.getStylesForElevation(1),
     borderRadius: 4,
     backgroundColor: '#ffffff',
   },
   containerNoElevation: {
-    elevation: 0,
+    ...ShadowUtil.getStylesForElevation(0),
   },
 });
 
