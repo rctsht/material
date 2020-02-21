@@ -1,6 +1,7 @@
 // @flow strict-local
 import * as React from 'react';
-import {ActivityIndicator, Animated, BackHandler, Dimensions, StatusBar, StyleSheet, View} from 'react-native';
+import {ActivityIndicator, Animated, BackHandler, Dimensions, StyleSheet, View} from 'react-native';
+import {SafeAreaConsumer} from 'react-native-safe-area-context';
 import type {LayoutEvent, PressEvent} from 'react-native/Libraries/Types/CoreEventTypes';
 
 import {Icon} from '../icon';
@@ -122,7 +123,7 @@ class Picker extends React.PureComponent<Props, State> {
           {
             open: true,
             pickerX: x,
-            pickerY: y + StatusBar.currentHeight,
+            pickerY: y,
             windowWidth: width,
             windowHeight: height,
           },
@@ -242,40 +243,44 @@ class Picker extends React.PureComponent<Props, State> {
     const selectedItem = items.find(item => item.value === value);
 
     return (
-      <>
-        <View ref={this.setViewRef} onLayout={this.onLayout} pointerEvents={disabled ? 'none' : 'auto'}>
-          {loading ? (
-            <View style={[styles.container, styles.containerLoading]}>
-              <ActivityIndicator size="small" color="#3c3f43" />
+      <SafeAreaConsumer>
+        {insets => (
+          <>
+            <View ref={this.setViewRef} onLayout={this.onLayout} pointerEvents={disabled ? 'none' : 'auto'}>
+              {loading ? (
+                <View style={[styles.container, styles.containerLoading]}>
+                  <ActivityIndicator size="small" color="#3c3f43" />
+                </View>
+              ) : (
+                this.renderSelectedItem({
+                  index: items.indexOf(selectedItem),
+                  item: selectedItem,
+                  selected: selectedItem ? selectedItem.disabled !== true : false,
+                })
+              )}
             </View>
-          ) : (
-            this.renderSelectedItem({
-              index: items.indexOf(selectedItem),
-              item: selectedItem,
-              selected: selectedItem ? selectedItem.disabled !== true : false,
-            })
-          )}
-        </View>
-        {disabled ? null : (
-          <PickerList
-            isVisible={open}
-            items={items}
-            onClose={this.onClosePickerList}
-            onPressListItem={this.onPressListItem}
-            pickerWidth={pickerWidth}
-            pickerHeight={pickerHeight}
-            pickerX={pickerX}
-            pickerY={pickerY}
-            renderFooter={renderFooter}
-            renderListItem={renderListItem}
-            renderSelectedItem={this.renderSelectedItem}
-            scrimOpacity={this.scrimOpacity}
-            selectedValue={value}
-            windowWidth={windowWidth}
-            windowHeight={windowHeight}
-          />
+            {disabled ? null : (
+              <PickerList
+                isVisible={open}
+                items={items}
+                onClose={this.onClosePickerList}
+                onPressListItem={this.onPressListItem}
+                pickerWidth={pickerWidth}
+                pickerHeight={pickerHeight}
+                pickerX={pickerX}
+                pickerY={pickerY + insets.top}
+                renderFooter={renderFooter}
+                renderListItem={renderListItem}
+                renderSelectedItem={this.renderSelectedItem}
+                scrimOpacity={this.scrimOpacity}
+                selectedValue={value}
+                windowWidth={windowWidth}
+                windowHeight={windowHeight}
+              />
+            )}
+          </>
         )}
-      </>
+      </SafeAreaConsumer>
     );
   }
 }

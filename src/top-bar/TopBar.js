@@ -1,7 +1,8 @@
 // @flow strict-local
 import * as React from 'react';
-import {Platform, StatusBar, StyleSheet, TouchableNativeFeedback, View} from 'react-native';
+import {Platform, StyleSheet, TouchableNativeFeedback, View} from 'react-native';
 import {Menu, MenuOptions, MenuOption, MenuTrigger} from 'react-native-popup-menu';
+import {SafeAreaConsumer} from 'react-native-safe-area-context';
 import type {ViewStyleProp} from 'react-native/Libraries/StyleSheet/StyleSheet';
 
 import {Button, CircleButton} from '../button';
@@ -14,8 +15,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    paddingTop: StatusBar.currentHeight,
-    minHeight: 56 + StatusBar.currentHeight,
   },
   leftAction: {
     marginLeft: 10,
@@ -226,64 +225,43 @@ class TopBar extends React.Component<Props> {
     );
 
     return (
-      <View
-        style={[
-          styles.container,
-          {backgroundColor: rctshtTheme.colors.primary},
-          ...(Array.isArray(style) ? style : [style]),
-        ]}
-      >
-        {leftNode != null ? leftNode : leftAction}
-        {tag != null ? (
-          <View style={[styles.tag, leftAction ? styles.labelLeftAction : styles.labelNoLeftAction]}>{tag}</View>
-        ) : null}
-        <View
-          style={[
-            styles.label,
-            leftAction && tag == null ? styles.labelLeftAction : null,
-            leftAction || tag != null ? null : styles.labelNoLeftAction,
-          ]}
-        >
-          {typeof label === 'string' ? (
-            <Type.H6 style={{color: rctshtTheme.colors.onPrimary}} numberOfLines={1}>
-              {label}
-            </Type.H6>
-          ) : (
-            label
-          )}
-        </View>
-        {rightActions.filter(this.filterRightActionsByShow).map(this.renderRightAction)}
-        {ellipsisMenu}
-        {/*
+      <SafeAreaConsumer>
+        {insets => (
           <View
-            style={{position: 'absolute', top: StatusBar.currentHeight, height: 4, width: 72, backgroundColor: 'black'}}
-          />
-          <View
-            style={{
-              position: 'absolute',
-              top: StatusBar.currentHeight + 4,
-              height: 4,
-              width: 32,
-              backgroundColor: 'white',
-            }}
-          />
-          <View style={{position: 'absolute', top: 0, right: 0, height: 56, width: 8, backgroundColor: 'white'}} />
-          <View style={{position: 'absolute', top: 0, right: 8, height: 56, width: 8, backgroundColor: 'black'}} />
-          <View style={{position: 'absolute', top: 40, right: 28, height: 24, width: 24, backgroundColor: 'white'}} />
-          <View style={{position: 'absolute', top: 40, right: 76, height: 24, width: 24, backgroundColor: 'black'}} />
-          <View style={{position: 'absolute', top: 40, right: 124, height: 24, width: 24, backgroundColor: 'white'}} />
-          <View
-            style={{
-              position: 'absolute',
-              top: 0,
-              height: StatusBar.currentHeight,
-              left: 0,
-              right: 0,
-              backgroundColor: 'black',
-            }}
-          />
-        */}
-      </View>
+            style={[
+              styles.container,
+              {
+                paddingTop: insets.top,
+                minHeight: 56 + insets.top,
+              },
+              {backgroundColor: rctshtTheme.colors.primary},
+              ...(Array.isArray(style) ? style : [style]),
+            ]}
+          >
+            {leftNode != null ? leftNode : leftAction}
+            {tag != null ? (
+              <View style={[styles.tag, leftAction ? styles.labelLeftAction : styles.labelNoLeftAction]}>{tag}</View>
+            ) : null}
+            <View
+              style={[
+                styles.label,
+                leftAction != null && tag == null ? styles.labelLeftAction : null,
+                leftAction || tag != null ? null : styles.labelNoLeftAction,
+              ]}
+            >
+              {typeof label === 'string' ? (
+                <Type.H6 style={{color: rctshtTheme.colors.onPrimary}} numberOfLines={1}>
+                  {label}
+                </Type.H6>
+              ) : (
+                label
+              )}
+            </View>
+            {rightActions.filter(this.filterRightActionsByShow).map(this.renderRightAction)}
+            {ellipsisMenu}
+          </View>
+        )}
+      </SafeAreaConsumer>
     );
   }
 }

@@ -39,7 +39,6 @@ type DefaultProps = {|
   initialExpanded: boolean,
   leadingIcon: React.Node,
   onPress: ?() => void,
-  selected: boolean,
   trailingIcon: React.Node,
   disabled: boolean,
 |};
@@ -61,7 +60,6 @@ class ListItem extends React.PureComponent<Props, State> {
     initialExpanded: false,
     expanding: false,
     onPress: null,
-    selected: false,
     leadingIcon: null,
     trailingIcon: null,
     disabled: false,
