@@ -4,6 +4,7 @@ import {Animated, StyleSheet, TouchableWithoutFeedback, View} from 'react-native
 import type AnimatedInterpolation from 'react-native/Libraries/Animated/src/nodes/AnimatedInterpolation';
 
 import {type ThemeProps, withTheme} from '../theme';
+import {ShadowUtil} from '../util';
 
 const styles = StyleSheet.create({
   container: {
@@ -118,9 +119,28 @@ class Scrim extends React.PureComponent<Props, State> {
     );
 
     return animated ? (
-      <Animated.View style={[styles.container, {elevation, opacity}]}>{scrim}</Animated.View>
+      <Animated.View
+        style={[
+          styles.container,
+          {
+            ...ShadowUtil.getStylesForElevation(elevation),
+            opacity,
+          },
+        ]}
+      >
+        {scrim}
+      </Animated.View>
     ) : (
-      <View style={[styles.container, {elevation}]}>{scrim}</View>
+      <View
+        style={[
+          styles.container,
+          {
+            ...ShadowUtil.getStylesForElevation(elevation),
+          },
+        ]}
+      >
+        {scrim}
+      </View>
     );
   }
 }

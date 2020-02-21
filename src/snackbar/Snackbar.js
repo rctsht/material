@@ -6,6 +6,7 @@ import uuid from 'uuid';
 import {Button} from '../button';
 import {GlobalOverlay, withGlobalOverlay} from '../global';
 import {Type} from '../type';
+import {ShadowUtil} from '../util';
 
 const labelLineHeight = 20;
 
@@ -20,7 +21,7 @@ const styles = StyleSheet.create({
     minHeight: 48,
     paddingLeft: 16,
     paddingRight: 8,
-    elevation: 6,
+    ...ShadowUtil.getStylesForElevation(6),
     position: 'absolute',
     left: 8,
     right: 8,

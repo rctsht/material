@@ -10,6 +10,7 @@ import type {PressEvent} from 'react-native/Libraries/Types/CoreEventTypes';
 import {isPhone} from '../device';
 import {Scrim} from '../scrim';
 import {type ThemeProps, withTheme} from '../theme';
+import {ShadowUtil} from '../util';
 
 const types = {
   BOTTOM: 'BOTTOM',
@@ -25,7 +26,7 @@ const styles = {
     left: 0,
     bottom: 0,
     right: 0,
-    elevation: 16,
+    ...ShadowUtil.getStylesForElevation(16),
   },
   wrapper2: {
     zIndex: 16800,
@@ -34,11 +35,11 @@ const styles = {
     left: 0,
     bottom: 0,
     right: 0,
-    elevation: 16,
+    ...ShadowUtil.getStylesForElevation(16),
   },
   common: StyleSheet.create({
     container: {
-      elevation: 16,
+      ...ShadowUtil.getStylesForElevation(16),
       backgroundColor: '#fff',
     },
   }),
