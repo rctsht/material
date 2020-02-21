@@ -12,7 +12,6 @@
     "hoist-non-react-statics": "^3.3.2",
     "lodash-es": "^4.17.15",
     "react-native-popup-menu": "^0.15.7",
-    "react-native-safe-area-context": "^0.7.3",
     "tinycolor2": "^1.4.1",
     "uuid": "^3.4.0"
   },
@@ -37,12 +36,14 @@
     "prettier": "^1.19.1",
     "react": "16.9.0",
     "react-native": "^0.61.5",
+    "react-native-safe-area-context": "^0.7.3",
     "react-native-vector-icons": "^6.6.0",
     "react-navigation": "^4.1.1"
   },
   "peerDependencies": {
     "react": "*",
     "react-native": "*",
+    "react-native-safe-area-context": "*",
     "react-native-vector-icons": "*",
     "react-navigation": "*"
   },
