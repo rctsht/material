@@ -16,7 +16,6 @@ import PickerList from './PickerList';
 const styles = StyleSheet.create({
   container: {
     borderRadius: 8,
-    overflow: 'hidden',
     backgroundColor: '#ffffff',
     flexDirection: 'row',
     alignItems: 'center',
