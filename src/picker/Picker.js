@@ -16,7 +16,6 @@ import PickerList from './PickerList';
 const styles = StyleSheet.create({
   container: {
     borderRadius: 8,
-    overflow: 'hidden',
     backgroundColor: '#ffffff',
     flexDirection: 'row',
     alignItems: 'center',
@@ -268,7 +267,7 @@ class Picker extends React.PureComponent<Props, State> {
                 pickerWidth={pickerWidth}
                 pickerHeight={pickerHeight}
                 pickerX={pickerX}
-                pickerY={pickerY + insets.top}
+                pickerY={pickerY + (Platform.OS === 'android' ? insets.top : 0)}
                 renderFooter={renderFooter}
                 renderListItem={renderListItem}
                 renderSelectedItem={this.renderSelectedItem}
