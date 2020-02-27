@@ -105,13 +105,9 @@ class Dialog extends React.PureComponent<Props, State> {
   };
 
   static getDerivedStateFromProps(props: Props) {
-    if (props.isVisible) {
-      return {
-        visible: true,
-      };
-    }
-
-    return null;
+    return {
+      visible: props.isVisible === true,
+    };
   }
 
   animationProgress = new Animated.Value(0.1);
