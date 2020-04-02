@@ -52,6 +52,7 @@ const styles = StyleSheet.create({
   menuOptionText: {
     flex: 1,
     fontSize: 15,
+    lineHeight: 20,
     color: '#212121',
     marginLeft: 7,
   },
