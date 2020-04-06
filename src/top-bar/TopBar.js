@@ -52,6 +52,7 @@ const styles = StyleSheet.create({
   menuOptionText: {
     flex: 1,
     fontSize: 15,
+    lineHeight: 20,
     color: '#212121',
     marginLeft: 7,
   },
@@ -82,7 +83,7 @@ const menuTriggerStyles = {
 
 const menuOptionStyles = {
   optionWrapper: {
-    height: 48,
+    minHeight: 48,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'flex-start',
